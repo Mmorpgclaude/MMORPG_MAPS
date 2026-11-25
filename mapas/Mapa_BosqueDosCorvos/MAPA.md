@@ -31,7 +31,7 @@ Oeste, norte e leste são fechados (paredão de rocha com mata morta densa).
 | 3 | Ninhal | leste, em volta de (117, 62): árvores com ninho, ninhos no chão, corvos pousados, penas |
 | 4 | Poço Sagrado | oeste, em volta de (31, 65): o poço com as pedras rúnicas e estacas de oferendas |
 | 5 | Árvore dos Corvos | norte, em volta de (75, 33): a árvore gigante e o altar dos corvos |
-| 6 | Cabana do Guardião | noroeste, em volta de (34, 35): a cabana abandonada, banco, tronco e toco |
+| 6 | Clareira do Guardião | noroeste, em volta de (34, 35): estacas de oferendas, banco, tronco caído, toco e pedras |
 
 Tipos de chão no `gen_data` (canal B ÷ 40): 0 neve, 1 chão do bosque, 2 trilha de terra congelada, 3 gelo escuro
 (lagoa, andável), 4 rocha (bloqueado), 5 neve pisada.
@@ -55,6 +55,7 @@ Tipos de chão no `gen_data` (canal B ÷ 40): 0 neve, 1 chão do bosque, 2 trilh
 ## Arte
 
 - Folhas originais em `Assets_BosqueDosCorvos/` (`folha_objetos.png`, `atlas_terreno.png`).
-- `pecas.json` e `arte/` (40 peças recortadas com `recorta_folha.py`, no máximo 128 cores).
-- A cabana saiu numa peça só com a lenha e o totem; o poço saiu junto com as duas pedras rúnicas (colisão só no pé).
+- `pecas.json` e `arte/` (39 peças recortadas com `recorta_folha.py`, no máximo 128 cores).
+- A cabana da folha **não é usada**: o Ricardo tirou porque tinha volume de casa (paredes e telhado em perspectiva), e o jogo é plano.
+- O poço saiu junto com as duas pedras rúnicas (colisão só no pé).
 - As penas no chão estão no `ov` (são planas, o jogador anda por cima).

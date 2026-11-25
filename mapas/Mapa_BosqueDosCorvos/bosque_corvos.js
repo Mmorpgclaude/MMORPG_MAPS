@@ -1,7 +1,7 @@
 /* ---------- Bosque dos Corvos Brancos (mapa 'lc') — ao norte do Passo de Hrimfjell (nh), posição (110, -660) ----------
    O bosque sagrado no alto das montanhas, de onde os corvos descem para todo o Reino do Gelo. Árvores mortas de madeira
-   branca, a Árvore dos Corvos gigante no norte (com o altar no pé), o Poço Sagrado a oeste, o Ninhal a leste e a Cabana
-   do Guardião a noroeste. Entrada só pelo sul (colunas 70-80), vindo do Passo de Hrimfjell.
+   branca, a Árvore dos Corvos gigante no norte (com o altar no pé), o Poço Sagrado a oeste, o Ninhal a leste e a Clareira
+   do Guardião a noroeste (sem a cabana: o jogo é plano e a casa tinha volume demais). Entrada só pelo sul (colunas 70-80), vindo do Passo de Hrimfjell.
    Objetos: a própria arte da folha do Ricardo (Assets_BosqueDosCorvos), recortada por recorta_folha.py em arte/.
    Chão: pintor por pixel abaixo, espelhado em lc_floor.gdshader.
    gen_data: R = andável, G = distância até a trilha × 10, B = tipo do chão × 40
@@ -20,7 +20,7 @@ function ravenWood(){
  const clamp=(v,a,b)=>v<a?a:v>b?b:v;
  const S=new Array(W*H).fill(0),Z=new Array(W*H).fill(0),ents=[],dark=[];
  const fx={mist:[],raven:[],feather:[],candle:[],rune:[],eyes:[]};
- const zn=['Bosque dos Corvos Brancos','Trilha do Passo','Bosque Branco','Ninhal','Poço Sagrado','Árvore dos Corvos','Cabana do Guardião'];
+ const zn=['Bosque dos Corvos Brancos','Trilha do Passo','Bosque Branco','Ninhal','Poço Sagrado','Árvore dos Corvos','Clareira do Guardião'];
  const put=(cv,x,yb,lb)=>{const ybase=Math.round(yb);const e={img:cv,x:Math.round(x),y:ybase,z:ybase-cv.height+2,sw:cv.width,sh:cv.height};if(lb)e.lb=lb;ents.push(e);return e};
  const blk=(x0,y0,x1,y1)=>{for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)if(x>=0&&y>=0&&x<W&&y<H)S[y*W+x]=1};
  const EL=(x,y,a,b,rx,ry)=>Math.hypot((x-a)/rx,(y-b)/ry);
@@ -47,7 +47,7 @@ function ravenWood(){
  const TR=[[75,119.5],[75,112],[73,104],[70,95],[71,84],[74,74],[76,64],[75,52],[75,44],[75,37],[75,33]];   /* entrada -> Árvore dos Corvos */
  const TP=[[71,84],[60,77],[48,71],[38,66]];                                                      /* para o Poço Sagrado */
  const TN=[[74,74],[88,68],[100,64],[110,62]];                                                    /* para o Ninhal */
- const TC=[[75,44],[62,40],[50,38],[42,37]];                                                      /* para a Cabana */
+ const TC=[[75,44],[62,40],[50,38],[42,37]];                                                      /* para a Clareira do Guardião */
  const RDD=new Float32Array(W*H).fill(99);
  for(const L of[TR,TP,TN,TC]){for(let k=0;k<L.length-1;k++){const [ax,ay]=L[k],[bx,by]=L[k+1],n=Math.ceil(Math.hypot(bx-ax,by-ay)*2);
   for(let q=0;q<=n;q++){const x=ax+(bx-ax)*q/n,y=ay+(by-ay)*q/n;for(let j=-4;j<=4;j++)for(let i=-4;i<=4;i++){const tx=Math.round(x+i),ty=Math.round(y+j);if(tx<0||ty<0||tx>=W||ty>=H)continue;
@@ -133,8 +133,8 @@ function ravenWood(){
  for(const [ox,oy] of[[17,20],[89,20]]){const p=at('well',WX,WB,ox,oy);fx.rune.push(p);dark.push([p[0],p[1],40,.55])}
  place('stake',(WELL[0]-7)*T,(WELL[1]-1)*T,.4,1);place('stake',(WELL[0]+7)*T,(WELL[1]+2)*T,.4,1,true);
  place('mush2',(WELL[0]-6)*T,(WELL[1]+4)*T,0,0);place('grass1',(WELL[0]+6)*T,(WELL[1]-3)*T,0,0);
- /* --- Cabana do Guardião --- */
- const CX=CAB[0]*T,CB=(CAB[1]-1)*T;place('cabin',CX,CB,.9,3);
+ /* --- Clareira do Guardião (sem cabana) --- */
+ place('stake',(CAB[0]+1)*T,(CAB[1]-1)*T,.4,1,true);place('rocks_pile',(CAB[0]-3)*T,(CAB[1]-4)*T,.6,1);
  place('bench',(CAB[0]+2)*T,(CAB[1]+2)*T,.8,1);place('stake',(CAB[0]-8)*T,(CAB[1]+1)*T,.4,1);place('log',(CAB[0]+9)*T,(CAB[1]-1)*T,.7,1,true);
  place('stump',(CAB[0]-7)*T,(CAB[1]-3)*T,.6,1);
  /* --- Ninhal: árvores com ninho, ninhos no chão, corvos pousados e penas --- */
