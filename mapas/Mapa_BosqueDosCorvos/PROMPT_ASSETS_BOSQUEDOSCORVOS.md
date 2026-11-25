@@ -1,17 +1,18 @@
 # Mapa novo do Gelo: Bosque dos Corvos Brancos (id proposto `lc`)
 
-Fica ao norte do Fiorde dos Corvos (`nr`), na posição (-40, -540) do Mapa do Mundo. Tamanho padrão 150×120.
-É de onde vêm os corvos que dão nome ao fiorde.
+Fica ao norte do Passo de Hrimfjell (`nh`), na posição (110, -660) do Mapa do Mundo (escolhida pelo Ricardo).
+Tamanho padrão 150×120. É o bosque sagrado no alto das montanhas, de onde os corvos descem para todo o Reino do Gelo.
 
-- **Entrada:** só pelo Fiorde dos Corvos, pela **borda sul (colunas 70-80)**, no meio da borda: longe da costa e da cachoeira congelada do Fiorde (lado oeste) e alinhada com a saída sul do Fiorde (colunas 69-75). O Fiorde ganha a mesma faixa (colunas 70-80) na borda norte.
-- **Oeste e norte fechados** (paredão de rocha e mata morta densa).
-- **Leste fechado** (lá fica o Passo de Hrimfjell `nh`); pode virar passagem no futuro, se o Ricardo quiser.
+- **Entrada:** só pelo Passo de Hrimfjell, pela **borda sul (colunas 70-80)**, no meio da borda, alinhada com a saída
+  sul do Passo (colunas 69-75): quem sobe do Vale dos Lobos atravessa o Passo quase em linha reta. O Passo ganha a
+  mesma faixa (colunas 70-80) na borda norte.
+- **Oeste, norte e leste fechados** (paredão de rocha e mata morta densa); não há mapas vizinhos desses lados.
 
 ## O que tem no mapa
 
 | Área | Onde | O que tem |
 |---|---|---|
-| **Trilha do Fiorde** | sul, na entrada | trilha de terra congelada subindo do fiorde entre pedras com neve e pinheiros mortos |
+| **Trilha do Passo** | sul, na entrada | trilha de terra congelada subindo do Passo entre pedras com neve e pinheiros mortos |
 | **Bosque Branco** | meio | árvores mortas de madeira branca, retorcidas, névoa baixa entre os troncos |
 | **Ninhal** | leste | árvores com ninhos enormes de gravetos, corvos pousados, penas pretas no chão |
 | **Poço Sagrado** | oeste | poço de pedra antigo com a água congelada, pedras rúnicas e oferendas em volta |
