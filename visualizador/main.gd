@@ -106,7 +106,9 @@ func load_map(id: String) -> void:
 	lbl_load.visible = false
 	hud.visible = true
 	camera.reset_smoothing()
-	if args.has("compara"): _compara(args.compara)
+	if args.has("compara"):
+		_compara(args.compara)
+		if not args.has("foto"): get_tree().quit()
 	if args.has("foto"):
 		for i in 20: await get_tree().process_frame
 		get_viewport().get_texture().get_image().save_png(args.foto)
