@@ -1,2 +1,4 @@
 build/
 .godot/
+saida*/
+__pycache__/
