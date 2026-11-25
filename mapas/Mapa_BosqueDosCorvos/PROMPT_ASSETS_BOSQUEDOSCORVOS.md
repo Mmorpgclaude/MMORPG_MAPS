@@ -3,7 +3,7 @@
 Fica ao norte do Fiorde dos Corvos (`nr`), na posição (-40, -540) do Mapa do Mundo. Tamanho padrão 150×120.
 É de onde vêm os corvos que dão nome ao fiorde.
 
-- **Entrada:** só pelo Fiorde dos Corvos, pela **borda sul (colunas 70-80)**. O Fiorde ganha a mesma faixa na borda norte.
+- **Entrada:** só pelo Fiorde dos Corvos, pela **borda sul (colunas 74-84)**, no ponto que o Ricardo marcou no Mapa do Mundo (meio da borda norte do Fiorde, um pouco à direita do centro). O Fiorde ganha a mesma faixa (colunas 74-84) na borda norte.
 - **Oeste e norte fechados** (paredão de rocha e mata morta densa).
 - **Leste fechado** (lá fica o Passo de Hrimfjell `nh`); pode virar passagem no futuro, se o Ricardo quiser.
 
