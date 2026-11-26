@@ -223,9 +223,9 @@ function nomadCamp(){
               {m:'ga',cells:cave('cave_sand',ARC[0]*T+16,ARC[1]),x:60*T+8,y:85*T}];
  /* enfeites soltos da folha em volta das entradas (sem animais) */
  for(const [Gp,sd] of[[GATE,360],[ARC,370]]){
-  aScat(['slab1','slab2'],2,sd,(x,y)=>Math.hypot(x-Gp[0],(y-Gp[1]-6)*1.3)<13,{bw:1,road:0});aScat(['stones_s','rocks_small','rock_flat2'],2,sd+2,(x,y)=>Math.hypot(x-Gp[0],(y-Gp[1]-6)*1.3)<13,{bw:0,walk:true,fit:0,road:0});
+  aScat(['slab1','slab2'],2,sd,(x,y)=>Math.hypot(x-Gp[0],(y-Gp[1]-6)*1.3)<13,{bw:1,road:0});aScat(['stones_s','rocks_small','rock_flat2'],2,sd+2,(x,y)=>Math.hypot(x-Gp[0],(y-Gp[1]-6)*1.3)<13,{fit:1,road:0});
   aScat(['grass_dry','grass_s','branch'],3,sd+1,(x,y)=>Math.hypot(x-Gp[0],(y-Gp[1]-6)*1.3)<14,{bw:0,walk:true,fit:0,road:0})}
- aNear('barrel',GATE[0]+9,GATE[1]+3,{bw:0});aNear('barrel_down',GATE[0]+11,GATE[1]+4,{bw:0});
+ aNear('barrel',GATE[0]+9,GATE[1]+3,{});aNear('barrel_down',GATE[0]+11,GATE[1]+4,{});
  aNear('cairn',LOOK[0],LOOK[1],{fit:2});aNear('tribe_flag',LOOK[0]+3,LOOK[1]-1,{m:0,bw:0});aNear('rock_tall',LOOK[0]-6,LOOK[1]-2,{fit:3,br:2});
  /* estrada: marcos e a placa do portão */
  for(const x of[90,112,128])aNear('milestone',x,47,{bw:0});
@@ -236,16 +236,16 @@ function nomadCamp(){
  const IN=(h,a,b)=>(x,y)=>{const e=Math.hypot(x-h[0],(y-h[1])*1.2)/h[2];return e>=a&&e<b};
  /* Planície Escaldante: seca e aberta — árvores mortas soltas, mato seco e pedrinhas (anda-se por cima), rochedos baixos na beirada */
  aScat(['dead_tree'],2,330,IN(H1,.7,.95),{bw:1,fit:2,road:3});
- aScat(['dry_bush','tumble','pebbles1','pebbles2','rock_red2'],6,331,IN(H1,.6,.95),{bw:0,walk:true,fit:0});
- aScat(['rock_m'],2,332,IN(H1,.8,1.05),{fit:1,road:3});aScat(['rock_s','rock_red'],3,333,IN(H1,.75,1.05),{bw:0,walk:true,fit:0});
+ aScat(['dry_bush','tumble','pebbles1','pebbles2'],5,331,IN(H1,.6,.95),{bw:0,walk:true,fit:0});
+ aScat(['rock_m'],2,332,IN(H1,.8,1.05),{fit:1,road:3});aScat(['rock_s','rock_red','rock_red2'],3,333,IN(H1,.75,1.05),{fit:1});
  /* Vale das Areias Vermelhas: um anel de rochedos vermelhos grandes em volta, cascalho vermelho no meio */
  aScat(['rock_big','rock_tall','rock_m'],6,340,IN(H2,.78,1.08),{fit:2,br:2,road:3,res:1});
- aScat(['rock_red','rock_red2','rock_s'],4,341,IN(H2,.65,1),{bw:0,walk:true,fit:0});
- aScat(['rock_red2','pebbles1','pebbles2'],6,342,IN(H2,.5,.8),{bw:0,walk:true,fit:0});
+ aScat(['rock_red','rock_red2','rock_s'],4,341,IN(H2,.65,1),{fit:1});
+ aScat(['pebbles1','pebbles2'],5,342,IN(H2,.5,.8),{bw:0,walk:true,fit:0});
  /* Campos do Vento: bolas de mato seco e arbustos rolando entre as dunas baixas */
  aScat(['tumble','dry_bush'],8,350,IN(H3,.55,1),{bw:0,walk:true,fit:0});
  aScat(['cactus_s','cactus_barrel'],2,351,IN(H3,.75,1),{bw:0});
- aScat(['rock_tall','rock_m','rock_big'],5,307,OPEN,{fit:3,br:2,road:5,res:2});aScat(ROCKS_S,24,308,OPEN,{bw:0,walk:true,fit:0});aScat(DRY,32,309,OPEN,{bw:0,walk:true,fit:0});
+ aScat(['rock_tall','rock_m','rock_big'],5,307,OPEN,{fit:3,br:2,road:5,res:2});aScat(['rock_s','rock_red','rock_red2'],14,308,OPEN,{fit:1});aScat(['pebbles1','pebbles2'],10,318,OPEN,{bw:0,walk:true,fit:0});aScat(DRY,32,309,OPEN,{bw:0,walk:true,fit:0});
  aScat(['cactus_s','cactus_m','cactus_barrel','cactus_flower'],12,311,OPEN,{bw:0});aScat(['dead_tree'],5,312,OPEN,{bw:1});
  /* efeitos (fx_nd.gd): redemoinhos de poeira e o fogo das fogueiras (sem abutres: nada de animais) */
  /* redemoinhos: três nos Campos do Vento, um em cada outro campo de caça, dois soltos */

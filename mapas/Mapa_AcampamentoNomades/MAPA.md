@@ -84,9 +84,10 @@ Norte, sul e oeste são fechados (dunas altas, `M = 2`).
 
 ## Colisão das pedras
 
-- Pedras pequenas, pedrinhas, cascalho e lajinhas (`rock_s`, `rock_red`, `rock_red2`, `pebbles1/2`, `stones_s`,
-  `rocks_small`, `rock_flat2`): **sem colisão** (o jogador passa por cima), pedido do Ricardo.
-- Rochedos médios e grandes (`rock_m`, `rock_tall`, `rock_big`) e as lajes grandes (`slab1/2`): colisão só no pé.
+- **Pedras pequenas** (`rock_s`, `rock_red`, `rock_red2`, `stones_s`, `rocks_small`, `rock_flat2`): **bloqueiam** — colisão no
+  pé pela largura da peça (padrão do ajudante do Deserto), para não dar para atravessar (pedido do Ricardo).
+- Rochedos médios e grandes, lajes grandes e barris: colisão no pé.
+- Só o **cascalho miúdo** rente ao chão (`pebbles1`, `pebbles2`) e o mato seco ficam sem colisão.
 - Áreas de caça: poucos enfeites, só na beirada; o meio de cada campo fica livre.
 
 ## Destinos sugeridos para o teleporte (tiles, livres)
