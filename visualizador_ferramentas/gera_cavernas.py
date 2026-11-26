@@ -142,18 +142,19 @@ GRUTA = dict(
   aScat(['rock_m','rock_tall'],3,500+k*10,(x,y)=>{const e=Math.hypot((x-h[0])/h[2],(y-h[1])/h[3]);return e>.85&&e<1.05},{fit:1,br:2,road:0});
   torch(Math.round(h[0]-h[2]*.6),Math.round(h[1]-h[3]*.6));torch(Math.round(h[0]+h[2]*.6),Math.round(h[1]-h[3]*.6),{flip:true})}
  torch(55,85);torch(73,85,{flip:true});
- /* Câmara do Fundo: um buraco no chão (poço escuro, pintado no ov) que desce para o Lago Subterrâneo (lg). A porta são os
-    tiles do meio do buraco; chega no Lago em (60, 126). Sem postes na câmara: só uma tocha na parede. */
- {const og=oc.getContext('2d'),cx=78*T+8,cy=11*T+8,rx=34,ry=20,P=(c,x,y)=>{og.fillStyle=c;og.fillRect(x,y,1,1)};
-  for(let y=cy-ry-8;y<=cy+ry+8;y++)for(let x=cx-rx-8;x<=cx+rx+8;x++){const u=(x-cx)/rx,v=(y-cy)/ry,e=u*u+v*v+(vn(x,y,9,150)-.5)*.22;
-   if(e<1){/* dentro: a parede de arenito do fundo (em cima) sumindo no escuro */const top=cy-ry*Math.sqrt(Math.max(0,1-u*u)),t=Math.min(1,(y-top)/(ry*1.1));
-    const lay=((y>>2)+(hq(x>>3,3)<.5?1:0))&1,k=(1-t)*(lay?1:.85);P('rgb('+((12+140*k)|0)+','+((8+96*k)|0)+','+((6+62*k)|0)+')',x,y)}
-   else if(e<1.5){/* borda: areia clara no alto e à esquerda, sombra embaixo */const lit=v<.2;
-    P(lit?(hq(x,y)<.15?'rgb(222,186,128)':'rgb(200,164,110)'):(e<1.2?'rgb(92,66,44)':'rgb(132,98,64)'),x,y)}}
-  for(const [ox,oy] of[[-rx-6,-4],[rx+4,2],[-rx+6,ry+4],[rx-10,ry+5]]){og.fillStyle='rgb(120,88,60)';og.fillRect(cx+ox,cy+oy,4,3);og.fillStyle='rgb(70,50,34)';og.fillRect(cx+ox,cy+oy+3,4,1)}
-  dark.push([cx,cy,90,.6]);
-  const ct=mkA('lamppost');put(ct,(84*T)-(ct.width>>1),10*T);fx.lamp.push([84*T-(ct.width>>1)+ct.width-18,10*T-ct.height+32]);dark.push([84*T,8*T,120,1]);
-  const c=[];for(let y=10;y<=12;y++)for(let x=76;x<=80;x++){const u=(x*T+8-cx)/rx,v=(y*T+8-cy)/ry;if(u*u+v*v<.75&&F[y*W+x])c.push(x,y)}
+ /* Câmara do Fundo: uma boca de caverna na parede do fundo (a entrada cor de areia da folha_cavernas, a mesma aprovada no
+    Acampamento) — o caminho natural que desce para o Lago Subterrâneo (lg). A areia do funil vai no ov; a pedra em volta
+    da boca e as pedrinhas dos lados são objetos. A porta são os tiles da boca; chega no Lago em (60, 126). */
+ {const g={"w": 202, "h": 192, "boca": [72, 52, 147, 104], "split": 116},cx=78*T+8;let dr=0;for(let y=2;y<20;y++){if(F[y*W+78]){dr=y;break}}dr+=1;
+  const x0=Math.round(cx-g.w/2),top=(dr+1)*T-6-g.boca[3];
+  oc.getContext('2d').drawImage(ART.cave_sand_chao,x0,top);
+  const cut=(img,y0,hh)=>{const [c,,q]=cmCv(g.w,hh);q.drawImage(img,0,-y0);return c};
+  put(cut(ART.cave_sand_fundo,0,g.split),x0,top+g.split);put(cut(ART.cave_sand_frente,g.split,g.h-g.split),x0,top+g.h);
+  const mx0=Math.floor((x0+g.boca[0]+6)/T),mx1=Math.floor((x0+g.boca[2]-6)/T),tx0=Math.floor(x0/T),tx1=Math.floor((x0+g.w-1)/T);
+  for(let y=dr-3;y<=dr;y++)for(let x=tx0;x<=tx1;x++)if(x>=0&&y>=0&&(y<dr||x<mx0||x>mx1))S[y*W+x]=1;
+  for(let y=dr+1;y<=dr+3;y++)for(const x of[tx0,tx0+1,tx1-1,tx1])if(x>=0&&y<H)S[y*W+x]=1;
+  dark.push([x0+((g.boca[0]+g.boca[2])>>1),top+g.boca[3]-6,70,.85]);
+  const c=[];for(let x=mx0;x<=mx1;x++){F[dr*W+x]=1;S[dr*W+x]=0;c.push(x,dr)}
   DOORS.push({m:'lg',cells:c,x:60*16+8,y:126*16})}''')
 
 for d, pasta, arq in [(TEMPLO, 'Mapa_TemploSoterrado', 'templo_soterrado.js'), (GRUTA, 'Mapa_GrutaArcoVermelho', 'gruta_arco.js')]:
