@@ -12,13 +12,13 @@
 - **Efeitos:** `fx_lg.gd` (igual ao `fx_ga.gd`: poeira, areia do teto, fogueira, lanternas).
 - **Sem animais.** Pouca poluição: enfeites só nas paredes; o meio dos salões e da margem fica livre para caçar.
 
-## Entrada e saída (a escada de corda)
+## Entrada e saída
 
-- **Entra:** pela escada de corda na **Câmara do Fundo da Gruta** (`ga`): porta nos tiles (76-80, 7), campo `doors` do
+- **Entra:** pela abertura na parede da **Câmara do Fundo da Gruta** (`ga`): porta nos tiles (77-79, 7), campo `doors` do
   gerador da Gruta. Chega aqui na **Chegada (60, 126)** (px: 968, 2016).
 - **Sai:** pelo pé da escada, a **borda sul, colunas 56-63**: `{k:'edge', m:'ga', x, y}` — volta para a Câmara do Fundo
-  da Gruta, no tile (78, 14).
-- A escada é uma **porta**: o jogo é plano, ninguém sobe ou desce de verdade.
+  da Gruta, no tile (78, 15).
+- A abertura é uma **porta**: o jogo é plano; no Lago, a chegada tem a escada de corda (provisória: o rolo de corda).
 
 ## Áreas (zonas)
 

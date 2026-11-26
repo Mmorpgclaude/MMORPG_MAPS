@@ -35,7 +35,7 @@
 | 5 | Salão Central (78, 46), **caça** | ~36 × 26 tiles |
 | 6 | Salão Leste (130, 44), **caça** | ~44 × 32 tiles |
 | 7 | Salão Sudeste (124, 92), **caça** | ~44 × 28 tiles |
-| 8 | Câmara do Fundo (78, 12) | a **escada de corda** (porta nos tiles (76-80, 7)) que desce para o **Lago Subterrâneo** (`lg`), chegando lá em (60, 126) |
+| 8 | Câmara do Fundo (78, 12) | na parede do fundo, uma face de rocha alta com uma **abertura escura em arco** (pintada no `ov`, sobre a rocha) — o túnel que desce para o **Lago Subterrâneo** (`lg`); porta nos tiles (77-79, 7), chega no Lago em (60, 126). Dois postes de lanterna ao lado da abertura e uma corda enrolada no canto |
 
 ## Planta (pedido do Ricardo: pouca poluição)
 
