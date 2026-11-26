@@ -102,25 +102,35 @@ function %(FN)s(){
 TEMPLO = dict(
  ID='ts', W=160, H=120, CH=115, FN='buriedTemple', NOME='Templo Soterrado', PORTA='da entrada de caverna com o portal esculpido (cave_temple), no morro de areia da Planície Escaldante,',
  DESC='''   Um templo antigo engolido pelas dunas. O eixo do templo (lajes): Salão da Entrada, Galeria das Colunas, Salão do Ídolo e a
-   Câmara Selada. Dos dois lados, SEIS salões desmoronados e criptas cheias de areia, largos para caçar, ligados em anel.''',
+   Câmara Selada (o tesouro). Dos dois lados, SEIS salões desmoronados e criptas cheias de areia, largos para caçar, ligados em anel.''',
  ZN="['Templo Soterrado','Salão da Entrada','Galeria das Colunas','Salão do Ídolo','Câmara Selada','Salão Desmoronado Oeste','Cripta Oeste','Salão Desmoronado Leste','Cripta Leste','Salão das Areias','Galeria Norte']",
  HALLS="[[60,110,11,6,1,1],[60,86,16,9,2,1],[60,42,20,12,3,1],[60,14,9,4,4,1],[22,88,17,13,5,0],[22,46,17,14,6,0],[104,92,21,13,7,0],[104,52,20,14,8,0],[143,72,14,20,9,0],[106,15,22,9,10,0]]",
  TUN="[[60,116,60,86,4],[60,86,60,42,4],[60,42,60,14,3],[60,86,22,88,3.6],[22,88,22,46,3.6],[22,46,60,42,3.4],[60,86,104,92,3.6],[104,92,104,52,3.6],[104,52,60,42,3.4],[104,92,143,72,3.6],[104,52,143,72,3.4],[104,52,106,15,3.4],[106,15,60,14,3]]",
  SD=90, R0='[150,104,70]', R1='[170,124,84]', R2='[128,88,60]', R3='[184,140,96]',
  SLR='', SLG='', SLB='',
  FR=92, FG=70, FB=50, VX='122*16+8', VY='89*16',
- OBJ=''' /* Salao da Entrada: acampamento encostado na parede */
+ OBJ=''' const og=oc.getContext('2d');
+ /* Salao da Entrada: acampamento dos exploradores encostado na parede (os postes de lanterna são deles) */
  fire(52,109);aNear('goods',50,106,{});aNear('jar',53,105,{bw:0});torch(69,107,{flip:true});
- /* Galeria: colunas encostadas nas paredes, meio largo e livre */
+ /* Galeria: colunas encostadas nas paredes, meio largo e livre; braseiros de pedra nos cantos */
  for(const x of[46,74])for(const y of[81,91])aNear('column',x,y,{bw:0,fit:0,road:0,res:0});
- torch(45,86);torch(75,86,{flip:true});
- /* Salao do Idolo: estatua no fundo, obeliscos so na parede de tras */
+ fire(47,95);fire(73,95);
+ /* guardiões (provisório: obeliscos) dos dois lados da passagem para o Salão do Ídolo */
+ aNear('obelisk',53,53,{bw:1,road:0});aNear('obelisk',67,53,{bw:1,road:0});
+ /* Salao do Idolo: estatua no fundo com um raio de luz caindo do teto sobre ela; obeliscos na parede de tras; braseiros */
  aNear('statue_head',60,32,{fit:2,br:2,road:0});aNear('obelisk',44,36,{bw:1,road:0});aNear('obelisk',76,36,{bw:1,road:0});
- torch(48,40);torch(72,40,{flip:true});torch(60,12);
- /* 6 saloes de caca (5 a 10): vazios no meio; uma coluna quebrada colada na parede e duas tochas no alto de cada um */
+ fire(46,46);fire(74,46);fx.beam=[[60*T+8,35*T]];dark.push([60*T+8,33*T,110,.7]);
+ /* Camara Selada: o tesouro no fim do eixo — porta selada (provisório: muro com relevo) na parede do fundo, jarros e
+    mercadorias dos lados, moedas de ouro espalhadas no chão (no ov, sem colisão) */
+ {let y=14;while(y>2&&F[(y-1)*W+60])y--;aPut('ruin_wall',60,y+1,{bw:3,res:1});}aNear('jar',54,15,{bw:0,road:0});aNear('jar',66,15,{bw:0,road:0});aNear('goods',56,16,{road:0});
+ for(let k=0;k<26;k++){const x=(52+hq(k,191)*16)*T,y=(14+hq(k,192)*4)*T;og.fillStyle=hq(k,193)<.5?'#e8c040':'#b08820';og.fillRect(x|0,y|0,3,2);og.fillStyle='#fff0a0';og.fillRect(x|0,y|0,1,1)}
+ dark.push([60*T+8,14*T,80,.6]);
+ /* 6 saloes de caca (5 a 10): vazios no meio; braseiros de pedra no alto; areia escorrendo de fendas do teto com montinho */
  for(let k=4;k<=9;k++){const h=HALLS[k];
-  aScat(['column_broken'],1,600+k*10,(x,y)=>{const e=Math.hypot((x-h[0])/h[2],(y-h[1])/h[3]);return e>.85&&e<1.05},{bw:0,fit:1,road:0});
-  torch(Math.round(h[0]-h[2]*.55),Math.round(h[1]-h[3]*.6));torch(Math.round(h[0]+h[2]*.55),Math.round(h[1]-h[3]*.6),{flip:true})}''')
+  fire(Math.round(h[0]-h[2]*.55),Math.round(h[1]-h[3]*.6));fire(Math.round(h[0]+h[2]*.55),Math.round(h[1]-h[3]*.6));
+  for(let q=0;q<3;q++){const sx=Math.round(h[0]+(q-1)*h[2]*.45);let y=Math.round(h[1]);while(y>0&&F[(y-1)*W+sx])y--;
+   if(y<=0)continue;fx.sand.push([sx*T+8,y*T-4,hq(k,q)*6.28]);
+   const px=sx*T+8,py=y*T+34;for(let j=-3;j<=3;j++)for(let i=-9;i<=9;i++){if((i*i)/81+(j*j)/9>1)continue;og.fillStyle=j<0?'#dcbc84':'#c8a46a';og.fillRect(px+i,py+j,1,1)}}}''')
 TEMPLO['SLR'] = 'id<.33?178:id<.66?166:190'
 TEMPLO['SLG'] = 'id<.33?150:id<.66?138:162'
 TEMPLO['SLB'] = 'id<.33?112:id<.66?100:122'

@@ -20,11 +20,11 @@
   "nome": "Gruta do Arco Vermelho"
  },
  {
-  "id": "ts",
-  "nome": "Templo Soterrado"
- },
- {
   "id": "nd",
   "nome": "Acampamento dos Nômades"
+ },
+ {
+  "id": "ts",
+  "nome": "Templo Soterrado"
  }
 ]

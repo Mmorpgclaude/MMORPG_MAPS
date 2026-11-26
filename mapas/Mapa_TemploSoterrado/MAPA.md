@@ -45,6 +45,18 @@
 Salões largos; o meio de cada salão fica livre para caçar e os enfeites ficam só encostados nas paredes.
 A arte do interior vai ser trocada pela folha nova (`PROMPT_ASSETS_INTERIOR_CAVERNAS.md`) quando ela chegar.
 
+## O que tem no templo (sem atrapalhar a caça)
+
+- **Areia escorrendo do teto** nos 6 salões de caça: fios de areia caindo de fendas na parede de cima (`fx.sand`) e um
+  montinho de areia no chão embaixo (no `ov`, sem colisão).
+- **Braseiros de pedra** com fogo (no lugar dos postes de lanterna dos exploradores, que ficam só no Salão da Entrada):
+  dois nos cantos de cima de cada salão de caça, dois na Galeria e dois no Salão do Ídolo (`fx.fire` + `dark`).
+- **Guardiões** dos dois lados da passagem para o Salão do Ídolo (provisório: obeliscos; a estátua de guardião com lança
+  está no `PROMPT_ASSETS_INTERIOR_CAVERNAS.md`).
+- **O tesouro na Câmara Selada**: a porta selada com relevo na parede do fundo (provisório: `ruin_wall`), jarros e
+  mercadorias dos lados e moedas de ouro espalhadas no chão (no `ov`, sem colisão).
+- **Raio de luz** caindo do teto sobre o ídolo, com poeira brilhando (`fx.beam`, desenhado na camada de luz).
+
 ## Luzes (`dark`)
 
 A caverna é escura: 1 fogueira (raio 140) e as lanternas (raio 120) iluminam os salões e os túneis.

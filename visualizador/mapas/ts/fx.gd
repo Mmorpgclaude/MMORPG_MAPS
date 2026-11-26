@@ -1,7 +1,8 @@
 extends "res://scripts/fx_base.gd"
 ## Templo Soterrado (ts), caverna do Acampamento dos Nômades: poeira flutuando no ar parado, areia escorrendo das frestas do teto,
 ## o fogo das fogueiras dos exploradores (D.fire, como no fx_dx.gd do kit) e o brilho das lanternas (D.lamp).
-## Listas do gerador: D.dust [x, y, fase], D.sand [x, y, fase], D.fire [x, y], D.lamp [x, y].
+## Listas do gerador: D.dust [x, y, fase], D.sand [x, y, fase], D.fire [x, y], D.lamp [x, y], D.beam [x, y] (raio de luz
+## caindo do teto sobre o ídolo, desenhado na camada de luz).
 
 func _flick(i: float) -> float:
 	return 0.82 + 0.18 * sin(tt * 9.0 + i * 1.7) * sin(tt * 3.3 + i * 2.9)
@@ -47,3 +48,14 @@ func glow(_a: float) -> void:
 		n += 1
 		if not inview(L[0], L[1], 60): continue
 		gl(G, L[0], L[1], 30, 0.4 * _flick(n), 1.0, false); gl(G, L[0], L[1], 8, 0.6, 1.0, false)
+	# raio de luz caindo do teto sobre o ídolo, com poeira brilhando
+	for B in D.get("beam", []):
+		if not inview(B[0], B[1], 160): continue
+		var p := 0.8 + 0.2 * sin(tt * 0.5)
+		for i in 12:
+			var w := 18.0 + i * 4.0
+			fr(Color(1, 0.9, 0.65, 0.07 * p), roundi(B[0] - w * 0.5), roundi(B[1] - 150 + i * 13), int(w), 13)
+		ell(B[0], B[1] + 8, 40, 14, Color(1, 0.85, 0.55, 0.12 * p), false, 24)
+		for j in 10:
+			var u := fmod(tt * 0.1 + j / 10.0, 1.0)
+			fr(Color(1, 0.95, 0.75, 0.7 * sin(u * PI)), roundi(B[0] + sin(j * 2.1 + tt * 0.3) * 14.0), roundi(B[1] - 140 + u * 150), 1, 1)
