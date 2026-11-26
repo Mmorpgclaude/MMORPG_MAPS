@@ -15,7 +15,7 @@ function lakeCave(){
    if(d<d1){d2=d1;d1=d;id=cx2*7919+cy2;ccx=px;ccy=py}else if(d<d2)d2=d}return [id,(d2-d1)/2,d1,ccx,ccy]};
  const clamp=(v,a,b)=>v<a?a:v>b?b:v;
  const S=new Array(W*H).fill(0),Z=new Array(W*H).fill(0),ents=[],dark=[];
- const fx={dust:[],sand:[],fire:[],lamp:[],glint:[],ripple:[],drop:[],mist:[],beam:[],statue:null};
+ const fx={dust:[],sand:[],fire:[],lamp:[],glint:[],ripple:[],drop:[],mist:[],beam:[],statue:null,sunk:[],deep:[]};
  const put=(cv,x,ybase,lb)=>{const e={img:cv,x:Math.round(x),y:ybase,z:ybase-cv.height+2,sw:cv.width,sh:cv.height};if(lb)e.lb=lb;ents.push(e)};
  const zn=['Lago Subterrâneo','Chegada','Margem Sul','Gruta Oeste','Gruta Leste','Salão dos Cristais','Praia Escura','Margem Norte','Margens do Lago'];
  /* ===== grade: rocha em tudo, os salões e os túneis são escavados ===== */
@@ -148,6 +148,14 @@ function lakeCave(){
  /* a estátua antiga meio afundada no lago, entre as duas ilhas (provisória: a cabeça de estátua do kit; a arte certa
     — cabeça e um braço saindo da água — vem na folha do Lago). Fica na água: não precisa de colisão. */
  {const sx=99*T,sy=72*T,c=mkA('statue_head');put(c,sx-(c.width>>1),sy);fx.statue=[sx,sy-6,c.width];dark.push([sx,sy-30,90,.45])}
+ /* ruínas afundadas em volta da estátua: colunas, muro e um arco saindo da água (só a parte de cima da peça; a linha da
+    água é a base). Provisório: peças de ruína do kit; ficam na água, sem colisão. */
+ {const sunk=(n,tx,ty,keep,flip)=>{const a=mkA(n,flip),h=Math.round(a.height*keep),[c,,q]=cmCv(a.width,h);q.drawImage(a,0,0);
+   const x=tx*T+8-(a.width>>1),y=ty*T+8;put(c,x,y);fx.sunk.push([tx*T+8,y-2,a.width])};
+  sunk('ruin_gate',112,68,.62,false);sunk('column',86,66,.7,false);sunk('column_broken',105,63,.72,true);
+  sunk('ruin_wall',84,73,.55,false);sunk('column',114,79,.6,true);sunk('column_broken',80,64,.7,false);}
+ /* luz vinda do fundo: cristais no fundo do lago, manchas âmbar e azuladas pulsando embaixo da água */
+ for(const [x,y,c] of[[99,72,0],[88,68,1],[110,72,0],[94,64,1],[104,80,1],[82,70,0],[116,64,1],[72,72,1],[124,70,0]])fx.deep.push([x*T,y*T,c,hq(x,y)*6.28]);
  /* vida no lago: ondinhas e reflexos, gotas pingando do teto, névoa fina sobre a água, feixes de luz de fendas do teto */
  {const isW=(x,y)=>x>=0&&y>=0&&x<W&&y<H&&TY[y*W+x]==4;
   for(let k=0;k<400&&fx.ripple.length<70;k++){const x=4+hq(k,171)*(W-8)|0,y=4+hq(k,172)*(H-8)|0;if(isW(x,y))fx.ripple.push([x*T+8,y*T+8,hq(k,173)*6.28])}

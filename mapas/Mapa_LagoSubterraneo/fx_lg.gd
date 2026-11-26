@@ -28,6 +28,23 @@ func _lago() -> void:
 			var v := (u - 0.15) / 0.85
 			ell(P[0], P[1], 2.0 + v * 14.0, 1.0 + v * 6.0, Color(0.75, 0.92, 1.0, 0.7 * (1.0 - v)), true, 18)
 			if v > 0.2: ell(P[0], P[1], 1.0 + (v - 0.2) * 9.0, 0.5 + (v - 0.2) * 4.0, Color(0.7, 0.9, 1.0, 0.35 * (1.0 - v)), true, 14)
+	# luz vinda do fundo: manchas âmbar e azuladas pulsando embaixo da água
+	for P in D.get("deep", []):
+		if not inview(P[0], P[1], 90): continue
+		var p := 0.55 + 0.45 * sin(tt * 0.6 + P[3])
+		var col := Color(1.0, 0.62, 0.2) if P[2] == 0 else Color(0.3, 0.75, 1.0)
+		for k in 4:
+			var r := 70.0 - k * 15.0
+			ell(P[0] + sin(tt * 0.2 + P[3]) * 4.0, P[1], r, r * 0.55, Color(col.r, col.g, col.b, 0.09 * p), false, 28)
+		for j in 5:
+			var u := fmod(tt * 0.25 + j * 0.2 + P[3], 1.0)
+			fr(Color(col.r, col.g, col.b, 0.6 * sin(u * PI) * p), roundi(P[0] + sin(j * 2.3) * 30.0), roundi(P[1] + cos(j * 1.7) * 14.0), 1, 1)
+	# a água batendo nas ruínas afundadas
+	for R in D.get("sunk", []):
+		if not inview(R[0], R[1], 60): continue
+		for k in 2:
+			var v := fmod(tt * 0.3 + k * 0.5 + R[0] * 0.001, 1.0)
+			ell(R[0], R[1], R[2] * 0.4 + v * 10.0, 3.0 + v * 3.0, Color(0.7, 0.9, 1.0, 0.3 * (1.0 - v)), true, 20)
 	# a água batendo na estátua
 	var S = D.get("statue")
 	if S != null and inview(S[0], S[1], 80):
