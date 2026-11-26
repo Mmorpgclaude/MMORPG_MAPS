@@ -43,7 +43,7 @@ Norte, sul e oeste são fechados (dunas altas, `M = 2`).
 | 7 | Vale das Areias Vermelhas | **área de caça**, em volta de (116, 24), raio 15: anel de rochedos vermelhos grandes em volta, cascalho vermelho no meio |
 | 8 | Campos do Vento | **área de caça**, em volta de (20, 46), raio 14: dunas baixas soltas formando corredores, mato seco rolando, 3 redemoinhos |
 | 9 | Entrada do Templo Soterrado | entrada de caverna de areia com o portal esculpido (`cave_temple`, folha_cavernas), no pé do morro de areia, com lajes, capim seco e dois barris em volta |
-| 10 | Gruta do Arco Vermelho | entrada de caverna de arenito vermelho (`cave_red`, folha_cavernas), encostada na parede de areia do norte |
+| 10 | Gruta do Arco Vermelho | entrada de caverna de arenito cor de areia (`cave_sand`, folha_cavernas), encostada na parede de areia do norte (o Ricardo trocou a vermelha pela cor de areia) |
 
 `gen_data`: R = chão, G = `RDD` × 10, B = `M` + zona × 16 (como o exemplo do Deserto).
 
@@ -52,7 +52,7 @@ Norte, sul e oeste são fechados (dunas altas, `M = 2`).
 | Porta (tiles) | Peça | Leva para | Chega em (px) |
 |---|---|---|---|
 | (121-124, 87), na boca | `cave_temple` | Templo Soterrado (`ts`) | (968, 1360) = tile (60, 85) |
-| (112-114, 12), na boca | `cave_red` | Gruta do Arco Vermelho (`ga`) | (968, 1360) = tile (60, 85) |
+| (111-115, 12), na boca | `cave_sand` | Gruta do Arco Vermelho (`ga`) | (968, 1360) = tile (60, 85) |
 
 - As portas vêm no **campo extra `doors`** do gerador (`[{m, cells:[x,y, x,y,...], x, y}]`): o kit não traz o formato da
   porta do jogo. O Claude do jogo liga no formato do jogo.
@@ -68,7 +68,7 @@ Norte, sul e oeste são fechados (dunas altas, `M = 2`).
   (a areia do funil, retingida com a paleta do chão do Deserto), `<peça>_fundo` é o objeto da pedra em volta da boca (base na
   linha da boca) e `<peça>_frente` é o objeto das pedrinhas dos lados do funil (base na borda de baixo). Geometria (boca e
   corte) em `arte/info_cavernas.json`.
-- Porta: os tiles da boca (Templo: (121-124, 87); Gruta: (112-114, 12)). Colisão: a pedra em volta da boca e as pedrinhas
+- Porta: os tiles da boca (Templo: (121-124, 87); Gruta: (111-115, 12)). Colisão: a pedra em volta da boca e as pedrinhas
   dos lados; o meio do funil é livre. Uma luz quente (`dark`) acende na boca à noite.
 - Não usados (pedido do Ricardo, sem animais): o crânio e as costelas da folha. O portal antigo (`ruin_gate`) e o arco de
   pedra saíram.

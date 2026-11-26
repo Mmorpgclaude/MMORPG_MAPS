@@ -220,7 +220,7 @@ function nomadCamp(){
   const cells=[];for(let x=mx0;x<=mx1;x++)cells.push(x,doorRow);return cells};
  const blkS=(x,y)=>{if(x>=0&&y>=0&&x<W&&y<H)S[y*W+x]=1};
  const doors=[{m:'ts',cells:cave('cave_temple',GATE[0]*T+8,GATE[1]),x:60*T+8,y:85*T},
-              {m:'ga',cells:cave('cave_red',ARC[0]*T+16,ARC[1]),x:60*T+8,y:85*T}];
+              {m:'ga',cells:cave('cave_sand',ARC[0]*T+16,ARC[1]),x:60*T+8,y:85*T}];
  /* enfeites soltos da folha em volta das entradas (sem animais) */
  for(const [Gp,sd] of[[GATE,360],[ARC,370]]){
   aScat(['slab1','slab2','stones_s','rocks_small','rock_flat2'],4,sd,(x,y)=>Math.hypot(x-Gp[0],(y-Gp[1]-6)*1.3)<13,{bw:1,road:0});
