@@ -18,7 +18,7 @@
 
 ## Entrada e saída
 
-- **Entra:** pela porta do portal antigo (ruin_gate) no monte de areia ao norte da Planície Escaldante, tiles (121-123, 87) do Acampamento dos Nômades. Chega aqui em **Salão da Entrada (60, 115)** (px: 968, 1840).
+- **Entra:** pela entrada de caverna com o portal esculpido (`cave_temple`), no morro de areia ao norte da Planície Escaldante, tiles (121-124, 87) do Acampamento dos Nômades. Chega aqui em **Salão da Entrada (60, 115)** (px: 968, 1840).
 - **Sai:** pela **borda sul, colunas 56-63** (8 tiles): `{k:'edge', m:'nd', x, y}` — volta para o Acampamento na frente da
   porta, no tile (122, 89). O gatilho leva `x` **e** `y` (é a volta de uma porta, não uma passagem entre mapas abertos).
 - O formato da porta no jogo não está no kit: no Acampamento ela vem no campo extra `doors` do gerador (tiles, destino e
