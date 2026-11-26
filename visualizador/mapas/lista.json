@@ -16,15 +16,15 @@
   "nome": "Acampamento dos Nômades"
  },
  {
-  "id": "lg",
-  "nome": "Lago Subterrâneo"
+  "id": "ts",
+  "nome": "Templo Soterrado"
  },
  {
   "id": "ga",
   "nome": "Gruta do Arco Vermelho"
  },
  {
-  "id": "ts",
-  "nome": "Templo Soterrado"
+  "id": "lg",
+  "nome": "Lago Subterrâneo"
  }
 ]

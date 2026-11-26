@@ -134,18 +134,27 @@ GRUTA = dict(
  SD=110, R0='[140,62,40]', R1='[162,78,48]', R2='[118,50,34]', R3='[178,96,60]',
  SLR='0', SLG='0', SLB='0',
  FR=96, FG=62, FB=46, VX='112*16+16', VY='14*16',
- OBJ=''' /* Entrada: acampamento encostado na parede */
+ OBJ=''' aRes(66,2,90,20);   /* a Câmara do Fundo fica livre (o buraco e uma tocha só) */
+ /* Entrada: acampamento encostado na parede */
  fire(55,109);aNear('goods',53,106,{});torch(67,107,{flip:true});
  /* 5 salões de caça (3 a 7): meio vazio; rochedos só colados na parede e duas tochas no alto de cada um */
  for(let k=3;k<=7;k++){const h=HALLS[k];
   aScat(['rock_m','rock_tall'],3,500+k*10,(x,y)=>{const e=Math.hypot((x-h[0])/h[2],(y-h[1])/h[3]);return e>.85&&e<1.05},{fit:1,br:2,road:0});
   torch(Math.round(h[0]-h[2]*.6),Math.round(h[1]-h[3]*.6));torch(Math.round(h[0]+h[2]*.6),Math.round(h[1]-h[3]*.6),{flip:true})}
  torch(55,85);torch(73,85,{flip:true});
- /* Câmara do Fundo: a escada de corda (provisória: o rolo de corda) descendo para o Lago Subterrâneo (lg). A porta é a
-    fileira de tiles mais ao norte da câmara, em x 76-80; chega no Lago em (60, 126). */
- {let dy=0;for(let y=2;y<20;y++){if(F[y*W+78]){dy=y;break}}
-  aPut('ropes',78,dy+1,{bw:1,res:1});
-  const c=[];for(let x=76;x<=80;x++)if(F[dy*W+x])c.push(x,dy);DOORS.push({m:'lg',cells:c,x:60*16+8,y:126*16})}''')
+ /* Câmara do Fundo: um buraco no chão (poço escuro, pintado no ov) que desce para o Lago Subterrâneo (lg). A porta são os
+    tiles do meio do buraco; chega no Lago em (60, 126). Sem postes na câmara: só uma tocha na parede. */
+ {const og=oc.getContext('2d'),cx=78*T+8,cy=11*T+8,rx=34,ry=20,P=(c,x,y)=>{og.fillStyle=c;og.fillRect(x,y,1,1)};
+  for(let y=cy-ry-8;y<=cy+ry+8;y++)for(let x=cx-rx-8;x<=cx+rx+8;x++){const u=(x-cx)/rx,v=(y-cy)/ry,e=u*u+v*v+(vn(x,y,9,150)-.5)*.22;
+   if(e<1){/* dentro: a parede de arenito do fundo (em cima) sumindo no escuro */const top=cy-ry*Math.sqrt(Math.max(0,1-u*u)),t=Math.min(1,(y-top)/(ry*1.1));
+    const lay=((y>>2)+(hq(x>>3,3)<.5?1:0))&1,k=(1-t)*(lay?1:.85);P('rgb('+((12+140*k)|0)+','+((8+96*k)|0)+','+((6+62*k)|0)+')',x,y)}
+   else if(e<1.5){/* borda: areia clara no alto e à esquerda, sombra embaixo */const lit=v<.2;
+    P(lit?(hq(x,y)<.15?'rgb(222,186,128)':'rgb(200,164,110)'):(e<1.2?'rgb(92,66,44)':'rgb(132,98,64)'),x,y)}}
+  for(const [ox,oy] of[[-rx-6,-4],[rx+4,2],[-rx+6,ry+4],[rx-10,ry+5]]){og.fillStyle='rgb(120,88,60)';og.fillRect(cx+ox,cy+oy,4,3);og.fillStyle='rgb(70,50,34)';og.fillRect(cx+ox,cy+oy+3,4,1)}
+  dark.push([cx,cy,90,.6]);
+  const ct=mkA('lamppost');put(ct,(84*T)-(ct.width>>1),10*T);fx.lamp.push([84*T-(ct.width>>1)+ct.width-18,10*T-ct.height+32]);dark.push([84*T,8*T,120,1]);
+  const c=[];for(let y=10;y<=12;y++)for(let x=76;x<=80;x++){const u=(x*T+8-cx)/rx,v=(y*T+8-cy)/ry;if(u*u+v*v<.75&&F[y*W+x])c.push(x,y)}
+  DOORS.push({m:'lg',cells:c,x:60*16+8,y:126*16})}''')
 
 for d, pasta, arq in [(TEMPLO, 'Mapa_TemploSoterrado', 'templo_soterrado.js'), (GRUTA, 'Mapa_GrutaArcoVermelho', 'gruta_arco.js')]:
     d = dict(d); d['HELPER'] = HELPER
