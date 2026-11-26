@@ -15,7 +15,8 @@ Responda ao Ricardo sempre em **português**, curto e direto. Quando houver uma 
    marco principal, clima) e deixe ele escolher.
 2. **Prompt de assets.** Escreva o prompt para o Ricardo gerar as imagens (ele gera numa IA de imagem). Sempre duas folhas
    de **1536 × 1024**: a **folha de objetos** e o **atlas do terreno** (só referência de cor e textura). Modelo:
-   `exemplo_geleira/PROMPT_ASSETS_GELEIRA.md`. Regras do prompt na seção 4.
+   `exemplo_geleira/PROMPT_ASSETS_GELEIRA.md`. Regras do prompt na seção 4. **Mapa do Deserto: leia antes a seção 12**
+   (o chão e 62 peças já estão prontos; talvez nem precise de folha nova).
 3. **Conferir as folhas** que ele mandar: todas as peças pedidas vieram? estão na vista certa? alguma tem chão ou plataforma
    desenhado embaixo (aí precisa dividir)? Se faltar algo, peça só o que falta, com a folha atual como referência.
 4. **Recortar a arte** com `ferramentas/recorta_folha.py` (seção 5). Sai com **no máximo 128 cores**, transparência binária
@@ -46,7 +47,8 @@ Veja também `referencia_jogo/mapa_do_mundo.png` e `referencia_jogo/world.json`.
 
 | id | Mapa | Tamanho | Posição (x, y) | Passagens |
 |---|---|---|---|---|
-| nh | Passo de Hrimfjell | 150×120 | 110, -540 | sul (colunas 69-75) → Vale dos Lobos |
+| lc | Bosque dos Corvos Brancos | 150×120 | 110, -660 | sul (colunas 70-80) → Passo de Hrimfjell |
+| nh | Passo de Hrimfjell | 150×120 | 110, -540 | norte (colunas 70-80) → Bosque dos Corvos; sul (colunas 69-75) → Vale dos Lobos |
 | nr | Fiorde dos Corvos | 150×120 | -40, -420 | sul (colunas 69-75) → Charneca |
 | nv | Vale dos Lobos | 150×120 | 110, -420 | norte (69-75) → Passo; sul (135-142) → Frostheim |
 | gj | Geleira do Gigante Adormecido | 150×120 | 260, -420 | sul (84-94) → Floresta; leste (linhas 56-66) → Utgard |
@@ -60,7 +62,11 @@ Veja também `referencia_jogo/mapa_do_mundo.png` e `referencia_jogo/world.json`.
 **Fundo do Mar (região W) — a grade 150 × 120:** cn (-750, 300), at (-600, 300), rc (-450, 300), rs (-300, 300),
 rp (-450, 420), fa (-450, 540) — todos 150×120.
 
-**Outras regiões (mapas antigos, tamanhos livres):** Umbrafell `c` 168×124 (0, 0); Deserto dq/dm/dn/dp; Cidade dos Piratas
+**Deserto (região D) — a grade 150 × 120:** Al-Sahrah `dq` (20, 640); embaixo dela, em fila, Mar de Areia `dm` (20, 760),
+Travessia das Dunas `dn` (170, 760) e Porto das Areias `dp` (320, 760). Passagens: `dq` sul ↔ `dm` norte (colunas 70-79);
+`dm` leste ↔ `dn` oeste e `dn` leste ↔ `dp` oeste (linhas 46-54).
+
+**Outras regiões (mapas antigos, tamanhos livres):** Umbrafell `c` 168×124 (0, 0); Cidade dos Piratas
 `sv` 150×120; Ilha de Brasa `ib` 210×176; mapas de Umbrafell de 96×72 a 300×218.
 
 **Lugares de dentro feitos no padrão novo:** Salões dos Gigantes `us` 120×90 (porta no portão de Utgard), Ninho da Serpente
@@ -70,7 +76,7 @@ rp (-450, 420), fa (-450, 540) — todos 150×120.
 Congelado** ficaria em (560, -300), com a borda oeste aberta numa faixa que o Fiorde também abriria na borda leste.
 O Claude ajusta o vizinho; você só precisa dizer **em que borda e em que linhas/colunas** fica cada passagem do seu mapa.
 
-**Ids já usados (não repita):** a ab at b bk bn bq c cn cp cs ct1 ct2 ct3 dg dm dn dp dq e f fa gd gj gm gn gq ib j k l m mv
+**Ids já usados (não repita):** a ab at b bk bn bq c cn cp cs ct1 ct2 ct3 dg dm dn dp dq e f fa gd gj gm gn gq ib j k l lc m mv
 nc nf ng nh nm nn np nr nv ny p q rc rp rs s sk sn sv t u ug us w wl x y1 y2. Proponha um id novo de 2 letras.
 
 ---
@@ -226,3 +232,89 @@ foto do Mapa do Mundo e testa andando.
 - Esqueleto de algo que no mapa está vivo (coerência da história).
 - Halo/brilho desenhado em volta de chamas na folha (o jogo faz o brilho): tirar no recorte.
 - Paredes de dentro baixas demais perto de móveis gigantes (interior de gigantes: face da parede com ~6 tiles).
+- Peças de madeira escura recortadas com o filtro de brilho (`halo`): ele come a madeira e o contorno (barraca, poste).
+  Só use `halo` em peça que tem brilho solto em volta de chama, e confira o recorte ampliado.
+- Peça com detalhe fino (cordas, toldo, peixes pendurados) reduzida demais: vira borrão picotado. Reduza menos.
+
+---
+
+## 12. Mapas do Deserto (região D) — leia tudo antes de começar
+
+O Deserto já tem o padrão pronto, com o chão novo aprovado pelo Ricardo (a "cor 5b") e 62 peças recortadas das folhas
+dele. **Use o exemplo `exemplo_deserto/` como base**: ele passa no `preview.py` e é feito do mesmo jeito que os mapas do
+jogo (Mar de Areia, Travessia das Dunas, Porto das Areias, versão 10.23).
+Teste: `python ferramentas/preview.py exemplo_deserto/deserto_exemplo.js desertExample exemplo_deserto/arte saida` dá tudo OK.
+
+### 12.1 Onde cabem mapas novos (grade 150 × 120)
+
+| Posição (x, y) | Ao lado de | Observação |
+|---|---|---|
+| (170, 640) | leste de Al-Sahrah, norte da Travessia | Al-Sahrah é murada: a ligação seria pelo norte da Travessia (borda de cima) |
+| (320, 640) | norte do Porto das Areias | ligação pela borda de cima do Porto (a praia continua) |
+| (-130, 760) | oeste do Mar de Areia | o oeste do Mar de Areia é o "Fim das Dunas", já pensado para uma passagem |
+| (-130, 640) | oeste de Al-Sahrah | sem ligação com a cidade (murada); só por outro mapa novo |
+| (20, 880), (170, 880), (320, 880) | sul do Mar de Areia, da Travessia e do Porto | as bordas de baixo deles são dunas fechadas, dá para abrir |
+| — | leste do Porto | é mar: fechado |
+
+**Passagens do Deserto:** de oeste para leste, **linhas 46-54** (9 tiles; é onde a estrada passa nos três mapas). De norte para
+sul, **colunas 70-79** (como Al-Sahrah ↔ Mar de Areia). Sempre deslocamento 0. O Claude abre a passagem no vizinho.
+
+### 12.2 O chão (não invente: copie)
+
+- Copie do exemplo: o **pintor** (o trecho "pintura por pixel" até `cx.putImageData`, com a função `ds5b`) e o **shader**
+  `dx_floor.gdshader` (renomeie para `<id>_floor.gdshader`, **sem mudar nada**). O shader é o mesmo do jogo e precisa de
+  `referencia_jogo/gen_common.gdshaderinc` e `referencia_jogo/ds_post.gdshaderinc` (o jogo já tem os dois).
+- O que você muda para cada mapa é **só a grade**:
+  - `F` (1 = chão andável);
+  - `M`, o material do que é sólido: **2 = duna alta** (o paredão de areia) ou **3 = muro de arenito** (ruínas). **Não use
+    `M = 1` (rocha vermelha)**: com a cor 5b ela vira mancha marrom. Rochedos são peças da arte;
+  - a estrada `RM` (lista de pontos), que vira as lajes de pedra pelo `RDD`;
+  - as zonas `Z` (nomes em `zn`, no máximo 15).
+- O `gen_data` sai sempre assim: R = chão, G = `RDD` × 10, B = `M` + zona × 16. O shader lê nesse formato.
+- O relevo (morros macios, encostas das dunas com sombra) e a cor (paleta dourada em degraus, ondulações finas, manchinhas)
+  saem sozinhos do pintor. **Não pinte nada por cima do chão** além do que já está no exemplo.
+
+### 12.3 A arte (62 peças prontas em `exemplo_deserto/arte/`)
+
+Recortadas das folhas do Ricardo (`PROMPT_ASSETS_DESERTO.md`), com o fator de cada uma em `pecas_folha_ruinas.json` e
+`pecas_folha_caravanas.json`. Reuse à vontade.
+- **Rochedos:** `rock_s`, `rock_m`, `rock_big`, `rock_tall`, `rock_arch` (arco: use com `ARCH`, que deixa passar pelo vão),
+  `rock_red`, `rock_red2`, `pebbles1`, `pebbles2`.
+- **Ruínas:** `column`, `column_broken`, `ruin_wall`, `ruin_gate`, `statue_head`, `obelisk`, `jar`, `jar_broken`, `shard`.
+- **Ossadas:** `lev_skull` (crânio gigante), `rib1`-`rib4` (costelas, da maior para a menor), `vertebrae`, `skull_small`,
+  `skull_horns`, `skull_horns2`, `bones_small`, `camel_skel`.
+- **Plantas:** `cactus_s`, `cactus_m`, `cactus_big`, `cactus_barrel`, `cactus_flower`, `palm_s`, `palm_big` (só perto de
+  água ou do porto), `dead_tree`, `dry_bush`, `tumble`.
+  **Não use** `dry_grass`, `shrub`, `agave` nem `flower_bush`: o Ricardo reprovou (verdes ou claros demais para a areia).
+- **Caravana e acampamento:** `wagon`, `tent`, `banner`, `goods`, `firepit`, `well`, `milestone`, `signpost`, `cairn`,
+  `lamppost`.
+- **Porto:** `stall`, `fish_goods`, `nets`, `rowboat`, `ship`, `mooring`, `mooring_rope`, `anchor`, `ropes`.
+- **Peças novas:** peça uma folha nova no mesmo estilo (mesmo texto de estilo do prompt). Fator de recorte: coisas do tamanho
+  de gente ~0,30-0,36; médias (colunas, árvores, cactos) ~0,40-0,45; rochedos e monumentos 0,5; criaturas gigantes ~0,55.
+  Confira o recorte ampliado antes de usar.
+
+### 12.4 Colocar as peças: use o ajudante (`ferramentas/ds_helper.js`, já dentro do exemplo)
+
+- `aNear(nome, tx, ty, opções)`: põe a peça no tile livre mais perto de (tx, ty). `aScat(nomes, n, semente, teste, opções)`:
+  espalha n peças (sorteadas por `hq`) onde `teste(tx, ty)` vale. `aRes(x0, y0, x1, y1)`: reserva uma área (nada entra).
+- Opções: `bw` (meia largura da colisão em tiles; sem ela é calculada pelo tamanho), `br` (linhas de colisão), `fit` (raio
+  livre em volta do pé), `road` (distância mínima da estrada), `res` (folga reservada em volta), `m` (folga do desenho,
+  padrão 1), `walk:true` (sem colisão: mato rasteiro), `flip`, `lb` (texto de placa).
+- **Regra do paredão (`aBox`):** a peça só entra se **o desenho inteiro dela**, com 1 tile de folga, ficar sobre chão livre.
+  Assim nada fica em cima das dunas. Para placas e estandartes em passagens estreitas use `m:0`.
+- Reserve as passagens (`aRes`) e o meio de qualquer conjunto (ex.: a área de um esqueleto), para o mato sorteado não cair
+  no meio dele.
+- Clareiras com conjuntos grandes (acampamento com 2 tendas, carroça e fogueira) precisam de **raio ~11 tiles**. Se uma peça
+  não aparecer na prévia, é porque não coube: abra a clareira ou mude a posição.
+
+### 12.5 Efeitos
+
+`fx_<id>.gd` = cópia de `exemplo_deserto/fx_dx.gd` (`extends "res://scripts/fx_sand.gd"`: vento com areia, redemoinhos,
+abutres, estandartes e fogo). Ele lê do gerador `fx.bird`, `fx.devil`, `fx.flag` e `fx.fire`. Referência:
+`referencia_jogo/fx_sand.gd`.
+
+### 12.6 Coerência com os mapas que já existem
+
+- Estrada de lajes ligando as passagens (os mapas do Deserto são uma rota de caravanas).
+- O deserto é seco: verde só em cactos, e palmeira só onde há água (oásis, porto).
+- Al-Sahrah (`dq`) ainda está com o chão antigo; o Claude vai passar ela para a cor 5b depois.

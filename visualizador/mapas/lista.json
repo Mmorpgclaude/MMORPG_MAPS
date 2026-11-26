@@ -6,5 +6,9 @@
  {
   "id": "lc",
   "nome": "Bosque dos Corvos Brancos"
+ },
+ {
+  "id": "dx",
+  "nome": "Exemplo: Vale das Caravanas (Deserto)"
  }
 ]

@@ -21,6 +21,8 @@ var lit := 1.0
 var dir := 0                # 0 baixo, 1 cima, 2 esquerda, 3 direita
 var rpx := 0.0
 var rpy := 0.0
+var pvx := 0.0             # velocidade do jogador (px/s), usada pela areia levantando nos pés (fx_sand.gd)
+var pvy := 0.0
 
 var M: Dictionary
 var base := ""
@@ -58,6 +60,7 @@ func _ready() -> void:
 	for a in OS.get_cmdline_user_args():
 		var p := a.trim_prefix("--").split("=", true, 1)
 		args[p[0]] = p[1] if p.size() > 1 else "1"
+	lamp_glow = _glow_tex()
 	_build_ui()
 	var lista: Array = JSON.parse_string(FileAccess.get_file_as_string("res://mapas/lista.json"))
 	if args.has("mapa"):
@@ -113,6 +116,15 @@ func load_map(id: String) -> void:
 		for i in 20: await get_tree().process_frame
 		get_viewport().get_texture().get_image().save_png(args.foto)
 		get_tree().quit()
+
+## Brilho redondo (como o lamp_glow do jogo): branco no meio, sumindo nas bordas.
+func _glow_tex() -> Texture2D:
+	var g := Gradient.new()
+	g.set_color(0, Color(1, 1, 1, 1)); g.set_color(1, Color(1, 1, 1, 0))
+	var t := GradientTexture2D.new()
+	t.gradient = g; t.fill = GradientTexture2D.FILL_RADIAL
+	t.fill_from = Vector2(0.5, 0.5); t.fill_to = Vector2(1.0, 0.5); t.width = 64; t.height = 64
+	return t
 
 func _fx(scr: Script, layer: int) -> Node2D:
 	var n: Node2D = scr.new()
@@ -197,6 +209,7 @@ func _process(dt: float) -> void:
 	var v := joy_v
 	var k := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	if k != Vector2.ZERO: v = k
+	var p0 := player.position
 	if v.length() > 0.15 and not overview.visible:
 		var step := v * SPEED * dt
 		var np := player.position + Vector2(step.x, 0)
@@ -207,6 +220,8 @@ func _process(dt: float) -> void:
 		walk_t += dt
 	else:
 		walk_t = 0.0
+	if dt > 0.0:
+		pvx = (player.position.x - p0.x) / dt; pvy = (player.position.y - p0.y) / dt
 	player.queue_redraw()
 	rpx = player.position.x; rpy = player.position.y
 	var vr := get_viewport_rect().size
