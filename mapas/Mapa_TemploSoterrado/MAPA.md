@@ -38,7 +38,7 @@
 | 7 | Salão Desmoronado Leste (104, 92), **caça** | idem |
 | 8 | Cripta Leste (104, 52), **caça** | idem |
 | 9 | Salão das Areias (143, 72), **caça** | idem, o mais a leste |
-| 10 | Galeria Norte (106, 15), **caça** | idem, ligada à Câmara Selada |
+| 10 | Galeria Norte (106, 15), **caça** | idem, ligada à Câmara Selada; na parede norte, a **porta selada aberta** (portal com blocos caídos, tiles (105-107, 6)) que desce para a **Tumba do Rei da Areia** (`tr`), chegando lá em (60, 115) |
 
 ## Planta (pedido do Ricardo: pouca poluição)
 

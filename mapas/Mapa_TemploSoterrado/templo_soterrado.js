@@ -124,6 +124,12 @@ function buriedTemple(){
  {let y=14;while(y>2&&F[(y-1)*W+60])y--;aPut('ruin_wall',60,y+1,{bw:3,res:1});}aNear('jar',54,15,{bw:0,road:0});aNear('jar',66,15,{bw:0,road:0});aNear('goods',56,16,{road:0});
  for(let k=0;k<26;k++){const x=(52+hq(k,191)*16)*T,y=(14+hq(k,192)*4)*T;og.fillStyle=hq(k,193)<.5?'#e8c040':'#b08820';og.fillRect(x|0,y|0,3,2);og.fillStyle='#fff0a0';og.fillRect(x|0,y|0,1,1)}
  dark.push([60*T+8,14*T,80,.6]);
+ /* Galeria Norte: a porta selada aberta (o portal com os blocos caídos) na parede norte — desce para a Tumba do Rei da
+    Areia (tr), chegando lá em (60, 115). A porta são os tiles do vão. */
+ {let ty=15;while(ty>2&&F[(ty-1)*W+106])ty--;aPut('ruin_gate',106,ty,{bw:3,br:1,cols:[-3,-2,2,3],res:2});
+  aNear('jar_broken',101,ty+2,{bw:0,road:0});
+  for(let k=0;k<6;k++){const x=(100+hq(k,211)*12)*T,y=(ty+1+hq(k,212)*2)*T;og.fillStyle='#9a7a56';og.fillRect(x|0,y|0,6,4);og.fillStyle='#5a4030';og.fillRect(x|0,(y+4)|0,6,1)}
+  DOORS.push({m:'tr',cells:[105,ty,106,ty,107,ty],x:60*16+8,y:115*16})}
  /* 6 saloes de caca (5 a 10): vazios no meio; braseiros de pedra no alto; areia escorrendo de fendas do teto com montinho */
  for(let k=4;k<=9;k++){const h=HALLS[k];
   fire(Math.round(h[0]-h[2]*.55),Math.round(h[1]-h[3]*.6));fire(Math.round(h[0]+h[2]*.55),Math.round(h[1]-h[3]*.6));
@@ -137,5 +143,5 @@ function buriedTemple(){
  fcx.drawImage(oc,0,0);
  return {gen:{data:genD,ov:oc.toDataURL('image/png')},W,H,floor:fc.toDataURL('image/png'),S,ents:ents.map(e=>({x:e.x,y:e.y,z:e.z,sw:e.sw,sh:e.sh,lb:e.lb,url:e.img.toDataURL('image/png')})),fx,dark,
   zones:{names:zn,z:Z},doors:DOORS,
-  /* saída: a borda sul (colunas 56-63) volta para o Acampamento dos Nômades, na frente da porta (px) */
+  /* saída: a borda sul (colunas 56-63) volta para o mapa de cima, na frente da porta (px) */
   portals:{trig:[{k:'edge',m:'nd',x:122*16+8,y:89*16}],cells:[56,57,58,59,60,61,62,63].flatMap(x=>[x,H-1,0])}}}

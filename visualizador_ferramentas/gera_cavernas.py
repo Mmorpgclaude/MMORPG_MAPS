@@ -95,12 +95,12 @@ function %(FN)s(){
  fcx.drawImage(oc,0,0);
  return {gen:{data:genD,ov:oc.toDataURL('image/png')},W,H,floor:fc.toDataURL('image/png'),S,ents:ents.map(e=>({x:e.x,y:e.y,z:e.z,sw:e.sw,sh:e.sh,lb:e.lb,url:e.img.toDataURL('image/png')})),fx,dark,
   zones:{names:zn,z:Z},doors:DOORS,
-  /* saída: a borda sul (colunas 56-63) volta para o Acampamento dos Nômades, na frente da porta (px) */
-  portals:{trig:[{k:'edge',m:'nd',x:%(VX)s,y:%(VY)s}],cells:[56,57,58,59,60,61,62,63].flatMap(x=>[x,H-1,0])}}}
+  /* saída: a borda sul (colunas 56-63) volta para o mapa de cima, na frente da porta (px) */
+  portals:{trig:[{k:'edge',m:'%(MS)s',x:%(VX)s,y:%(VY)s}],cells:[56,57,58,59,60,61,62,63].flatMap(x=>[x,H-1,0])}}}
 '''
 
 TEMPLO = dict(
- ID='ts', W=160, H=120, CH=115, FN='buriedTemple', NOME='Templo Soterrado', PORTA='da entrada de caverna com o portal esculpido (cave_temple), no morro de areia da Planície Escaldante,',
+ ID='ts', MS='nd', W=160, H=120, CH=115, FN='buriedTemple', NOME='Templo Soterrado', PORTA='da entrada de caverna com o portal esculpido (cave_temple), no morro de areia da Planície Escaldante,',
  DESC='''   Um templo antigo engolido pelas dunas. O eixo do templo (lajes): Salão da Entrada, Galeria das Colunas, Salão do Ídolo e a
    Câmara Selada (o tesouro). Dos dois lados, SEIS salões desmoronados e criptas cheias de areia, largos para caçar, ligados em anel.''',
  ZN="['Templo Soterrado','Salão da Entrada','Galeria das Colunas','Salão do Ídolo','Câmara Selada','Salão Desmoronado Oeste','Cripta Oeste','Salão Desmoronado Leste','Cripta Leste','Salão das Areias','Galeria Norte']",
@@ -125,6 +125,12 @@ TEMPLO = dict(
  {let y=14;while(y>2&&F[(y-1)*W+60])y--;aPut('ruin_wall',60,y+1,{bw:3,res:1});}aNear('jar',54,15,{bw:0,road:0});aNear('jar',66,15,{bw:0,road:0});aNear('goods',56,16,{road:0});
  for(let k=0;k<26;k++){const x=(52+hq(k,191)*16)*T,y=(14+hq(k,192)*4)*T;og.fillStyle=hq(k,193)<.5?'#e8c040':'#b08820';og.fillRect(x|0,y|0,3,2);og.fillStyle='#fff0a0';og.fillRect(x|0,y|0,1,1)}
  dark.push([60*T+8,14*T,80,.6]);
+ /* Galeria Norte: a porta selada aberta (o portal com os blocos caídos) na parede norte — desce para a Tumba do Rei da
+    Areia (tr), chegando lá em (60, 115). A porta são os tiles do vão. */
+ {let ty=15;while(ty>2&&F[(ty-1)*W+106])ty--;aPut('ruin_gate',106,ty,{bw:3,br:1,cols:[-3,-2,2,3],res:2});
+  aNear('jar_broken',101,ty+2,{bw:0,road:0});
+  for(let k=0;k<6;k++){const x=(100+hq(k,211)*12)*T,y=(ty+1+hq(k,212)*2)*T;og.fillStyle='#9a7a56';og.fillRect(x|0,y|0,6,4);og.fillStyle='#5a4030';og.fillRect(x|0,(y+4)|0,6,1)}
+  DOORS.push({m:'tr',cells:[105,ty,106,ty,107,ty],x:60*16+8,y:115*16})}
  /* 6 saloes de caca (5 a 10): vazios no meio; braseiros de pedra no alto; areia escorrendo de fendas do teto com montinho */
  for(let k=4;k<=9;k++){const h=HALLS[k];
   fire(Math.round(h[0]-h[2]*.55),Math.round(h[1]-h[3]*.6));fire(Math.round(h[0]+h[2]*.55),Math.round(h[1]-h[3]*.6));
@@ -135,8 +141,35 @@ TEMPLO['SLR'] = 'id<.33?178:id<.66?166:190'
 TEMPLO['SLG'] = 'id<.33?150:id<.66?138:162'
 TEMPLO['SLB'] = 'id<.33?112:id<.66?100:122'
 
+TUMBA = dict(
+ ID='tr', MS='ts', W=160, H=120, CH=115, FN='sandKingTomb', NOME='Tumba do Rei da Areia', PORTA='selada da Galeria Norte (aberta, com os blocos caídos) no Templo Soterrado,',
+ DESC='''   A tumba verdadeira, embaixo do Templo Soterrado: a Antecâmara, o Corredor dos Nichos e, no fundo, o Salão do Sarcófago do
+   rei. Dos dois lados, CINCO câmaras funerárias e salões largos para caçar, ligados em anel.''',
+ ZN="['Tumba do Rei da Areia','Antecâmara','Corredor dos Nichos','Câmara Funerária Oeste','Câmara Funerária Leste','Salão das Oferendas','Salão dos Servos','Cripta Profunda','Salão do Sarcófago']",
+ HALLS="[[60,108,12,6,1,1],[60,82,7,13,2,1],[24,88,18,13,3,0],[102,92,21,13,4,0],[24,46,18,14,5,0],[100,50,20,14,6,0],[141,72,14,20,7,0],[60,24,22,12,8,1]]",
+ TUN="[[60,116,60,108,4],[60,108,60,82,4],[60,82,60,24,4],[60,90,24,88,3.6],[24,88,24,46,3.6],[24,46,60,30,3.4],[60,90,102,92,3.6],[102,92,100,50,3.6],[100,50,60,30,3.4],[102,92,141,72,3.6],[100,50,141,72,3.4]]",
+ SD=170, R0='[118,84,58]', R1='[138,100,70]', R2='[98,70,50]', R3='[152,116,82]',
+ SLR='id<.33?150:id<.66?138:162', SLG='id<.33?126:id<.66?114:138', SLB='id<.33?96:id<.66?86:106',
+ FR=78, FG=60, FB=44, VX='106*16+8', VY='9*16',
+ OBJ=''' const og=oc.getContext('2d');
+ /* Antecâmara: os blocos da porta selada caídos e dois braseiros */
+ fire(50,104);fire(70,104);aNear('ruin_wall',53,110,{road:0});
+ /* Corredor dos Nichos: colunas coladas nas paredes e jarros funerários */
+ for(const y of[74,86])for(const x of[54,66])aNear('column',x,y,{bw:0,fit:0,road:0,res:0});
+ aNear('jar',54,80,{bw:0,road:0});aNear('jar_broken',66,92,{bw:0,road:0});
+ /* Salão do Sarcófago: o sarcófago do rei (provisório: a cabeça de estátua) com um raio de luz, obeliscos e braseiros */
+ aNear('statue_head',60,16,{fit:2,br:2,road:0});aNear('obelisk',46,20,{bw:1,road:0});aNear('obelisk',74,20,{bw:1,road:0});
+ fire(42,30);fire(78,30);fx.beam=[[60*T+8,19*T]];dark.push([60*T+8,17*T,110,.7]);
+ for(let k=0;k<30;k++){const x=(50+hq(k,201)*20)*T,y=(20+hq(k,202)*5)*T;og.fillStyle=hq(k,203)<.5?'#e8c040':'#b08820';og.fillRect(x|0,y|0,3,2);og.fillStyle='#fff0a0';og.fillRect(x|0,y|0,1,1)}
+ /* 5 salões de caça (2 a 6): vazios no meio; braseiros no alto; areia escorrendo de fendas do teto */
+ for(let k=2;k<=6;k++){const h=HALLS[k];
+  fire(Math.round(h[0]-h[2]*.55),Math.round(h[1]-h[3]*.6));fire(Math.round(h[0]+h[2]*.55),Math.round(h[1]-h[3]*.6));
+  for(let q=0;q<2;q++){const sx=Math.round(h[0]+(q?.4:-.4)*h[2]);let y=Math.round(h[1]);while(y>0&&F[(y-1)*W+sx])y--;
+   if(y<=0)continue;fx.sand.push([sx*T+8,y*T-4,hq(k,q+7)*6.28]);
+   const px=sx*T+8,py=y*T+34;for(let j=-3;j<=3;j++)for(let i=-9;i<=9;i++){if((i*i)/81+(j*j)/9>1)continue;og.fillStyle=j<0?'#dcbc84':'#c8a46a';og.fillRect(px+i,py+j,1,1)}}}''')
+
 GRUTA = dict(
- ID='ga', W=160, H=120, CH=115, FN='redArchCave', NOME='Gruta do Arco Vermelho', PORTA='do arco de pedra (rock_arch), no Vale das Areias Vermelhas,',
+ ID='ga', MS='nd', W=160, H=120, CH=115, FN='redArchCave', NOME='Gruta do Arco Vermelho', PORTA='do arco de pedra (rock_arch), no Vale das Areias Vermelhas,',
  DESC='''   Uma caverna de arenito atrás da entrada de areia: a entrada, a galeria e CINCO salões largos para caçar (Oeste, das
    Pedras, Central, Leste e Sudeste), ligados entre si por túneis largos, e a Câmara do Fundo.''',
  ZN="['Gruta do Arco Vermelho','Entrada da Gruta','Galeria','Salão Oeste','Salão das Pedras','Salão Central','Salão Leste','Salão Sudeste','Câmara do Fundo']",
@@ -180,7 +213,7 @@ GRUTA = dict(
   const c=[];for(let x=77;x<=79;x++)if(F[top*W+x])c.push(x,top);
   DOORS.push({m:'lg',cells:c,x:60*16+8,y:126*16})}''')
 
-for d, pasta, arq in [(TEMPLO, 'Mapa_TemploSoterrado', 'templo_soterrado.js'), (GRUTA, 'Mapa_GrutaArcoVermelho', 'gruta_arco.js')]:
+for d, pasta, arq in [(TEMPLO, 'Mapa_TemploSoterrado', 'templo_soterrado.js'), (GRUTA, 'Mapa_GrutaArcoVermelho', 'gruta_arco.js'), (TUMBA, 'Mapa_TumbaReiAreia', 'tumba_rei_areia.js')]:
     d = dict(d); d['HELPER'] = HELPER
     os.makedirs(os.path.join(RAIZ, 'mapas', pasta), exist_ok=True)
     open(os.path.join(RAIZ, 'mapas', pasta, arq), 'w', encoding='utf-8').write(MOLDE % d)
@@ -274,7 +307,7 @@ def glx(e):  # expressão ternária do JS com id -> GLSL
     p = e.replace('id<.33?', 'id < 0.33 ? ').replace(':id<.66?', ' : id < 0.66 ? ').replace(':', ' : ')
     import re
     return re.sub(r'(?<![\w.])(\d+)(?![\w.])', r'\1.0', p)
-for d, pasta in [(TEMPLO, 'Mapa_TemploSoterrado'), (GRUTA, 'Mapa_GrutaArcoVermelho')]:
+for d, pasta in [(TEMPLO, 'Mapa_TemploSoterrado'), (GRUTA, 'Mapa_GrutaArcoVermelho'), (TUMBA, 'Mapa_TumbaReiAreia')]:
     e = dict(d)
     for k in ('R0', 'R1', 'R2', 'R3'): e[k] = gl(d[k])
     for k in ('SLR', 'SLG', 'SLB'): e[k] = glx(d[k])

@@ -149,5 +149,5 @@ function redArchCave(){
  fcx.drawImage(oc,0,0);
  return {gen:{data:genD,ov:oc.toDataURL('image/png')},W,H,floor:fc.toDataURL('image/png'),S,ents:ents.map(e=>({x:e.x,y:e.y,z:e.z,sw:e.sw,sh:e.sh,lb:e.lb,url:e.img.toDataURL('image/png')})),fx,dark,
   zones:{names:zn,z:Z},doors:DOORS,
-  /* saída: a borda sul (colunas 56-63) volta para o Acampamento dos Nômades, na frente da porta (px) */
+  /* saída: a borda sul (colunas 56-63) volta para o mapa de cima, na frente da porta (px) */
   portals:{trig:[{k:'edge',m:'nd',x:112*16+16,y:14*16}],cells:[56,57,58,59,60,61,62,63].flatMap(x=>[x,H-1,0])}}}
