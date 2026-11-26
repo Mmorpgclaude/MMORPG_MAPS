@@ -43,6 +43,7 @@ function %(FN)s(){
  /* tira bolsões sem ligação com a saída */
  {const seen=new Uint8Array(W*H),q=[(H-2)*W+60];seen[q[0]]=1;while(q.length){const i=q.pop(),x=i%%W,y=(i/W)|0;for(const [dx,dy] of[[1,0],[-1,0],[0,1],[0,-1]]){const nx=x+dx,ny=y+dy;if(nx<0||ny<0||nx>=W||ny>=H)continue;const n=ny*W+nx;if(!seen[n]&&TY[n]!=3){seen[n]=1;q.push(n)}}}
   for(let i=0;i<W*H;i++)if(TY[i]!=3&&!seen[i])TY[i]=3}
+%(PRE)s
  const F=new Uint8Array(W*H);for(let i=0;i<W*H;i++)F[i]=TY[i]!=3?1:0;
  for(let i=0;i<W*H;i++){S[i]=F[i]?0:1;if(!F[i])Z[i]=0}
  /* caminho principal (a distância RDD afasta os enfeites do meio dos túneis) */
@@ -100,7 +101,8 @@ function %(FN)s(){
 '''
 
 TEMPLO = dict(
- ID='ts', MS='nd', W=160, H=120, CH=115, FN='buriedTemple', NOME='Templo Soterrado', PORTA='da entrada de caverna com o portal esculpido (cave_temple), no morro de areia da Planície Escaldante,',
+ ID='ts', MS='nd', PRE=""" /* a parede norte da Galeria Norte avança dos dois lados da boca da passagem, para a peça encaixar na parede */
+ {let ty=15;while(ty>2&&TY[(ty-1)*W+106]!=3)ty--;for(let y=ty;y<=ty+1;y++)for(let x=97;x<=115;x++){if(x>=103&&x<=109)continue;if(Math.abs(x-106)<=8||y==ty)TY[y*W+x]=3}}""", W=160, H=120, CH=115, FN='buriedTemple', NOME='Templo Soterrado', PORTA='da entrada de caverna com o portal esculpido (cave_temple), no morro de areia da Planície Escaldante,',
  DESC='''   Um templo antigo engolido pelas dunas. O eixo do templo (lajes): Salão da Entrada, Galeria das Colunas, Salão do Ídolo e a
    Câmara Selada (o tesouro). Dos dois lados, SEIS salões desmoronados e criptas cheias de areia, largos para caçar, ligados em anel.''',
  ZN="['Templo Soterrado','Salão da Entrada','Galeria das Colunas','Salão do Ídolo','Câmara Selada','Salão Desmoronado Oeste','Cripta Oeste','Salão Desmoronado Leste','Cripta Leste','Salão das Areias','Galeria Norte']",
@@ -148,7 +150,7 @@ TEMPLO['SLG'] = 'id<.33?150:id<.66?138:162'
 TEMPLO['SLB'] = 'id<.33?112:id<.66?100:122'
 
 TUMBA = dict(
- ID='tr', MS='ts', W=160, H=120, CH=115, FN='sandKingTomb', NOME='Tumba do Rei da Areia', PORTA='selada da Galeria Norte (aberta, com os blocos caídos) no Templo Soterrado,',
+ ID='tr', MS='ts', PRE='', W=160, H=120, CH=115, FN='sandKingTomb', NOME='Tumba do Rei da Areia', PORTA='selada da Galeria Norte (aberta, com os blocos caídos) no Templo Soterrado,',
  DESC='''   A tumba verdadeira, embaixo do Templo Soterrado: a Antecâmara, o Corredor dos Nichos e, no fundo, o Salão do Sarcófago do
    rei. Dos dois lados, CINCO câmaras funerárias e salões largos para caçar, ligados em anel.''',
  ZN="['Tumba do Rei da Areia','Antecâmara','Corredor dos Nichos','Câmara Funerária Oeste','Câmara Funerária Leste','Salão das Oferendas','Salão dos Servos','Cripta Profunda','Salão do Sarcófago']",
@@ -175,7 +177,7 @@ TUMBA = dict(
    const px=sx*T+8,py=y*T+34;for(let j=-3;j<=3;j++)for(let i=-9;i<=9;i++){if((i*i)/81+(j*j)/9>1)continue;og.fillStyle=j<0?'#dcbc84':'#c8a46a';og.fillRect(px+i,py+j,1,1)}}}''')
 
 GRUTA = dict(
- ID='ga', MS='nd', W=160, H=120, CH=115, FN='redArchCave', NOME='Gruta do Arco Vermelho', PORTA='do arco de pedra (rock_arch), no Vale das Areias Vermelhas,',
+ ID='ga', MS='nd', PRE='', W=160, H=120, CH=115, FN='redArchCave', NOME='Gruta do Arco Vermelho', PORTA='do arco de pedra (rock_arch), no Vale das Areias Vermelhas,',
  DESC='''   Uma caverna de arenito atrás da entrada de areia: a entrada, a galeria e CINCO salões largos para caçar (Oeste, das
    Pedras, Central, Leste e Sudeste), ligados entre si por túneis largos, e a Câmara do Fundo.''',
  ZN="['Gruta do Arco Vermelho','Entrada da Gruta','Galeria','Salão Oeste','Salão das Pedras','Salão Central','Salão Leste','Salão Sudeste','Câmara do Fundo']",

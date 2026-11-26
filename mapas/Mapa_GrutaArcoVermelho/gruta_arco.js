@@ -36,6 +36,7 @@ function redArchCave(){
  /* tira bolsões sem ligação com a saída */
  {const seen=new Uint8Array(W*H),q=[(H-2)*W+60];seen[q[0]]=1;while(q.length){const i=q.pop(),x=i%W,y=(i/W)|0;for(const [dx,dy] of[[1,0],[-1,0],[0,1],[0,-1]]){const nx=x+dx,ny=y+dy;if(nx<0||ny<0||nx>=W||ny>=H)continue;const n=ny*W+nx;if(!seen[n]&&TY[n]!=3){seen[n]=1;q.push(n)}}}
   for(let i=0;i<W*H;i++)if(TY[i]!=3&&!seen[i])TY[i]=3}
+
  const F=new Uint8Array(W*H);for(let i=0;i<W*H;i++)F[i]=TY[i]!=3?1:0;
  for(let i=0;i<W*H;i++){S[i]=F[i]?0:1;if(!F[i])Z[i]=0}
  /* caminho principal (a distância RDD afasta os enfeites do meio dos túneis) */

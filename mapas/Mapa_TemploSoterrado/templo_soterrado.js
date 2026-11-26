@@ -36,6 +36,8 @@ function buriedTemple(){
  /* tira bolsões sem ligação com a saída */
  {const seen=new Uint8Array(W*H),q=[(H-2)*W+60];seen[q[0]]=1;while(q.length){const i=q.pop(),x=i%W,y=(i/W)|0;for(const [dx,dy] of[[1,0],[-1,0],[0,1],[0,-1]]){const nx=x+dx,ny=y+dy;if(nx<0||ny<0||nx>=W||ny>=H)continue;const n=ny*W+nx;if(!seen[n]&&TY[n]!=3){seen[n]=1;q.push(n)}}}
   for(let i=0;i<W*H;i++)if(TY[i]!=3&&!seen[i])TY[i]=3}
+ /* a parede norte da Galeria Norte avança dos dois lados da boca da passagem, para a peça encaixar na parede */
+ {let ty=15;while(ty>2&&TY[(ty-1)*W+106]!=3)ty--;for(let y=ty;y<=ty+1;y++)for(let x=97;x<=115;x++){if(x>=103&&x<=109)continue;if(Math.abs(x-106)<=8||y==ty)TY[y*W+x]=3}}
  const F=new Uint8Array(W*H);for(let i=0;i<W*H;i++)F[i]=TY[i]!=3?1:0;
  for(let i=0;i<W*H;i++){S[i]=F[i]?0:1;if(!F[i])Z[i]=0}
  /* caminho principal (a distância RDD afasta os enfeites do meio dos túneis) */
