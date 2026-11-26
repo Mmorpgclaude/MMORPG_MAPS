@@ -8,7 +8,7 @@
   (`visualizador_ferramentas/gera_cavernas.py` no repositório): mesmo pintor, mesmo shader, cores próprias.
 - **Chão:** `ts_floor.gdshader`, porte linha a linha do pintor de caverna (o kit não tem chão de caverna do Deserto; o
   pintor do Deserto é de área aberta). Usa só `gen_common.gdshaderinc`. Conferido no Godot 4.7.2 contra a `floor_ref.png`:
-  **100 %** dos pixels com diferença ≤ 2, PSNR **93,2 dB**.
+  **99,999 %** dos pixels com diferença ≤ 2, PSNR **74-76 dB**.
 - **`gen_data`:** R = andável, G = distância até o caminho principal × 10, B = tipo × 40 (0 chão de arenito com cascalho,
   1 areia acumulada, 2 lajes do templo, 3 rocha: parede e teto).
 - **Efeitos:** `fx_ts.gd` (`extends "res://scripts/fx_base.gd"`): poeira flutuando, areia escorrendo do teto, fogo da
@@ -28,21 +28,26 @@
 | # | Zona | O que tem |
 |---|---|---|
 | 0 | Templo Soterrado (túneis) | |
-| 1 | Salão da Entrada (60, 80) | acampamento dos exploradores (fogueira, mercadorias, jarro) |
-| 2 | Galeria das Colunas (60, 57) | duas filas de colunas |
-| 3 | Salão do Ídolo (60, 24) | a cabeça da estátua, quatro obeliscos e dois muros com relevos |
-| 4 | Câmara dos Jarros (22, 38) | jarros e mercadorias |
-| 5 | Salões Desmoronados (94, 46), **caça** | salão largo e vazio no meio, pedras e colunas caídas só na beirada |
-| 6 | Cripta Arenosa (24, 70), **caça** | idem |
+| 1 | Salão da Entrada (60, 80) | acampamento dos exploradores encostado na parede (fogueira, mercadorias, jarro) |
+| 2 | Galeria das Colunas (60, 58) | colunas encostadas nas paredes, o meio largo e livre |
+| 3 | Salão do Ídolo (60, 26) | a cabeça da estátua na parede do fundo, dois obeliscos na parede de trás |
+| 4 | Câmara Selada (60, 8) | câmara pequena atrás do Salão do Ídolo |
+| 5 | Salão Desmoronado Oeste (22, 44), **caça** | grande e **vazio** no meio; só tochas e uma coluna quebrada na parede |
+| 6 | Salão Desmoronado Leste (98, 44), **caça** | idem |
+
+## Planta (pedido do Ricardo: pouca poluição)
+
+Salões largos; o meio de cada salão fica livre para caçar e os enfeites ficam só encostados nas paredes.
+A arte do interior vai ser trocada pela folha nova (`PROMPT_ASSETS_INTERIOR_CAVERNAS.md`) quando ela chegar.
 
 ## Luzes (`dark`)
 
-A caverna é escura: 1 fogueira (raio 140) e 12 lanternas (raio 120) iluminam os salões e os túneis.
+A caverna é escura: 1 fogueira (raio 140) e as lanternas (raio 120) iluminam os salões e os túneis.
 
 ## Destinos sugeridos para o teleporte
 
 - **Salão da Entrada (60, 84)**
-- **Salão do Ídolo (60, 32)**
+- **Salão do Ídolo (60, 30)**
 
 ## Arte
 

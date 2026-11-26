@@ -18,11 +18,11 @@ function redArchCave(){
  const S=new Array(W*H).fill(0),Z=new Array(W*H).fill(0),ents=[],dark=[];
  const fx={dust:[],sand:[],fire:[],lamp:[],glint:[]};
  const put=(cv,x,ybase,lb)=>{const e={img:cv,x:Math.round(x),y:ybase,z:ybase-cv.height+2,sw:cv.width,sh:cv.height};if(lb)e.lb=lb;ents.push(e)};
- const zn=['Gruta do Arco Vermelho','Entrada da Gruta','Galeria Vermelha','Salão das Pedras','Salão do Eco','Fenda Funda','Covil Arenoso'];
+ const zn=['Gruta do Arco Vermelho','Entrada da Gruta','Galeria','Salão Oeste','Salão Leste','Câmara do Fundo'];
  /* ===== grade: rocha em tudo, os salões e os túneis são escavados ===== */
  const TY=new Uint8Array(W*H).fill(3),SL=new Uint8Array(W*H);
- const HALLS=[[60,80,9,6,1,0],[58,57,17,9,2,0],[28,30,21,14,3,0],[90,28,22,14,4,0],[96,66,14,10,5,0],[22,70,14,11,6,0]];   /* [x, y, rx, ry, zona, lajes] */
- const TUN=[[60,86,60,80,3],[60,80,58,57,3],[58,57,28,30,3],[58,57,90,28,3],[58,57,96,66,2.6],[28,30,22,70,2.6],[28,30,90,28,2.4]];       /* túneis entre os salões: [x0, y0, x1, y1, largura] */
+ const HALLS=[[60,80,10,6,1,0],[60,58,15,8,2,0],[28,30,22,16,3,0],[92,30,22,16,4,0],[60,22,9,7,5,0]];   /* [x, y, rx, ry, zona, lajes] */
+ const TUN=[[60,86,60,80,4],[60,80,60,58,4],[60,58,28,30,4],[60,58,92,30,4],[28,30,60,22,3.4],[92,30,60,22,3.4]];       /* túneis entre os salões: [x0, y0, x1, y1, largura] */
  for(let y=0;y<H;y++)for(let x=0;x<W;x++){const X=x*16,Y=y*16;
   for(const [hx,hy,rx,ry,zz,sl] of HALLS){const e=Math.hypot((x-hx)/rx,(y-hy)/ry)+(vn(X,Y,46,110)-.5)*.42;if(e<1){TY[y*W+x]=0;Z[y*W+x]=zz;if(sl&&e<.86)SL[y*W+x]=1}}}
  for(const [ax,ay,bx,by,w] of TUN){const n=Math.ceil(Math.hypot(bx-ax,by-ay)*2);for(let s2=0;s2<=n;s2++){const x=ax+(bx-ax)*s2/n,y=ay+(by-ay)*s2/n,r=w+(vn(x*16,y*16,60,110+1)-.5)*1.4;
@@ -107,14 +107,11 @@ function redArchCave(){
  const HALL=k=>HALLS[k];
  const inHall=(k,f=1)=>(x,y)=>{const h=HALLS[k];return Math.hypot((x-h[0])/h[2],(y-h[1])/h[3])<f};
  const rim=k=>(x,y)=>{const h=HALLS[k],e=Math.hypot((x-h[0])/h[2],(y-h[1])/h[3]);return e>.62&&e<1.1};
- /* Entrada da Gruta: acampamento de exploradores */
- fire(56,79);aNear('goods',65,78,{});aNear('jar',54,76,{bw:0,fit:0});torch(52,82);torch(67,82,{flip:true});
- /* Galeria Vermelha: rochedos vermelhos nos lados */
- aScat(['rock_red','rock_red2','rock_s','pebbles2'],10,501,rim(1),{bw:0});aNear('rock_tall',46,56,{fit:2,br:2,road:2});aNear('rock_m',71,58,{fit:2,br:2,road:2});
- torch(50,52);torch(66,52,{flip:true});
- /* salões de caça: largos e vazios no meio, pedras só na beirada */
- for(const [k,sd] of[[2,510],[3,520],[4,530],[5,540]]){aScat(['rock_s','rock_red','rock_red2','pebbles1','pebbles2'],16,sd,rim(k),{bw:0});aScat(['rock_m','rock_tall','rock_big'],3,sd+1,rim(k),{fit:2,br:2})}
- torch(28,19);torch(16,36);torch(42,40);torch(90,17);torch(74,32);torch(106,36);torch(96,58);torch(90,72);torch(22,61);torch(30,76);
+ /* Entrada: acampamento encostado na parede */
+ fire(53,79);aNear('goods',51,76,{});torch(67,77,{flip:true});
+ /* rochedos so colados na parede, meio livre */
+ for(const [k,sd] of[[1,510],[2,515],[3,520],[4,530]])aScat(['rock_m','rock_tall'],k<=2?1:3,sd,(x,y)=>{const h=HALLS[k],e=Math.hypot((x-h[0])/h[2],(y-h[1])/h[3]);return e>.85&&e<1.05},{fit:1,br:2,road:0});
+ torch(48,55);torch(72,55,{flip:true});torch(12,24);torch(40,18,{flip:true});torch(80,18);torch(108,24,{flip:true});torch(28,44);torch(92,44,{flip:true});torch(60,16);
  /* poeira no ar e areia escorrendo do teto */
  for(let k=0;k<90;k++){const x=4+hq(k,61)*(W-8)|0,y=4+hq(k,62)*(H-8)|0;if(F[y*W+x])fx.dust.push([x*T+8,y*T+8,hq(k,63)*6.28])}
  for(let k=0;k<200&&fx.sand.length<16;k++){const x=4+hq(k,64)*(W-8)|0,y=4+hq(k,65)*(H-8)|0;if(F[y*W+x]&&!F[(y-1)*W+x])fx.sand.push([x*T+8,y*T-4,hq(k,66)*6.28])}

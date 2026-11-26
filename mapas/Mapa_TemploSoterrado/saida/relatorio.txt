@@ -5,6 +5,6 @@ AVISO tamanho 120×90 (só lugar de dentro pode ter outro tamanho)
 OK    chão com 1920×1440 px (16 px por tile)
 OK    gen_data com 1 texel por tile
 OK    passagem {"k": "edge", "m": "nd", "x": 1960, "y": 1424}: 8 células na borda, livres
-OK    3764 de 3764 tiles livres alcançáveis a partir da passagem
+OK    3246 de 3246 tiles livres alcançáveis a partir da passagem
 OK    arte recortada com no máximo 128 cores (maior peça: 128)
-objetos: 68 · zonas: Templo Soterrado, Salão da Entrada, Galeria das Colunas, Salão do Ídolo, Câmara dos Jarros, Salões Desmoronados, Cripta Arenosa
+objetos: 21 · zonas: Templo Soterrado, Salão da Entrada, Galeria das Colunas, Salão do Ídolo, Câmara Selada, Salão Desmoronado Oeste, Salão Desmoronado Leste

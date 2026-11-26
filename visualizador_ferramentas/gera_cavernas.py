@@ -102,27 +102,23 @@ TEMPLO = dict(
  ID='ts', FN='buriedTemple', NOME='Templo Soterrado', PORTA='do portal antigo (ruin_gate), no monte de areia da Planície Escaldante,',
  DESC='''   Um templo antigo engolido pelas dunas: salões de lajes, a galeria das colunas, o salão do ídolo com a cabeça da estátua e
    os obeliscos, uma câmara de jarros e dois salões desmoronados, cheios de areia, largos para caçar.''',
- ZN="['Templo Soterrado','Salão da Entrada','Galeria das Colunas','Salão do Ídolo','Câmara dos Jarros','Salões Desmoronados','Cripta Arenosa']",
- HALLS="[[60,80,10,6,1,1],[60,57,16,10,2,1],[60,24,20,12,3,1],[22,38,12,9,4,1],[94,46,22,15,5,0],[24,70,17,13,6,0]]",
- TUN="[[60,86,60,57,3],[60,57,60,24,3],[60,57,94,46,3],[60,57,22,38,2.6],[22,38,24,70,2.6],[60,24,94,46,2.6]]",
+ ZN="['Templo Soterrado','Salão da Entrada','Galeria das Colunas','Salão do Ídolo','Câmara Selada','Salão Desmoronado Oeste','Salão Desmoronado Leste']",
+ HALLS="[[60,80,11,6,1,1],[60,58,17,9,2,1],[60,26,22,13,3,1],[22,44,15,13,5,0],[98,44,15,13,6,0],[60,8,8,3,4,1]]",
+ TUN="[[60,86,60,58,4],[60,58,60,26,4],[60,58,22,44,3.6],[60,58,98,44,3.6],[60,26,60,8,3]]",
  SD=90, R0='[150,104,70]', R1='[170,124,84]', R2='[128,88,60]', R3='[184,140,96]',
  SLR='[184,160,120][(id*3)|0]'.replace('[(id*3)|0]',''), SLG='', SLB='',
  FR=92, FG=70, FB=50, VX='122*16+8', VY='89*16',
- OBJ=''' /* Salão da Entrada: acampamento de exploradores */
- fire(55,80);aNear('goods',66,78,{});aNear('jar',53,76,{bw:0,fit:0});torch(52,82);torch(68,82,{flip:true});
- /* Galeria das Colunas: duas filas de colunas, algumas quebradas */
- for(const x of[50,56,64,70])for(const y of[53,62])aNear(hq(x,y)<.3?'column_broken':'column',x,y,{bw:0,fit:0,road:1.5,res:0});
- torch(46,57);torch(74,57,{flip:true});
- /* Salão do Ídolo: a cabeça da estátua no fundo, obeliscos e muros com relevos */
- aNear('statue_head',60,17,{fit:2,br:2,road:0});aNear('obelisk',50,20,{bw:1});aNear('obelisk',70,20,{bw:1});
- aNear('ruin_wall',44,24,{});aNear('ruin_wall',76,24,{flip:true});aNear('obelisk',48,30,{bw:1});aNear('obelisk',72,30,{bw:1});
- torch(54,28);torch(66,28,{flip:true});
- /* Câmara dos Jarros */
- aScat(['jar','jar','jar_broken','shard','goods'],12,401,inHall(3,.9),{bw:0,fit:0,road:1});torch(22,33);
- /* salões desmoronados e cripta: largos e vazios no meio (caça), pedras e colunas caídas só na beirada */
- aScat(['rock_s','rock_red','pebbles1','pebbles2','column_broken','shard'],20,402,rim(4),{bw:0});aScat(['rock_m','rock_tall'],3,403,rim(4),{fit:2,br:2});
- aScat(['rock_s','pebbles1','pebbles2','jar_broken','shard'],14,404,rim(5),{bw:0});aScat(['rock_m'],2,405,rim(5),{fit:2,br:2});
- torch(94,34);torch(78,52);torch(108,50);torch(24,60);torch(14,72);torch(34,78);''')
+ OBJ=''' /* Salao da Entrada: acampamento encostado na parede esquerda */
+ fire(52,79);aNear('goods',50,76,{});aNear('jar',53,75,{bw:0});torch(68,77,{flip:true});
+ /* Galeria: colunas encostadas nas paredes, meio largo e livre */
+ for(const x of[46,74])for(const y of[53,63])aNear('column',x,y,{bw:0,fit:0,road:0,res:0});
+ torch(44,58);torch(76,58,{flip:true});
+ /* Salao do Idolo: estatua no fundo, obeliscos so na parede de tras */
+ aNear('statue_head',60,16,{fit:2,br:2,road:0});aNear('obelisk',44,20,{bw:1,road:0});aNear('obelisk',76,20,{bw:1,road:0});
+ torch(48,24);torch(72,24,{flip:true});
+ /* saloes de caca laterais: vazios no meio */
+ aNear('column_broken',12,36,{bw:0,road:0});torch(22,33);aNear('column_broken',108,36,{bw:0,road:0});torch(98,33,{flip:true});
+ torch(14,52);torch(106,52,{flip:true});''')
 TEMPLO['SLR'] = 'id<.33?178:id<.66?166:190'
 TEMPLO['SLG'] = 'id<.33?150:id<.66?138:162'
 TEMPLO['SLB'] = 'id<.33?112:id<.66?100:122'
@@ -131,20 +127,17 @@ GRUTA = dict(
  ID='ga', FN='redArchCave', NOME='Gruta do Arco Vermelho', PORTA='do arco de pedra (rock_arch), no Vale das Areias Vermelhas,',
  DESC='''   Uma caverna de rocha vermelha atrás do arco de pedra: a galeria vermelha da entrada e quatro salões largos para caçar
    (o Salão das Pedras, o Salão do Eco, a Fenda Funda e o Covil Arenoso), ligados por túneis.''',
- ZN="['Gruta do Arco Vermelho','Entrada da Gruta','Galeria Vermelha','Salão das Pedras','Salão do Eco','Fenda Funda','Covil Arenoso']",
- HALLS="[[60,80,9,6,1,0],[58,57,17,9,2,0],[28,30,21,14,3,0],[90,28,22,14,4,0],[96,66,14,10,5,0],[22,70,14,11,6,0]]",
- TUN="[[60,86,60,80,3],[60,80,58,57,3],[58,57,28,30,3],[58,57,90,28,3],[58,57,96,66,2.6],[28,30,22,70,2.6],[28,30,90,28,2.4]]",
+ ZN="['Gruta do Arco Vermelho','Entrada da Gruta','Galeria','Salão Oeste','Salão Leste','Câmara do Fundo']",
+ HALLS="[[60,80,10,6,1,0],[60,58,15,8,2,0],[28,30,22,16,3,0],[92,30,22,16,4,0],[60,22,9,7,5,0]]",
+ TUN="[[60,86,60,80,4],[60,80,60,58,4],[60,58,28,30,4],[60,58,92,30,4],[28,30,60,22,3.4],[92,30,60,22,3.4]]",
  SD=110, R0='[140,62,40]', R1='[162,78,48]', R2='[118,50,34]', R3='[178,96,60]',
  SLR='0', SLG='0', SLB='0',
  FR=96, FG=62, FB=46, VX='112*16+16', VY='14*16',
- OBJ=''' /* Entrada da Gruta: acampamento de exploradores */
- fire(56,79);aNear('goods',65,78,{});aNear('jar',54,76,{bw:0,fit:0});torch(52,82);torch(67,82,{flip:true});
- /* Galeria Vermelha: rochedos vermelhos nos lados */
- aScat(['rock_red','rock_red2','rock_s','pebbles2'],10,501,rim(1),{bw:0});aNear('rock_tall',46,56,{fit:2,br:2,road:2});aNear('rock_m',71,58,{fit:2,br:2,road:2});
- torch(50,52);torch(66,52,{flip:true});
- /* salões de caça: largos e vazios no meio, pedras só na beirada */
- for(const [k,sd] of[[2,510],[3,520],[4,530],[5,540]]){aScat(['rock_s','rock_red','rock_red2','pebbles1','pebbles2'],16,sd,rim(k),{bw:0});aScat(['rock_m','rock_tall','rock_big'],3,sd+1,rim(k),{fit:2,br:2})}
- torch(28,19);torch(16,36);torch(42,40);torch(90,17);torch(74,32);torch(106,36);torch(96,58);torch(90,72);torch(22,61);torch(30,76);''')
+ OBJ=''' /* Entrada: acampamento encostado na parede */
+ fire(53,79);aNear('goods',51,76,{});torch(67,77,{flip:true});
+ /* rochedos so colados na parede, meio livre */
+ for(const [k,sd] of[[1,510],[2,515],[3,520],[4,530]])aScat(['rock_m','rock_tall'],k<=2?1:3,sd,(x,y)=>{const h=HALLS[k],e=Math.hypot((x-h[0])/h[2],(y-h[1])/h[3]);return e>.85&&e<1.05},{fit:1,br:2,road:0});
+ torch(48,55);torch(72,55,{flip:true});torch(12,24);torch(40,18,{flip:true});torch(80,18);torch(108,24,{flip:true});torch(28,44);torch(92,44,{flip:true});torch(60,16);''')
 
 for d, pasta, arq in [(TEMPLO, 'Mapa_TemploSoterrado', 'templo_soterrado.js'), (GRUTA, 'Mapa_GrutaArcoVermelho', 'gruta_arco.js')]:
     d = dict(d); d['HELPER'] = HELPER

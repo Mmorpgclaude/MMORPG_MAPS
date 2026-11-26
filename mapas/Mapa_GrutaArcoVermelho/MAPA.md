@@ -8,7 +8,7 @@
   (`visualizador_ferramentas/gera_cavernas.py` no repositório): mesmo pintor, mesmo shader, cores próprias.
 - **Chão:** `ga_floor.gdshader`, porte linha a linha do pintor de caverna (o kit não tem chão de caverna do Deserto; o
   pintor do Deserto é de área aberta). Usa só `gen_common.gdshaderinc`. Conferido no Godot 4.7.2 contra a `floor_ref.png`:
-  **99,9999 %** dos pixels com diferença ≤ 2, PSNR **79,7 dB**.
+  **99,999 %** dos pixels com diferença ≤ 2, PSNR **74-76 dB**.
 - **`gen_data`:** R = andável, G = distância até o caminho principal × 10, B = tipo × 40 (0 chão de arenito com cascalho,
   1 areia acumulada, 2 lajes do templo, 3 rocha: parede e teto).
 - **Efeitos:** `fx_ga.gd` (`extends "res://scripts/fx_base.gd"`): poeira flutuando, areia escorrendo do teto, fogo da
@@ -28,21 +28,25 @@
 | # | Zona | O que tem |
 |---|---|---|
 | 0 | Gruta do Arco Vermelho (túneis) | |
-| 1 | Entrada da Gruta (60, 80) | acampamento dos exploradores |
-| 2 | Galeria Vermelha (58, 57) | rochedos vermelhos nos lados |
-| 3 | Salão das Pedras (28, 30), **caça** | |
-| 4 | Salão do Eco (90, 28), **caça** | |
-| 5 | Fenda Funda (96, 66), **caça** | |
-| 6 | Covil Arenoso (22, 70), **caça** (os salões de caça | largos e vazios no meio, rochedos só na beirada) |
+| 1 | Entrada da Gruta (60, 80) | acampamento dos exploradores encostado na parede |
+| 2 | Galeria (60, 58) | túnel largo ligando os salões |
+| 3 | Salão Oeste (28, 30), **caça** | enorme e **vazio** no meio; só tochas e rochedos colados na parede |
+| 4 | Salão Leste (92, 30), **caça** | idem |
+| 5 | Câmara do Fundo (60, 22) | a câmara do marco da gruta (vai receber o poço de areia da folha nova) |
+
+## Planta (pedido do Ricardo: pouca poluição)
+
+Salões largos; o meio de cada salão fica livre para caçar e os enfeites ficam só encostados nas paredes.
+A arte do interior vai ser trocada pela folha nova (`PROMPT_ASSETS_INTERIOR_CAVERNAS.md`) quando ela chegar.
 
 ## Luzes (`dark`)
 
-A caverna é escura: 1 fogueira (raio 140) e 12 lanternas (raio 120) iluminam os salões e os túneis.
+A caverna é escura: 1 fogueira (raio 140) e as lanternas (raio 120) iluminam os salões e os túneis.
 
 ## Destinos sugeridos para o teleporte
 
 - **Entrada da Gruta (60, 84)**
-- **Salão do Eco (90, 30)**
+- **Salão Leste (92, 30)**
 
 ## Arte
 

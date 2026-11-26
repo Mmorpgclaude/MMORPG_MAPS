@@ -18,11 +18,11 @@ function buriedTemple(){
  const S=new Array(W*H).fill(0),Z=new Array(W*H).fill(0),ents=[],dark=[];
  const fx={dust:[],sand:[],fire:[],lamp:[],glint:[]};
  const put=(cv,x,ybase,lb)=>{const e={img:cv,x:Math.round(x),y:ybase,z:ybase-cv.height+2,sw:cv.width,sh:cv.height};if(lb)e.lb=lb;ents.push(e)};
- const zn=['Templo Soterrado','Salão da Entrada','Galeria das Colunas','Salão do Ídolo','Câmara dos Jarros','Salões Desmoronados','Cripta Arenosa'];
+ const zn=['Templo Soterrado','Salão da Entrada','Galeria das Colunas','Salão do Ídolo','Câmara Selada','Salão Desmoronado Oeste','Salão Desmoronado Leste'];
  /* ===== grade: rocha em tudo, os salões e os túneis são escavados ===== */
  const TY=new Uint8Array(W*H).fill(3),SL=new Uint8Array(W*H);
- const HALLS=[[60,80,10,6,1,1],[60,57,16,10,2,1],[60,24,20,12,3,1],[22,38,12,9,4,1],[94,46,22,15,5,0],[24,70,17,13,6,0]];   /* [x, y, rx, ry, zona, lajes] */
- const TUN=[[60,86,60,57,3],[60,57,60,24,3],[60,57,94,46,3],[60,57,22,38,2.6],[22,38,24,70,2.6],[60,24,94,46,2.6]];       /* túneis entre os salões: [x0, y0, x1, y1, largura] */
+ const HALLS=[[60,80,11,6,1,1],[60,58,17,9,2,1],[60,26,22,13,3,1],[22,44,15,13,5,0],[98,44,15,13,6,0],[60,8,8,3,4,1]];   /* [x, y, rx, ry, zona, lajes] */
+ const TUN=[[60,86,60,58,4],[60,58,60,26,4],[60,58,22,44,3.6],[60,58,98,44,3.6],[60,26,60,8,3]];       /* túneis entre os salões: [x0, y0, x1, y1, largura] */
  for(let y=0;y<H;y++)for(let x=0;x<W;x++){const X=x*16,Y=y*16;
   for(const [hx,hy,rx,ry,zz,sl] of HALLS){const e=Math.hypot((x-hx)/rx,(y-hy)/ry)+(vn(X,Y,46,90)-.5)*.42;if(e<1){TY[y*W+x]=0;Z[y*W+x]=zz;if(sl&&e<.86)SL[y*W+x]=1}}}
  for(const [ax,ay,bx,by,w] of TUN){const n=Math.ceil(Math.hypot(bx-ax,by-ay)*2);for(let s2=0;s2<=n;s2++){const x=ax+(bx-ax)*s2/n,y=ay+(by-ay)*s2/n,r=w+(vn(x*16,y*16,60,90+1)-.5)*1.4;
@@ -107,21 +107,17 @@ function buriedTemple(){
  const HALL=k=>HALLS[k];
  const inHall=(k,f=1)=>(x,y)=>{const h=HALLS[k];return Math.hypot((x-h[0])/h[2],(y-h[1])/h[3])<f};
  const rim=k=>(x,y)=>{const h=HALLS[k],e=Math.hypot((x-h[0])/h[2],(y-h[1])/h[3]);return e>.62&&e<1.1};
- /* Salão da Entrada: acampamento de exploradores */
- fire(55,80);aNear('goods',66,78,{});aNear('jar',53,76,{bw:0,fit:0});torch(52,82);torch(68,82,{flip:true});
- /* Galeria das Colunas: duas filas de colunas, algumas quebradas */
- for(const x of[50,56,64,70])for(const y of[53,62])aNear(hq(x,y)<.3?'column_broken':'column',x,y,{bw:0,fit:0,road:1.5,res:0});
- torch(46,57);torch(74,57,{flip:true});
- /* Salão do Ídolo: a cabeça da estátua no fundo, obeliscos e muros com relevos */
- aNear('statue_head',60,17,{fit:2,br:2,road:0});aNear('obelisk',50,20,{bw:1});aNear('obelisk',70,20,{bw:1});
- aNear('ruin_wall',44,24,{});aNear('ruin_wall',76,24,{flip:true});aNear('obelisk',48,30,{bw:1});aNear('obelisk',72,30,{bw:1});
- torch(54,28);torch(66,28,{flip:true});
- /* Câmara dos Jarros */
- aScat(['jar','jar','jar_broken','shard','goods'],12,401,inHall(3,.9),{bw:0,fit:0,road:1});torch(22,33);
- /* salões desmoronados e cripta: largos e vazios no meio (caça), pedras e colunas caídas só na beirada */
- aScat(['rock_s','rock_red','pebbles1','pebbles2','column_broken','shard'],20,402,rim(4),{bw:0});aScat(['rock_m','rock_tall'],3,403,rim(4),{fit:2,br:2});
- aScat(['rock_s','pebbles1','pebbles2','jar_broken','shard'],14,404,rim(5),{bw:0});aScat(['rock_m'],2,405,rim(5),{fit:2,br:2});
- torch(94,34);torch(78,52);torch(108,50);torch(24,60);torch(14,72);torch(34,78);
+ /* Salao da Entrada: acampamento encostado na parede esquerda */
+ fire(52,79);aNear('goods',50,76,{});aNear('jar',53,75,{bw:0});torch(68,77,{flip:true});
+ /* Galeria: colunas encostadas nas paredes, meio largo e livre */
+ for(const x of[46,74])for(const y of[53,63])aNear('column',x,y,{bw:0,fit:0,road:0,res:0});
+ torch(44,58);torch(76,58,{flip:true});
+ /* Salao do Idolo: estatua no fundo, obeliscos so na parede de tras */
+ aNear('statue_head',60,16,{fit:2,br:2,road:0});aNear('obelisk',44,20,{bw:1,road:0});aNear('obelisk',76,20,{bw:1,road:0});
+ torch(48,24);torch(72,24,{flip:true});
+ /* saloes de caca laterais: vazios no meio */
+ aNear('column_broken',12,36,{bw:0,road:0});torch(22,33);aNear('column_broken',108,36,{bw:0,road:0});torch(98,33,{flip:true});
+ torch(14,52);torch(106,52,{flip:true});
  /* poeira no ar e areia escorrendo do teto */
  for(let k=0;k<90;k++){const x=4+hq(k,61)*(W-8)|0,y=4+hq(k,62)*(H-8)|0;if(F[y*W+x])fx.dust.push([x*T+8,y*T+8,hq(k,63)*6.28])}
  for(let k=0;k<200&&fx.sand.length<16;k++){const x=4+hq(k,64)*(W-8)|0,y=4+hq(k,65)*(H-8)|0;if(F[y*W+x]&&!F[(y-1)*W+x])fx.sand.push([x*T+8,y*T-4,hq(k,66)*6.28])}
