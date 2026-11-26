@@ -1,10 +1,11 @@
 /* ---------- Acampamento dos Nômades (mapa 'nd') — a oeste de Al-Sahrah (dq), posição (-130, 640) ----------
    A tribo do deserto que vive do lado de fora dos muros da cidade: o Círculo das Tendas em volta da fogueira grande,
-   o Poço da Tribo, a Parada das Carroças e o Mirante nas dunas. Sem animais (pedido do Ricardo): nada de bichos, de
+   o Poço da Tribo, o Mercado da Tribo e o Mirante nas dunas. A tribo é viva: tendas inteiras e
+   coloridas, a tenda do chefe, varal, tear, mercado de especiarias e lanternas (folha Assets_Nomades do Ricardo). Sem animais (pedido do Ricardo): nada de bichos, de
    abutres nem de ossadas. Entrada só pelo leste (linhas 46-54), pelo portão oeste da muralha de Al-Sahrah.
    Feito sobre o exemplo do Deserto do kit (v10.23): o PINTOR DO CHÃO, o ds5b e o ajudante da arte são cópia exata
    (o shader nd_floor.gdshader é o dx_floor.gdshader sem mudança); mudam só a GRADE, as zonas, os objetos e as passagens.
-   Objetos: as peças prontas de exemplo_deserto/arte (folhas do Ricardo). 1 tile = 16 px. */
+   Objetos: a folha da tribo (Assets_Nomades) e peças prontas de exemplo_deserto/arte (folhas do Ricardo). 1 tile = 16 px. */
 function nomadCamp(){
  const T=16,W=150,H=120,FW=W*T,FH=H*T;
  let [fc,f]=cmCv(FW,FH),P=ufP(f);const cx=fc.getContext('2d');
@@ -34,7 +35,7 @@ function nomadCamp(){
  const RM=[[149,50],[134,52],[118,48],[100,53],[84,56],[74,57]];
  const CAMP=[60,58],WELL=[38,82],CART=[92,84],LOOK=[52,24];
  carve(RM,3,3);carve([[64,64],[52,72],[38,82]],2.6,4);carve([[78,60],[86,72],[92,84]],2.6,5);carve([[58,48],[54,36],[52,24]],2.4,6);
- clear(CAMP[0],CAMP[1],15);clear(WELL[0],WELL[1],9);clear(CART[0],CART[1],11);clear(LOOK[0],LOOK[1],8);
+ clear(CAMP[0],CAMP[1],18);clear(WELL[0],WELL[1],9);clear(CART[0],CART[1],11);clear(LOOK[0],LOOK[1],8);
  /* bordas fechadas, menos a passagem leste (linhas 46-54) para Al-Sahrah */
  for(let y=0;y<H;y++)for(let x=0;x<W;x++){const pas=y>=46&&y<=54;if(x<3||(x>=W-3&&!pas)||y<3||y>=H-3)solid(x,y,2)}
  for(let y=46;y<=54;y++)for(let x=0;x<5;x++){F[y*W+W-1-x]=1}
@@ -43,7 +44,7 @@ function nomadCamp(){
   for(let i=0;i<W*H;i++)if(F[i]&&!seen[i])solid(i%W,(i/W)|0,2)}
  for(let i=0;i<W*H;i++)S[i]=F[i]?0:1;
  /* zonas */
- const zn=['Dunas do Oeste','Estrada de Al-Sahrah','Círculo das Tendas','Poço da Tribo','Parada das Carroças','Mirante das Dunas'];
+ const zn=['Dunas do Oeste','Estrada de Al-Sahrah','Círculo das Tendas','Poço da Tribo','Mercado da Tribo','Mirante das Dunas'];
  const Z=new Array(W*H).fill(0);
  const RDD=new Float32Array(W*H).fill(99);{const pts=[];for(let k=0;k<RM.length-1;k++){const [ax,ay]=RM[k],[bx,by]=RM[k+1],n=Math.ceil(Math.hypot(bx-ax,by-ay)*2);for(let s2=0;s2<=n;s2++)pts.push([ax+(bx-ax)*s2/n,ay+(by-ay)*s2/n])}
   for(const [x,y] of pts)for(let j=-4;j<=4;j++)for(let i=-4;i<=4;i++){const tx=Math.round(x+i),ty=Math.round(y+j);if(tx<0||ty<0||tx>=W||ty>=H)continue;const dd=Math.hypot(tx+.5-x,ty+.5-y);if(dd<RDD[ty*W+tx])RDD[ty*W+tx]=dd}}
@@ -150,22 +151,35 @@ function nomadCamp(){
 
  aRes(W-10,43,W-1,57);   /* passagem livre */
  const last=()=>ents[ents.length-1];
- const fire=(tx,ty)=>{if(aNear('firepit',tx,ty,{})){const e=last(),x=e.x+(e.sw>>1),y=e.y-10;fx.fire.push([x,y]);dark.push([x,y,110,1])}};
- /* Círculo das Tendas: tendas em roda, a fogueira grande no meio, estandartes da tribo, mercadorias e jarros */
- fire(CAMP[0],CAMP[1]);
- aRes(CAMP[0]-4,CAMP[1]-3,CAMP[0]+4,CAMP[1]+3);   /* o meio da roda fica livre, em volta da fogueira */
- for(const [dx,dy,fl] of[[-13,-7,0],[0,-10,1],[13,-7,0],[16,4,1],[-16,4,0],[-8,11,1],[8,11,0]])aNear('tent',CAMP[0]+dx,CAMP[1]+dy,{flip:!!fl,road:1,res:2});
- for(const [dx,dy] of[[-7,-13],[7,-13],[-20,-3]])aNear('banner',CAMP[0]+dx,CAMP[1]+dy,{m:0,bw:0,road:1});
- aNear('goods',CAMP[0]-9,CAMP[1]+1,{road:1});aNear('goods',CAMP[0]+9,CAMP[1]+1,{flip:true,road:1});
- aScat(['jar','jar_broken','jar','shard'],8,303,(x,y)=>Z[y*W+x]==2,{fit:0,bw:0,road:1});
- /* Poço da Tribo */
- aNear('well',WELL[0],WELL[1],{fit:2});aNear('jar',WELL[0]+3,WELL[1]+1,{bw:0,fit:0});aNear('jar',WELL[0]+4,WELL[1]+2,{bw:0,fit:0});
- aNear('cactus_m',WELL[0]-6,WELL[1]-3,{bw:0});aNear('cactus_barrel',WELL[0]+6,WELL[1]-4,{bw:0});fire(WELL[0]-4,WELL[1]+4);
- /* Parada das Carroças */
- aNear('wagon',CART[0]-5,CART[1]-1,{m:0,fit:1});aNear('wagon',CART[0]+5,CART[1]+2,{m:0,fit:1,flip:true});
- aNear('goods',CART[0]+1,CART[1]-5,{});aNear('goods',CART[0]-2,CART[1]+5,{flip:true});aNear('tent',CART[0]+8,CART[1]-6,{});
+ /* fogueiras da folha da tribo: (ox, oy) = ponto da chama dentro da peça */
+ const fire=(n,tx,ty,ox,oy,o={})=>{if(aNear(n,tx,ty,o)){const e=last(),x=e.x+ox,y=e.z-2+oy;fx.fire.push([x,y]);dark.push([x,y,110,1])}};
+ const lamp=(tx,ty,o={})=>{if(aNear('lantern_post',tx,ty,Object.assign({m:0,bw:0},o))){const e=last();for(const [ox,oy] of[[28,14],[23,44]])dark.push([e.x+ox,e.z-2+oy,64,.8])}};
+ const seat=(n,tx,ty)=>aNear(n,tx,ty,{walk:true,bw:0,fit:0,res:0,road:0,m:0});
+ /* Círculo das Tendas: a tenda do chefe ao norte, o tapete dele estendido na frente (no chão), a fogueira grande no meio
+    com almofadas e banquinhos em volta, as tendas da tribo em roda, estandartes, varal, tear e tapetes enrolados */
+ const RUG=[CAMP[0],CAMP[1]-1];
+ {const r=ART.chief_rug;oc.getContext('2d').drawImage(r,RUG[0]*T+8-(r.width>>1),RUG[1]*T+8-(r.height>>1));
+  aRes(RUG[0]-4,RUG[1]-2,RUG[0]+4,RUG[1]+2)}
+ aNear('chief_tent',CAMP[0],CAMP[1]-5,{fit:1,br:2,road:0,res:0,m:0});
+ fire('bigfire',CAMP[0],CAMP[1]+5,38,42,{road:0,res:0});
+ for(const [n,dx,dy] of[['cushion_r',-4,5],['cushion_b',4,5],['cushion_y',-2,8],['stool_r',2,8],['stool_t',-4,7],['stool_b',4,7]])seat(n,CAMP[0]+dx,CAMP[1]+dy);
+ for(const [n,dx,dy,fl] of[['tent_red',-15,1,0],['tent_teal',15,1,1],['tent_cream',-12,12,0],['tent_teal',12,12,0],['tent_red',0,16,1]])aNear(n,CAMP[0]+dx,CAMP[1]+dy,{flip:!!fl,road:1,res:2,fit:1});
+ aNear('tribe_banner',CAMP[0]-10,CAMP[1]-5,{m:0,bw:0,road:0});aNear('tribe_banner',CAMP[0]+10,CAMP[1]-5,{m:0,bw:0,road:0});
+ aNear('tribe_flag',CAMP[0]+19,CAMP[1]-4,{m:0,bw:0,road:0});
+ aNear('clothesline',CAMP[0]-20,CAMP[1]+6,{road:1});aNear('loom',CAMP[0]-8,CAMP[1]+18,{road:1});aNear('rugs',CAMP[0]+19,CAMP[1]+7,{road:1});
+ lamp(CAMP[0]-6,CAMP[1]+2);lamp(CAMP[0]+6,CAMP[1]+2);
+ aScat(['jar','jar','goods'],5,303,(x,y)=>Z[y*W+x]==2&&Math.hypot(x-CAMP[0],y-(CAMP[1]-4))>8,{fit:0,bw:0,road:1});
+ /* Poço da Tribo: o poço com toldo, a fogueira pequena com o bule, o cavalete dos odres e a mesa baixa do chá */
+ aNear('tribe_well',WELL[0],WELL[1],{fit:2,br:2});aNear('waterskins',WELL[0]+6,WELL[1]-1,{});
+ fire('smallfire',WELL[0]-5,WELL[1]+3,21,26,{});aNear('teatable',WELL[0]+1,WELL[1]+5,{});
+ seat('cushion_b',WELL[0]-1,WELL[1]+7);seat('cushion_r',WELL[0]+3,WELL[1]+7);
+ aNear('cactus_m',WELL[0]-7,WELL[1]-4,{bw:0});aNear('cactus_barrel',WELL[0]+7,WELL[1]-5,{bw:0});
+ /* Mercado da Tribo: a barraca de especiarias, os odres, potes, e as carroças que trazem as mercadorias */
+ aNear('spice_stall',CART[0],CART[1]-4,{fit:2,br:2});aNear('waterskins',CART[0]+7,CART[1]-3,{flip:true});
+ aNear('wagon',CART[0]-6,CART[1]+3,{m:0,fit:1});aNear('wagon',CART[0]+6,CART[1]+5,{m:0,fit:1,flip:true});
+ aNear('goods',CART[0]-8,CART[1]-3,{});aNear('rugs',CART[0]+1,CART[1]+6,{});lamp(CART[0]-3,CART[1]-8);
  /* Mirante das Dunas */
- aNear('cairn',LOOK[0],LOOK[1],{fit:2});aNear('banner',LOOK[0]+3,LOOK[1]-1,{m:0,bw:0});aNear('rock_tall',LOOK[0]-6,LOOK[1]-2,{fit:3,br:2});
+ aNear('cairn',LOOK[0],LOOK[1],{fit:2});aNear('tribe_flag',LOOK[0]+3,LOOK[1]-1,{m:0,bw:0});aNear('rock_tall',LOOK[0]-6,LOOK[1]-2,{fit:3,br:2});
  /* estrada: marcos e a placa do portão */
  for(const x of[90,112,128])aNear('milestone',x,47,{bw:0});
  aNear('signpost',W-7,45,{m:0,lb:'Al-Sahrah',bw:1,road:0});aNear('lamppost',W-12,56,{m:0,bw:0,road:0});

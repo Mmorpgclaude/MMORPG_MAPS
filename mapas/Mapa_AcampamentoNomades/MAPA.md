@@ -33,19 +33,20 @@ Norte, sul e oeste são fechados (dunas altas, `M = 2`).
 |---|---|---|
 | 0 | Dunas do Oeste | o resto do mapa |
 | 1 | Estrada de Al-Sahrah | a estrada de lajes, do portão (leste) até o acampamento |
-| 2 | Círculo das Tendas | em volta de (60, 58): 7 tendas em roda, a fogueira grande no meio, estandartes, mercadorias e jarros |
-| 3 | Poço da Tribo | em volta de (38, 82): o poço, jarros, cactos e uma fogueira pequena |
-| 4 | Parada das Carroças | em volta de (92, 84): duas carroças, mercadorias e uma tenda |
-| 5 | Mirante das Dunas | em volta de (52, 24): o marco de pedras, um estandarte e um rochedo |
+| 2 | Círculo das Tendas | em volta de (60, 58): a tenda do chefe ao norte, o tapete dele estendido na frente (no `ov`), a fogueira grande com o caldeirão no meio, almofadas e banquinhos em volta, 5 tendas da tribo em roda, estandartes, lanternas, varal, tear e tapetes enrolados |
+| 3 | Poço da Tribo | em volta de (38, 82): o poço com toldo, o cavalete dos odres, a fogueira pequena com o bule, a mesa do chá e almofadas |
+| 4 | Mercado da Tribo | em volta de (92, 84): a barraca de especiarias, os odres, duas carroças, mercadorias e uma lanterna |
+| 5 | Mirante das Dunas | em volta de (52, 24): o marco de pedras, a flâmula da tribo e um rochedo |
 
 `gen_data`: R = chão, G = `RDD` × 10, B = `M` + zona × 16 (como o exemplo do Deserto).
 
 ## Luzes (`dark`) e efeitos (`fx`)
 
-- **Luzes:** as 2 fogueiras (Círculo das Tendas e Poço), raio 110, força 1.
+- **Luzes:** as 2 fogueiras (Círculo das Tendas e Poço), raio 110, força 1; e as lanternas de latão dos 3 postes
+  (2 lanternas em cada, raio 64, força 0,8).
 - **`fx.fire`:** o fogo das 2 fogueiras.
 - **`fx.devil`:** 4 redemoinhos de poeira.
-- **`fx.bird`:** vazio (sem abutres). `fx.flag`: vazio (os estandartes já têm o pano desenhado na arte).
+- **`fx.bird`:** vazio (sem abutres). `fx.flag`: vazio (os estandartes e a flâmula já têm o pano desenhado na arte).
 - Mais o vento com areia e o ar quente do `fx_sand.gd`, como nos outros mapas do Deserto.
 
 ## Destinos sugeridos para o teleporte (tiles, livres)
@@ -55,7 +56,12 @@ Norte, sul e oeste são fechados (dunas altas, `M = 2`).
 
 ## Arte
 
-- **Nenhuma folha nova:** sem animais, tudo saiu das 62 peças prontas do kit (`exemplo_deserto/arte/`). Não há
-  `PROMPT_ASSETS` nem folhas originais para este mapa.
-- `arte/`: só as 28 peças usadas (cópia das do kit). `pecas_folha_ruinas.json` e `pecas_folha_caravanas.json`: o registro
-  dessas peças, copiado do kit.
+- **Folha da tribo** (nova): `Assets_Nomades/folha_nomades.png` (original do Ricardo) e o prompt `PROMPT_ASSETS_NOMADES.md`.
+  `Assets_Nomades/folha_nomades_corte.png` é uma cópia com uma linha de fundo entre a tenda turquesa e a clara (as estacas
+  das cordas se encostavam); o recorte é feito dela. Registro: `pecas_folha_nomades.json` (o "pixel" dessa folha tem ~3 px,
+  por isso os fatores são menores que os do kit).
+- **Peças do kit** (`exemplo_deserto/arte/`): rochedos, cactos, estrada, carroças, mercadorias, jarros, marco de pedras.
+  Registro: `pecas_folha_ruinas.json` e `pecas_folha_caravanas.json` (copiados do kit).
+- `arte/`: só as peças usadas, das duas origens (no máximo 128 cores). O **tapete do chefe** (`chief_rug`) é desenhado no
+  `ov` (plano, o jogador anda por cima).
+- As tendas rasgadas, o estandarte rasgado, o poço e a fogueira do kit não são usados: a tribo é viva.

@@ -1,0 +1,94 @@
+{
+"chief_tent": [
+176,
+135
+],
+"tent_red": [
+115,
+105
+],
+"tent_teal": [
+94,
+99
+],
+"tent_cream": [
+91,
+99
+],
+"tribe_banner": [
+38,
+110
+],
+"bigfire": [
+76,
+75
+],
+"smallfire": [
+43,
+44
+],
+"clothesline": [
+91,
+58
+],
+"loom": [
+75,
+64
+],
+"rugs": [
+54,
+45
+],
+"cushion_r": [
+24,
+18
+],
+"cushion_b": [
+24,
+18
+],
+"cushion_y": [
+24,
+18
+],
+"stool_r": [
+23,
+14
+],
+"stool_b": [
+21,
+14
+],
+"stool_t": [
+22,
+14
+],
+"teatable": [
+56,
+44
+],
+"spice_stall": [
+133,
+97
+],
+"waterskins": [
+81,
+88
+],
+"lantern_post": [
+40,
+101
+],
+"tribe_flag": [
+47,
+109
+],
+"tribe_well": [
+93,
+105
+],
+"chief_rug": [
+113,
+66
+]
+}
