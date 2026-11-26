@@ -45,6 +45,8 @@ var joy_c := Vector2.ZERO
 var joy_v := Vector2.ZERO
 var walk_t := 0.0
 var args := {}
+var loading := false
+var ids := []               # mapas que o visualizador tem (para atravessar portas e passagens)
 
 # UI
 var ui: CanvasLayer
@@ -71,7 +73,9 @@ func _ready() -> void:
 		_show_menu(lista)
 
 # ------------------------------------------------------------------ carregar
-func load_map(id: String) -> void:
+func load_map(id: String, at := Vector2(-1, -1)) -> void:
+	loading = true
+	player = null
 	if menu: menu.visible = false
 	if world: world.queue_free()
 	base = "res://mapas/%s/" % id
@@ -101,10 +105,12 @@ func load_map(id: String) -> void:
 	debug_layer = Node2D.new(); debug_layer.draw.connect(_draw_debug); world.add_child(debug_layer)
 	camera = Camera2D.new(); camera.limit_left = 0; camera.limit_top = 0; camera.limit_right = W * T; camera.limit_bottom = H * T
 	player.add_child(camera)
-	player.position = _spawn()
-	if args.has("px"): player.position = Vector2(float(args.px) * T + 8, float(args.py) * T + 8)
+	player.position = _spawn() if at.x < 0 else at
+	if args.has("px") and at.x < 0: player.position = Vector2(float(args.px) * T + 8, float(args.py) * T + 8)
 	dark_a = 0.0
-	if args.has("noite"): _set_dark(0.75)
+	if M.get("dentro", false): _set_dark(0.7)   # caverna: escura, só as luzes dos fogos e lanternas
+	elif args.has("noite"): _set_dark(0.75)
+	loading = false
 	zone_last = -1
 	lbl_load.visible = false
 	hud.visible = true
@@ -113,7 +119,7 @@ func load_map(id: String) -> void:
 		_compara(args.compara)
 		if not args.has("foto"): get_tree().quit()
 	if args.has("foto"):
-		for i in 20: await get_tree().process_frame
+		for i in int(args.get("espera", "20")): await get_tree().process_frame
 		get_viewport().get_texture().get_image().save_png(args.foto)
 		get_tree().quit()
 
@@ -205,7 +211,7 @@ func blocked_at(p: Vector2) -> bool:
 
 func _process(dt: float) -> void:
 	tt += dt
-	if player == null: return
+	if player == null or loading: return
 	var v := joy_v
 	var k := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	if k != Vector2.ZERO: v = k
@@ -228,6 +234,7 @@ func _process(dt: float) -> void:
 	VW = vr.x; VH = vr.y
 	cam.position = (camera.get_screen_center_position() - vr / 2.0).floor()
 	var tx := int(player.position.x / T); var ty := int(player.position.y / T)
+	if not loading and _crossing(tx, ty): return
 	var zi: int = int(Z[clampi(ty, 0, H - 1) * W + clampi(tx, 0, W - 1)])
 	if zi != zone_last:
 		zone_last = zi
@@ -239,6 +246,7 @@ func _process(dt: float) -> void:
 	if show_col: debug_layer.queue_redraw()
 
 func _draw_player() -> void:
+	if player == null or loading: return
 	var b := int(sin(walk_t * 14.0) * 1.5) if walk_t > 0 else 0
 	player.draw_rect(Rect2(-6, 0, 12, 3), Color(0, 0, 0, 0.3))
 	player.draw_rect(Rect2(-5, -12 + b, 4, 12 - b), Color("#3a2c22"))
@@ -253,6 +261,7 @@ func _draw_player() -> void:
 		if dir == 0: player.draw_rect(Rect2(2, -28, 1, 2), Color.BLACK)
 
 func _draw_debug() -> void:
+	if debug_layer == null or loading: return
 	# passagens sempre (azul), colisão (vermelho) quando ligada
 	var C: Array = M.portals.cells
 	for i in range(0, C.size(), 3):
@@ -333,6 +342,23 @@ func _open_overview() -> void:
 			if not blocked_at(p):
 				player.position = p; camera.reset_smoothing(); overview.visible = false)
 	overview.visible = true
+
+## Portas (lugares de dentro) e passagens de borda que levam a um mapa que o visualizador tem: vai para lá.
+func _crossing(tx: int, ty: int) -> bool:
+	if ids.is_empty():
+		for m in JSON.parse_string(FileAccess.get_file_as_string("res://mapas/lista.json")): ids.append(m.id)
+	for d in M.get("doors", []):
+		var c: Array = d.cells
+		for i in range(0, c.size(), 2):
+			if int(c[i]) == tx and int(c[i + 1]) == ty and ids.has(d.m):
+				load_map(d.m, Vector2(d.x, d.y)); return true
+	var C: Array = M.portals.cells
+	for i in range(0, C.size(), 3):
+		if int(C[i]) == tx and int(C[i + 1]) == ty:
+			var t: Dictionary = M.portals.trig[int(C[i + 2])]
+			if ids.has(t.m) and t.has("x") and t.has("y"):
+				load_map(t.m, Vector2(t.x, t.y)); return true
+	return false
 
 func _show_menu(lista: Array) -> void:
 	if menu: menu.queue_free()

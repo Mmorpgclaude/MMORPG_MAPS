@@ -34,22 +34,32 @@ function nomadCamp(){
  /* a estrada que vem do portão oeste de Al-Sahrah (leste) até o Círculo das Tendas, e os caminhos até as outras áreas */
  const RM=[[149,50],[134,52],[118,48],[100,53],[84,56],[74,57]];
  const CAMP=[60,58],WELL=[38,82],CART=[92,84],LOOK=[52,24];
+ /* áreas de caça: campos grandes e quase vazios (só enfeite nas beiradas), para o jogo pôr as criaturas */
+ const H1=[116,99,17],H2=[116,24,15],H3=[20,46,14];          /* [x, y, raio] Planície Escaldante, Vale das Areias Vermelhas, Campos do Vento */
+ const GATE=[122,87],ARC=[112,12];                            /* entradas das cavernas (a base da peça): Templo Soterrado e Gruta do Arco */
  carve(RM,3,3);carve([[64,64],[52,72],[38,82]],2.6,4);carve([[78,60],[86,72],[92,84]],2.6,5);carve([[58,48],[54,36],[52,24]],2.4,6);
+ carve([[118,48],[117,36],[116,24]],2.6,7);carve([[92,84],[104,92],[116,99]],2.6,8);carve([[44,58],[30,52],[20,46]],2.6,9);
  clear(CAMP[0],CAMP[1],18);clear(WELL[0],WELL[1],9);clear(CART[0],CART[1],11);clear(LOOK[0],LOOK[1],8);
+ for(const h of[H1,H2,H3])clear(h[0],h[1],h[2]);
  /* bordas fechadas, menos a passagem leste (linhas 46-54) para Al-Sahrah */
  for(let y=0;y<H;y++)for(let x=0;x<W;x++){const pas=y>=46&&y<=54;if(x<3||(x>=W-3&&!pas)||y<3||y>=H-3)solid(x,y,2)}
  for(let y=46;y<=54;y++)for(let x=0;x<5;x++){F[y*W+W-1-x]=1}
+ /* paredão de duna atrás das entradas das cavernas: a peça fica encostada nele e a porta fica no vão */
+ for(let y=0;y<=ARC[1]-1;y++)for(let x=ARC[0]-14;x<=ARC[0]+14;x++){const e=Math.hypot((x-ARC[0]-.5)/11,(y-(ARC[1]-9))/9)+(vn(x*16,y*16,40,21)-.5)*.35;if(e<1)solid(x,y,2)}
+ /* o Templo Soterrado: um monte de areia arredondado cobrindo o templo, com o portal saindo na frente */
+ for(let y=GATE[1]-16;y<=GATE[1]-1;y++)for(let x=GATE[0]-14;x<=GATE[0]+14;x++){const e=Math.hypot((x-GATE[0])/12,(y-(GATE[1]-7))/7.5)+(vn(x*16,y*16,40,19)-.5)*.35;if(e<1)solid(x,y,2)}
  /* tira bolsões de chão sem ligação com a passagem leste */
  {const seen=new Uint8Array(W*H),q=[50*W+W-2];seen[q[0]]=1;while(q.length){const i=q.pop(),x=i%W,y=(i/W)|0;for(const [dx,dy] of[[1,0],[-1,0],[0,1],[0,-1]]){const nx=x+dx,ny=y+dy;if(nx<0||ny<0||nx>=W||ny>=H)continue;const n=ny*W+nx;if(!seen[n]&&F[n]){seen[n]=1;q.push(n)}}}
   for(let i=0;i<W*H;i++)if(F[i]&&!seen[i])solid(i%W,(i/W)|0,2)}
  for(let i=0;i<W*H;i++)S[i]=F[i]?0:1;
  /* zonas */
- const zn=['Dunas do Oeste','Estrada de Al-Sahrah','Círculo das Tendas','Poço da Tribo','Mercado da Tribo','Mirante das Dunas'];
+ const zn=['Dunas do Oeste','Estrada de Al-Sahrah','Círculo das Tendas','Poço da Tribo','Mercado da Tribo','Mirante das Dunas',
+  'Planície Escaldante','Vale das Areias Vermelhas','Campos do Vento','Entrada do Templo Soterrado','Gruta do Arco Vermelho'];
  const Z=new Array(W*H).fill(0);
  const RDD=new Float32Array(W*H).fill(99);{const pts=[];for(let k=0;k<RM.length-1;k++){const [ax,ay]=RM[k],[bx,by]=RM[k+1],n=Math.ceil(Math.hypot(bx-ax,by-ay)*2);for(let s2=0;s2<=n;s2++)pts.push([ax+(bx-ax)*s2/n,ay+(by-ay)*s2/n])}
   for(const [x,y] of pts)for(let j=-4;j<=4;j++)for(let i=-4;i<=4;i++){const tx=Math.round(x+i),ty=Math.round(y+j);if(tx<0||ty<0||tx>=W||ty>=H)continue;const dd=Math.hypot(tx+.5-x,ty+.5-y);if(dd<RDD[ty*W+tx])RDD[ty*W+tx]=dd}}
  for(let y=0;y<H;y++)for(let x=0;x<W;x++){const d=(a,r)=>Math.hypot(x-a[0],(y-a[1])*1.2)<r;let z=RDD[y*W+x]<4?1:0;
-  if(d(CAMP,15))z=2;else if(d(WELL,10))z=3;else if(d(CART,12))z=4;else if(d(LOOK,9))z=5;Z[y*W+x]=z}
+  if(d(CAMP,15))z=2;else if(d(WELL,10))z=3;else if(d(CART,12))z=4;else if(d(LOOK,9))z=5;else if(d(GATE,6))z=9;else if(d(ARC,6))z=10;else if(d(H1,H1[2]))z=6;else if(d(H2,H2[2]))z=7;else if(d(H3,H3[2]))z=8;Z[y*W+x]=z}
  const bil=(A,x,y)=>{const X=(x-8)/16,Y=(y-8)/16,x0=Math.max(0,Math.min(W-2,Math.floor(X))),y0=Math.max(0,Math.min(H-2,Math.floor(Y))),u=Math.max(0,Math.min(1,X-x0)),v=Math.max(0,Math.min(1,Y-y0));
   const a=A[y0*W+x0],b=A[y0*W+x0+1],c=A[(y0+1)*W+x0],d=A[(y0+1)*W+x0+1];return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v};
 
@@ -160,10 +170,10 @@ function nomadCamp(){
  const RUG=[CAMP[0],CAMP[1]-1];
  {const r=ART.chief_rug;oc.getContext('2d').drawImage(r,RUG[0]*T+8-(r.width>>1),RUG[1]*T+8-(r.height>>1));
   aRes(RUG[0]-4,RUG[1]-2,RUG[0]+4,RUG[1]+2)}
- aNear('chief_tent',CAMP[0],CAMP[1]-5,{fit:1,br:2,road:0,res:0,m:0});
+ aNear('tent',CAMP[0],CAMP[1]-5,{fit:1,br:2,road:0,res:0,m:0});
  fire('bigfire',CAMP[0],CAMP[1]+5,38,42,{road:0,res:0});
  for(const [n,dx,dy] of[['cushion_r',-4,5],['cushion_b',4,5],['cushion_y',-2,8],['stool_r',2,8],['stool_t',-4,7],['stool_b',4,7]])seat(n,CAMP[0]+dx,CAMP[1]+dy);
- for(const [n,dx,dy,fl] of[['tent_red',-15,1,0],['tent_teal',15,1,1],['tent_cream',-12,12,0],['tent_teal',12,12,0],['tent_red',0,16,1]])aNear(n,CAMP[0]+dx,CAMP[1]+dy,{flip:!!fl,road:1,res:2,fit:1});
+ for(const [n,dx,dy,fl] of[['tent',-15,1,0],['tent',15,1,1],['tent',-12,12,0],['tent',12,12,1],['tent',0,16,0]])aNear(n,CAMP[0]+dx,CAMP[1]+dy,{flip:!!fl,road:1,res:2,fit:1});
  aNear('tribe_banner',CAMP[0]-10,CAMP[1]-5,{m:0,bw:0,road:0});aNear('tribe_banner',CAMP[0]+10,CAMP[1]-5,{m:0,bw:0,road:0});
  aNear('tribe_flag',CAMP[0]+19,CAMP[1]-4,{m:0,bw:0,road:0});
  aNear('clothesline',CAMP[0]-20,CAMP[1]+6,{road:1});aNear('loom',CAMP[0]-8,CAMP[1]+18,{road:1});aNear('rugs',CAMP[0]+19,CAMP[1]+7,{road:1});
@@ -178,6 +188,15 @@ function nomadCamp(){
  aNear('spice_stall',CART[0],CART[1]-4,{fit:2,br:2});aNear('waterskins',CART[0]+7,CART[1]-3,{flip:true});
  aNear('wagon',CART[0]-6,CART[1]+3,{m:0,fit:1});aNear('wagon',CART[0]+6,CART[1]+5,{m:0,fit:1,flip:true});
  aNear('goods',CART[0]-8,CART[1]-3,{});aNear('rugs',CART[0]+1,CART[1]+6,{});lamp(CART[0]-3,CART[1]-8);
+ /* entradas das cavernas, encostadas no paredão: o vão escuro é pintado no ov; a porta são os tiles do vão */
+ const og=oc.getContext('2d');
+ const hole=(cx,by,w,h)=>{for(let k=0;k<6;k++){og.fillStyle='rgba(20,12,8,'+(.25+k*.13)+')';og.beginPath();og.ellipse(cx,by-h/2,w/2-k*2,h/2-k*2,0,0,Math.PI*2);og.fill()}};
+ hole(GATE[0]*T+8,(GATE[1]+1)*T-6,56,70);aPut('ruin_gate',GATE[0],GATE[1],{bw:3,br:1,cols:[-3,-2,2,3],res:2});
+ hole(ARC[0]*T+16,(ARC[1]+1)*T-6,60,64);aPut('rock_arch',ARC[0],ARC[1],Object.assign({res:2},ARCH));
+ const doors=[{m:'ts',cells:[GATE[0]-1,GATE[1],GATE[0],GATE[1],GATE[0]+1,GATE[1]],x:60*T+8,y:85*T},
+              {m:'ga',cells:[ARC[0],ARC[1],ARC[0]+1,ARC[1]],x:60*T+8,y:85*T}];
+ aRes(GATE[0]-4,GATE[1],GATE[0]+4,GATE[1]+3);aRes(ARC[0]-4,ARC[1],ARC[0]+5,ARC[1]+3);
+ aNear('lantern_post',GATE[0]-5,GATE[1]+1,{m:0,bw:0,road:0});aNear('lantern_post',GATE[0]+5,GATE[1]+1,{m:0,bw:0,road:0,flip:true});
  /* Mirante das Dunas */
  aNear('cairn',LOOK[0],LOOK[1],{fit:2});aNear('tribe_flag',LOOK[0]+3,LOOK[1]-1,{m:0,bw:0});aNear('rock_tall',LOOK[0]-6,LOOK[1]-2,{fit:3,br:2});
  /* estrada: marcos e a placa do portão */
@@ -185,6 +204,8 @@ function nomadCamp(){
  aNear('signpost',W-7,45,{m:0,lb:'Al-Sahrah',bw:1,road:0});aNear('lamppost',W-12,56,{m:0,bw:0,road:0});
  /* espalhados (sem animais nem ossadas; as plantas verdes e o capim alto NÃO entram) */
  const OPEN=(x,y)=>Z[y*W+x]<=1;
+ const EDGE=(x,y)=>{for(const h of[H1,H2,H3]){const e=Math.hypot(x-h[0],(y-h[1])*1.2)/h[2];if(e<1)return e>.8}return false};
+ aScat(['rock_s','rock_red','rock_red2','pebbles1','pebbles2','dry_bush','cactus_s'],22,320,EDGE,{bw:0});aScat(['rock_m','rock_tall'],4,321,EDGE,{fit:2,br:2,road:4});
  aScat(['rock_tall','rock_m','rock_big'],5,307,OPEN,{fit:3,br:2,road:5,res:2});aScat(ROCKS_S,24,308,OPEN,{bw:0});aScat(DRY,32,309,OPEN,{bw:0,walk:true,fit:0});
  aScat(['cactus_s','cactus_m','cactus_barrel','cactus_flower'],12,311,OPEN,{bw:0});aScat(['dead_tree'],5,312,OPEN,{bw:1});
  /* efeitos (fx_nd.gd): redemoinhos de poeira e o fogo das fogueiras (sem abutres: nada de animais) */
@@ -194,4 +215,6 @@ function nomadCamp(){
  return {gen:{data:genD,ov:oc.toDataURL('image/png')},W,H,floor:fc.toDataURL('image/png'),S,ents:ents.map(e=>({x:e.x,y:e.y,z:e.z,sw:e.sw,sh:e.sh,lb:e.lb,url:e.img.toDataURL('image/png')})),fx,dark,
   zones:{names:zn,z:Z},
   /* passagem: leste (linhas 46-54) para Al-Sahrah, pelo portão oeste da muralha; sem deslocamento */
-  portals:{trig:[{k:'edge',m:'dq',x:24,dy:0}],cells:[46,47,48,49,50,51,52,53,54].flatMap(y=>[W-1,y,0])}}}
+  portals:{trig:[{k:'edge',m:'dq',x:24,dy:0}],cells:[46,47,48,49,50,51,52,53,54].flatMap(y=>[W-1,y,0])},
+  /* portas das cavernas (lugares de dentro): tiles da porta, mapa de destino e onde chega lá dentro (px) */
+  doors}}

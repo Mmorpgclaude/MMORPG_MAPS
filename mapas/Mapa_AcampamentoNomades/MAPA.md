@@ -37,8 +37,27 @@ Norte, sul e oeste são fechados (dunas altas, `M = 2`).
 | 3 | Poço da Tribo | em volta de (38, 82): o poço com toldo, o cavalete dos odres, a fogueira pequena com o bule, a mesa do chá e almofadas |
 | 4 | Mercado da Tribo | em volta de (92, 84): a barraca de especiarias, os odres, duas carroças, mercadorias e uma lanterna |
 | 5 | Mirante das Dunas | em volta de (52, 24): o marco de pedras, a flâmula da tribo e um rochedo |
+| 6 | Planície Escaldante | **área de caça**, em volta de (116, 99), raio 17: campo largo e vazio, enfeites só na beirada |
+| 7 | Vale das Areias Vermelhas | **área de caça**, em volta de (116, 24), raio 15 |
+| 8 | Campos do Vento | **área de caça**, em volta de (20, 46), raio 14 |
+| 9 | Entrada do Templo Soterrado | o portal antigo saindo de um monte de areia arredondado, com duas lanternas |
+| 10 | Gruta do Arco Vermelho | o arco de pedra encostado no paredão norte, com o vão escuro |
 
 `gen_data`: R = chão, G = `RDD` × 10, B = `M` + zona × 16 (como o exemplo do Deserto).
+
+## Cavernas (lugares de dentro)
+
+| Porta (tiles) | Peça | Leva para | Chega em (px) |
+|---|---|---|---|
+| (121-123, 87), no vão do portal | `ruin_gate` | Templo Soterrado (`ts`) | (968, 1360) = tile (60, 85) |
+| (112-113, 12), no vão do arco | `rock_arch` | Gruta do Arco Vermelho (`ga`) | (968, 1360) = tile (60, 85) |
+
+- As portas vêm no **campo extra `doors`** do gerador (`[{m, cells:[x,y, x,y,...], x, y}]`): o kit não traz o formato da
+  porta do jogo. O Claude do jogo liga no formato do jogo.
+- O vão escuro das duas entradas é pintado no `ov` (embaixo da peça). Atrás de cada entrada há duna alta (`M = 2`), então o
+  jogador não passa por trás.
+- Cada caverna sai pela borda sul e volta para a frente da porta: Templo → tile (122, 89); Gruta → tile (112, 14).
+- As duas cavernas têm pasta própria (`Mapa_TemploSoterrado/`, `Mapa_GrutaArcoVermelho/`) com o `MAPA.md` delas.
 
 ## Luzes (`dark`) e efeitos (`fx`)
 
@@ -53,6 +72,7 @@ Norte, sul e oeste são fechados (dunas altas, `M = 2`).
 
 - **Portão Oeste de Al-Sahrah:** (140, 50)
 - **Círculo das Tendas:** (60, 67), logo ao sul da fogueira
+- **Planície Escaldante** (caça): (116, 99)
 
 ## Arte
 
@@ -64,4 +84,7 @@ Norte, sul e oeste são fechados (dunas altas, `M = 2`).
   Registro: `pecas_folha_ruinas.json` e `pecas_folha_caravanas.json` (copiados do kit).
 - `arte/`: só as peças usadas, das duas origens (no máximo 128 cores). O **tapete do chefe** (`chief_rug`) é desenhado no
   `ov` (plano, o jogador anda por cima).
-- As tendas rasgadas, o estandarte rasgado, o poço e a fogueira do kit não são usados: a tribo é viva.
+- **Tendas:** as da primeira folha da tribo (redondas, com franjas) **saíram**: o Ricardo achou que pareciam de circo.
+  Por enquanto as tendas são a `tent` do kit (beduína, cor de areia). Há um prompt de tendas novas
+  (`PROMPT_ASSETS_TENDAS.md`); se a folha vier, as tendas são trocadas.
+- Entradas das cavernas: `ruin_gate` e `rock_arch` do kit. O estandarte rasgado, o poço e a fogueira do kit não são usados.
