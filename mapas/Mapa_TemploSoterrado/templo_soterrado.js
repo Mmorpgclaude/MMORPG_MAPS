@@ -17,6 +17,7 @@ function buriedTemple(){
  const clamp=(v,a,b)=>v<a?a:v>b?b:v;
  const S=new Array(W*H).fill(0),Z=new Array(W*H).fill(0),ents=[],dark=[];
  const fx={dust:[],sand:[],fire:[],lamp:[],glint:[]};
+ const DOORS=[];   /* portas para outros lugares de dentro (escadas) */
  const put=(cv,x,ybase,lb)=>{const e={img:cv,x:Math.round(x),y:ybase,z:ybase-cv.height+2,sw:cv.width,sh:cv.height};if(lb)e.lb=lb;ents.push(e)};
  const zn=['Templo Soterrado','Salão da Entrada','Galeria das Colunas','Salão do Ídolo','Câmara Selada','Salão Desmoronado Oeste','Salão Desmoronado Leste'];
  /* ===== grade: rocha em tudo, os salões e os túneis são escavados ===== */
@@ -124,6 +125,6 @@ function buriedTemple(){
  const genD=(()=>{const [dc]=cmCv(W,H),dx=dc.getContext('2d'),id=dx.createImageData(W,H);for(let i=0;i<W*H;i++){id.data[i*4]=F[i]?255:0;id.data[i*4+1]=Math.min(255,Math.round(RDD[i]*10));id.data[i*4+2]=TY[i]*40;id.data[i*4+3]=255}dx.putImageData(id,0,0);return dc.toDataURL('image/png')})();
  fcx.drawImage(oc,0,0);
  return {gen:{data:genD,ov:oc.toDataURL('image/png')},W,H,floor:fc.toDataURL('image/png'),S,ents:ents.map(e=>({x:e.x,y:e.y,z:e.z,sw:e.sw,sh:e.sh,lb:e.lb,url:e.img.toDataURL('image/png')})),fx,dark,
-  zones:{names:zn,z:Z},
+  zones:{names:zn,z:Z},doors:DOORS,
   /* saída: a borda sul (colunas 56-63) volta para o Acampamento dos Nômades, na frente da porta (px) */
   portals:{trig:[{k:'edge',m:'nd',x:122*16+8,y:89*16}],cells:[56,57,58,59,60,61,62,63].flatMap(x=>[x,H-1,0])}}}

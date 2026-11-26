@@ -17,6 +17,7 @@ function redArchCave(){
  const clamp=(v,a,b)=>v<a?a:v>b?b:v;
  const S=new Array(W*H).fill(0),Z=new Array(W*H).fill(0),ents=[],dark=[];
  const fx={dust:[],sand:[],fire:[],lamp:[],glint:[]};
+ const DOORS=[];   /* portas para outros lugares de dentro (escadas) */
  const put=(cv,x,ybase,lb)=>{const e={img:cv,x:Math.round(x),y:ybase,z:ybase-cv.height+2,sw:cv.width,sh:cv.height};if(lb)e.lb=lb;ents.push(e)};
  const zn=['Gruta do Arco Vermelho','Entrada da Gruta','Galeria','Salão Oeste','Salão das Pedras','Salão Central','Salão Leste','Salão Sudeste','Câmara do Fundo'];
  /* ===== grade: rocha em tudo, os salões e os túneis são escavados ===== */
@@ -113,13 +114,18 @@ function redArchCave(){
  for(let k=3;k<=7;k++){const h=HALLS[k];
   aScat(['rock_m','rock_tall'],3,500+k*10,(x,y)=>{const e=Math.hypot((x-h[0])/h[2],(y-h[1])/h[3]);return e>.85&&e<1.05},{fit:1,br:2,road:0});
   torch(Math.round(h[0]-h[2]*.6),Math.round(h[1]-h[3]*.6));torch(Math.round(h[0]+h[2]*.6),Math.round(h[1]-h[3]*.6),{flip:true})}
- torch(55,85);torch(73,85,{flip:true});torch(78,8);
+ torch(55,85);torch(73,85,{flip:true});
+ /* Câmara do Fundo: a escada de corda (provisória: o rolo de corda) descendo para o Lago Subterrâneo (lg). A porta é a
+    fileira de tiles mais ao norte da câmara, em x 76-80; chega no Lago em (60, 126). */
+ {let dy=0;for(let y=2;y<20;y++){if(F[y*W+78]){dy=y;break}}
+  aPut('ropes',78,dy+1,{bw:1,res:1});
+  const c=[];for(let x=76;x<=80;x++)if(F[dy*W+x])c.push(x,dy);DOORS.push({m:'lg',cells:c,x:60*16+8,y:126*16})}
  /* poeira no ar e areia escorrendo do teto */
  for(let k=0;k<90;k++){const x=4+hq(k,61)*(W-8)|0,y=4+hq(k,62)*(H-8)|0;if(F[y*W+x])fx.dust.push([x*T+8,y*T+8,hq(k,63)*6.28])}
  for(let k=0;k<200&&fx.sand.length<16;k++){const x=4+hq(k,64)*(W-8)|0,y=4+hq(k,65)*(H-8)|0;if(F[y*W+x]&&!F[(y-1)*W+x])fx.sand.push([x*T+8,y*T-4,hq(k,66)*6.28])}
  const genD=(()=>{const [dc]=cmCv(W,H),dx=dc.getContext('2d'),id=dx.createImageData(W,H);for(let i=0;i<W*H;i++){id.data[i*4]=F[i]?255:0;id.data[i*4+1]=Math.min(255,Math.round(RDD[i]*10));id.data[i*4+2]=TY[i]*40;id.data[i*4+3]=255}dx.putImageData(id,0,0);return dc.toDataURL('image/png')})();
  fcx.drawImage(oc,0,0);
  return {gen:{data:genD,ov:oc.toDataURL('image/png')},W,H,floor:fc.toDataURL('image/png'),S,ents:ents.map(e=>({x:e.x,y:e.y,z:e.z,sw:e.sw,sh:e.sh,lb:e.lb,url:e.img.toDataURL('image/png')})),fx,dark,
-  zones:{names:zn,z:Z},
+  zones:{names:zn,z:Z},doors:DOORS,
   /* saída: a borda sul (colunas 56-63) volta para o Acampamento dos Nômades, na frente da porta (px) */
   portals:{trig:[{k:'edge',m:'nd',x:112*16+16,y:14*16}],cells:[56,57,58,59,60,61,62,63].flatMap(x=>[x,H-1,0])}}}

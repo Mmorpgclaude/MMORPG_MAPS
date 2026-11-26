@@ -35,7 +35,7 @@
 | 5 | Salão Central (78, 46), **caça** | ~36 × 26 tiles |
 | 6 | Salão Leste (130, 44), **caça** | ~44 × 32 tiles |
 | 7 | Salão Sudeste (124, 92), **caça** | ~44 × 28 tiles |
-| 8 | Câmara do Fundo (78, 12) | a câmara do marco da gruta (vai receber o poço de areia da folha nova) |
+| 8 | Câmara do Fundo (78, 12) | a **escada de corda** (porta nos tiles (76-80, 7)) que desce para o **Lago Subterrâneo** (`lg`), chegando lá em (60, 126) |
 
 ## Planta (pedido do Ricardo: pouca poluição)
 
