@@ -37,6 +37,12 @@ function lakeCave(){
   if(e<1&&!ISL.some(([a,b,rx,ry])=>Math.hypot((x-a)/rx,(y-b)/ry)<1))TY[i]=4}
  for(const [ax,ay,bx,by] of[[40,56,144,56],[92,80,92,96]]){const n=Math.ceil(Math.hypot(bx-ax,by-ay)*2);
   for(let s2=0;s2<=n;s2++){const x=ax+(bx-ax)*s2/n,y=ay+(by-ay)*s2/n;for(let j=-1;j<=0;j++)for(let k=-1;k<=0;k++){const tx=Math.round(x+k),ty=Math.round(y+j),i=ty*W+tx;if(TY[i]==4){TY[i]=0;BR[i]=1}}}}
+ /* Praia Escura: areia preta e brilhante (TY 5) no salão nordeste e descendo pela margem até a água */
+ for(let y=0;y<H;y++)for(let x=0;x<W;x++){const i=y*W+x;if(TY[i]==3||TY[i]==4||BR[i])continue;
+  const e=Math.hypot((x-152)/22,(y-36)/16)+(vn(x*16,y*16,30,160)-.5)*.3,sh=Math.hypot((x-128)/16,(y-46)/12)+(vn(x*16,y*16,30,161)-.5)*.3;
+  if(e<1||sh<1)TY[i]=5}
+ /* Margem Norte: um píer velho de tábuas (plano) saindo da margem para dentro do lago */
+ for(let y=28;y<=40;y++)for(const x of[91,92]){const i=y*W+x;if(TY[i]==4){TY[i]=0;BR[i]=1}}
  /* tira bolsões sem ligação com a saída */
  {const seen=new Uint8Array(W*H),q=[(H-2)*W+60];seen[q[0]]=1;while(q.length){const i=q.pop(),x=i%W,y=(i/W)|0;for(const [dx,dy] of[[1,0],[-1,0],[0,1],[0,-1]]){const nx=x+dx,ny=y+dy;if(nx<0||ny<0||nx>=W||ny>=H)continue;const n=ny*W+nx;if(!seen[n]&&TY[n]!=3&&TY[n]!=4){seen[n]=1;q.push(n)}}}
   for(let i=0;i<W*H;i++)if(TY[i]!=3&&TY[i]!=4&&!seen[i])TY[i]=3}
@@ -62,6 +68,9 @@ function lakeCave(){
     if(lay==0){cr=[140,62,40]}else if(lay==1){cr=[162,78,48]}else if(lay==2){cr=[118,50,34]}else{cr=[178,96,60]}
     let k=.62+.38*dn/14;if(dn<3)k*=.62;if(hq(x>>1,y)<.05)k*=.8;r=cr[0]*k*grain;g=cr[1]*k*grain;b=cr[2]*k*grain}
    else{const n=vn(X,Y,40,77)*.7+vn(X,Y,9,78)*.3;r=(30+22*n)*grain;g=(22+16*n)*grain;b=(20+12*n)*grain}}
+  else if(tp==5){/* areia escura da praia: preta, ondulada, com grãos brilhando */
+   const n=vn(X,Y,30,79),rip=Math.sin((X*.35+Y*.9+vn(X,Y,40,74)*14)*.55),k=(.9+.1*rip)*grain;r=(52+22*n)*k;g=(46+18*n)*k;b=(50+20*n)*k;
+   if(hq(x,y*3)<.012){r=150;g=140;b=160}}
   else if(tp==1){/* areia acumulada com ondulações */
    const n=vn(X,Y,30,79),rip=Math.sin((X*.35+Y*.9+vn(X,Y,40,74)*14)*.55),k=(.92+.08*rip)*grain;r=(170+26*n)*k;g=(134+22*n)*k;b=(88+16*n)*k}
   else if(tp==2){/* lajes do templo com rejunte e areia por cima */
@@ -122,7 +131,12 @@ function lakeCave(){
  /* Chegada: escada de corda (provisória: as cordas) e o acampamento dos exploradores */
  aNear('ropes',60,123,{bw:1});fire(55,128);aNear('goods',65,127,{});torch(66,124,{flip:true});
  /* barco a remo amarrado na Margem Sul e um poste de amarração */
- {const c=mkA('rowboat');put(c,100*T,86*T);}aNear('mooring',97,95,{bw:0,road:0});
+ /* Margem Norte: o barco amarrado ao lado do píer velho, com o poste de amarração na ponta da margem */
+ {const c=mkA('rowboat',true);put(c,94*T,39*T);}{let sy=28;while(sy<50&&TY[sy*W+94]!=4)sy++;const m=mkA('mooring');put(m,94*T,(sy-1)*T+4);S[(sy-2)*W+94]=1}
+ /* Praia Escura: pedras lisas só na beira da água (bloqueiam) */
+ {let n=0;for(let k=0;k<600&&n<14;k++){const x=110+hq(k,181)*50|0,y=24+hq(k,182)*40|0,i=y*W+x;if(TY[i]!=5||S[i]||AUSE[i])continue;
+   let w=false;for(const [dx,dy] of[[1,0],[-1,0],[0,1],[0,-1],[2,0],[0,2]])if(TY[(y+dy)*W+x+dx]==4)w=true;if(!w)continue;
+   aPut(['pebbles1','pebbles2'][(hq(x,y)*2)|0],x,y,{flip:hq(y,x)<.5,res:1});n++}}
  /* tochas em volta do lago e nos salões; rochedos só colados na parede */
  for(const [x,y,f] of[[52,82,0],[132,82,1],[48,40,0],[136,40,1],[70,24,0],[114,24,1],[90,104,0]])torch(x,y,{flip:!!f});
  for(let k=3;k<=7;k++){const h=HALLS[k];

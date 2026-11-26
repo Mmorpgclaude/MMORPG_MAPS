@@ -7,4 +7,4 @@ OK    gen_data com 1 texel por tile
 OK    passagem {"k": "edge", "m": "ga", "x": 1256, "y": 240}: 8 células na borda, livres
 OK    9841 de 9841 tiles livres alcançáveis a partir da passagem
 OK    arte recortada com no máximo 128 cores (maior peça: 128)
-objetos: 19 · zonas: Lago Subterrâneo, Chegada, Margem Sul, Gruta Oeste, Gruta Leste, Salão dos Cristais, Praia Escura, Margem Norte, Margens do Lago
+objetos: 28 · zonas: Lago Subterrâneo, Chegada, Margem Sul, Gruta Oeste, Gruta Leste, Salão dos Cristais, Praia Escura, Margem Norte, Margens do Lago

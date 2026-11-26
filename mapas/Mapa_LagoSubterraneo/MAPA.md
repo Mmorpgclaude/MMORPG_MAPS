@@ -8,7 +8,7 @@
   Gruta) com um tipo de chão a mais: **4 = água funda** (não se anda).
 - **Chão:** `lg_floor.gdshader` = o shader da Gruta + a água (porte linha a linha). Conferido no Godot 4.7.2:
   **99,9995 %** dos pixels com diferença ≤ 2, PSNR **71,0 dB**.
-- **`gen_data`:** R = andável, G = distância × 10, B = tipo × 40 (0 arenito, 1 areia, 2 lajes, 3 rocha, 4 água).
+- **`gen_data`:** R = andável, G = distância × 10, B = tipo × 40 (0 arenito, 1 areia, 2 lajes, 3 rocha, 4 água, 5 areia escura).
 - **Efeitos:** `fx_lg.gd` (igual ao `fx_ga.gd`: poeira, areia do teto, fogueira, lanternas).
 - **Sem animais.** Pouca poluição: enfeites só nas paredes; o meio dos salões e da margem fica livre para caçar.
 
@@ -26,12 +26,12 @@
 |---|---|---|
 | 0 | Lago Subterrâneo | túneis e rocha |
 | 1 | Chegada (60, 128) | o pé da escada e o acampamento dos exploradores |
-| 2 | Margem Sul (90, 112) | o barco amarrado e a passarela para a ilhota |
+| 2 | Margem Sul (90, 112) | a passarela para a ilhota |
 | 3 | Gruta Oeste (36, 100), **caça** | salão grande, vazio no meio |
 | 4 | Gruta Leste (146, 100), **caça** | idem |
 | 5 | Salão dos Cristais (30, 40), **caça** | idem (vai receber os cristais âmbar) |
-| 6 | Praia Escura (152, 36), **caça** | idem |
-| 7 | Margem Norte (92, 14), **caça** | idem |
+| 6 | Praia Escura (152, 36), **caça** | **areia preta e brilhante** (tipo 5) descendo até a margem nordeste do lago; pedras lisas (com colisão) só na beira da água |
+| 7 | Margem Norte (92, 14), **caça** | aberta; na margem do lago, um **píer velho de tábuas** (plano, x 91-92) com o **barco amarrado** ao lado e o poste de amarração |
 | 8 | Margens do Lago, **caça** | a margem larga em volta do lago, as duas ilhas e a ilhota |
 
 O lago (água funda) fica no meio, com duas ilhas ligadas às margens leste e oeste por uma **passarela reta de tábuas**

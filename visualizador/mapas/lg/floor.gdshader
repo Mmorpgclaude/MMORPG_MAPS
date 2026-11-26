@@ -1,6 +1,6 @@
 // Chão do Lago Subterrâneo (lg) gerado na placa de vídeo — porte direto do pintor de caverna (o mesmo das duas cavernas do
 // Acampamento dos Nômades; só mudam as cores). A grade "data": R = andável, G = distância até o caminho × 10,
-// B = tipo × 40 (0 chão de arenito com cascalho, 1 areia acumulada, 2 lajes do templo, 3 rocha: parede e teto, 4 água funda).
+// B = tipo × 40 (0 chão de arenito com cascalho, 1 areia acumulada, 2 lajes do templo, 3 rocha: parede e teto, 4 água funda, 5 areia escura da Praia Escura).
 shader_type canvas_item;
 render_mode unshaded, blend_disabled;
 #include "res://shaders/gen_common.gdshaderinc"
@@ -57,6 +57,11 @@ void fragment() {
 			float n = vn(X, Y, 40.0, 77) * 0.7 + vn(X, Y, 9.0, 78) * 0.3;
 			c = vec3(30.0 + 22.0 * n, 22.0 + 16.0 * n, 20.0 + 12.0 * n) * grain;
 		}
+	} else if (tp == 5) {
+		// areia escura da praia: preta, ondulada, com grãos brilhando
+		float n = vn(X, Y, 30.0, 79), rip = sin((X * 0.35 + Y * 0.9 + vn(X, Y, 40.0, 74) * 14.0) * 0.55), k = (0.9 + 0.1 * rip) * grain;
+		c = vec3((52.0 + 22.0 * n) * k, (46.0 + 18.0 * n) * k, (50.0 + 20.0 * n) * k);
+		if (hq(x, y * 3) < 0.012) c = vec3(150.0, 140.0, 160.0);
 	} else if (tp == 1) {
 		// areia acumulada com ondulações
 		float n = vn(X, Y, 30.0, 79), rip = sin((X * 0.35 + Y * 0.9 + vn(X, Y, 40.0, 74) * 14.0) * 0.55), k = (0.92 + 0.08 * rip) * grain;
