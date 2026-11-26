@@ -41,6 +41,9 @@ function nomadCamp(){
  carve([[118,48],[117,36],[116,24]],2.6,7);carve([[92,84],[104,92],[116,99]],2.6,8);carve([[44,58],[30,52],[20,46]],2.6,9);
  clear(CAMP[0],CAMP[1],18);clear(WELL[0],WELL[1],9);clear(CART[0],CART[1],11);clear(LOOK[0],LOOK[1],8);
  for(const h of[H1,H2,H3])clear(h[0],h[1],h[2]);
+ /* Campos do Vento: dunas baixas soltas no meio do campo, abrindo corredores para a caça */
+ for(const [dx,dy,rx,ry] of[[-6,-4,3,2],[5,2,3.5,2],[-2,7,2.6,1.6],[7,-7,2.4,1.6],[-9,4,2,1.4]])
+  for(let y=Math.floor(H3[1]+dy-ry-1);y<=H3[1]+dy+ry+1;y++)for(let x=Math.floor(H3[0]+dx-rx-1);x<=H3[0]+dx+rx+1;x++){if(Math.hypot((x-H3[0]-dx)/rx,(y-H3[1]-dy)/ry)+(vn(x*16,y*16,24,25)-.5)*.4<1)solid(x,y,2)}
  /* bordas fechadas, menos a passagem leste (linhas 46-54) para Al-Sahrah */
  for(let y=0;y<H;y++)for(let x=0;x<W;x++){const pas=y>=46&&y<=54;if(x<3||(x>=W-3&&!pas)||y<3||y>=H-3)solid(x,y,2)}
  for(let y=46;y<=54;y++)for(let x=0;x<5;x++){F[y*W+W-1-x]=1}
@@ -205,11 +208,24 @@ function nomadCamp(){
  /* espalhados (sem animais nem ossadas; as plantas verdes e o capim alto NÃO entram) */
  const OPEN=(x,y)=>Z[y*W+x]<=1;
  const EDGE=(x,y)=>{for(const h of[H1,H2,H3]){const e=Math.hypot(x-h[0],(y-h[1])*1.2)/h[2];if(e<1)return e>.8}return false};
- aScat(['rock_s','rock_red','rock_red2','pebbles1','pebbles2','dry_bush','cactus_s'],22,320,EDGE,{bw:0});aScat(['rock_m','rock_tall'],4,321,EDGE,{fit:2,br:2,road:4});
+ const IN=(h,a,b)=>(x,y)=>{const e=Math.hypot(x-h[0],(y-h[1])*1.2)/h[2];return e>=a&&e<b};
+ /* Planície Escaldante: seca e aberta — árvores mortas soltas, mato seco e pedrinhas (anda-se por cima), rochedos baixos na beirada */
+ aScat(['dead_tree'],3,330,IN(H1,.45,.95),{bw:1,fit:2,road:3});
+ aScat(['dry_bush','tumble','pebbles1','pebbles2','rock_red2'],15,331,IN(H1,.3,.95),{bw:0,walk:true,fit:0});
+ aScat(['rock_s','rock_m','rock_red'],8,332,IN(H1,.75,1.05),{fit:1,road:3});
+ /* Vale das Areias Vermelhas: um anel de rochedos vermelhos grandes em volta, cascalho vermelho no meio */
+ aScat(['rock_big','rock_tall','rock_m'],10,340,IN(H2,.72,1.08),{fit:2,br:2,road:3,res:1});
+ aScat(['rock_red','rock_red2','rock_s'],10,341,IN(H2,.6,1),{bw:0});
+ aScat(['rock_red2','pebbles1','pebbles2'],18,342,IN(H2,0,.7),{bw:0,walk:true,fit:0});
+ /* Campos do Vento: bolas de mato seco e arbustos rolando entre as dunas baixas */
+ aScat(['tumble','dry_bush'],22,350,IN(H3,0,1),{bw:0,walk:true,fit:0});
+ aScat(['cactus_s','cactus_barrel'],4,351,IN(H3,.7,1),{bw:0});
  aScat(['rock_tall','rock_m','rock_big'],5,307,OPEN,{fit:3,br:2,road:5,res:2});aScat(ROCKS_S,24,308,OPEN,{bw:0});aScat(DRY,32,309,OPEN,{bw:0,walk:true,fit:0});
  aScat(['cactus_s','cactus_m','cactus_barrel','cactus_flower'],12,311,OPEN,{bw:0});aScat(['dead_tree'],5,312,OPEN,{bw:1});
  /* efeitos (fx_nd.gd): redemoinhos de poeira e o fogo das fogueiras (sem abutres: nada de animais) */
- for(let k=0;k<4;k++)fx.devil.push([(20+hq(k,5)*110)*T,(15+hq(k,6)*90)*T,30+hq(k,7)*60,hq(k,8)*6.28]);
+ /* redemoinhos: três nos Campos do Vento, um em cada outro campo de caça, dois soltos */
+ for(const [x,y,a,f] of[[H3[0]-4,H3[1]-1,24,0],[H3[0]+5,H3[1]+6,30,2.1],[H3[0]+1,H3[1]-8,20,4.2],[H1[0],H1[1],50,1],[H2[0],H2[1]+2,40,3]])fx.devil.push([x*T,y*T,a,f]);
+ for(let k=0;k<2;k++)fx.devil.push([(20+hq(k,5)*110)*T,(15+hq(k,6)*90)*T,30+hq(k,7)*60,hq(k,8)*6.28]);
  cx.drawImage(oc,0,0);
  const genD=(()=>{const [dc]=cmCv(W,H),dx=dc.getContext('2d'),id=dx.createImageData(W,H);for(let i=0;i<W*H;i++){id.data[i*4]=F[i]?255:0;id.data[i*4+1]=Math.min(255,Math.round(RDD[i]*10));id.data[i*4+2]=(M[i]&15)+Z[i]*16;id.data[i*4+3]=255}dx.putImageData(id,0,0);return dc.toDataURL('image/png')})();
  return {gen:{data:genD,ov:oc.toDataURL('image/png')},W,H,floor:fc.toDataURL('image/png'),S,ents:ents.map(e=>({x:e.x,y:e.y,z:e.z,sw:e.sw,sh:e.sh,lb:e.lb,url:e.img.toDataURL('image/png')})),fx,dark,

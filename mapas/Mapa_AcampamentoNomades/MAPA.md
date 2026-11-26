@@ -37,9 +37,9 @@ Norte, sul e oeste são fechados (dunas altas, `M = 2`).
 | 3 | Poço da Tribo | em volta de (38, 82): o poço com toldo, o cavalete dos odres, a fogueira pequena com o bule, a mesa do chá e almofadas |
 | 4 | Mercado da Tribo | em volta de (92, 84): a barraca de especiarias, os odres, duas carroças, mercadorias e uma lanterna |
 | 5 | Mirante das Dunas | em volta de (52, 24): o marco de pedras, a flâmula da tribo e um rochedo |
-| 6 | Planície Escaldante | **área de caça**, em volta de (116, 99), raio 17: campo largo e vazio, enfeites só na beirada |
-| 7 | Vale das Areias Vermelhas | **área de caça**, em volta de (116, 24), raio 15 |
-| 8 | Campos do Vento | **área de caça**, em volta de (20, 46), raio 14 |
+| 6 | Planície Escaldante | **área de caça**, em volta de (116, 99), raio 17: seca e aberta, 3 árvores mortas, mato seco e pedrinhas (sem colisão), rochedos baixos na beirada |
+| 7 | Vale das Areias Vermelhas | **área de caça**, em volta de (116, 24), raio 15: anel de rochedos vermelhos grandes em volta, cascalho vermelho no meio |
+| 8 | Campos do Vento | **área de caça**, em volta de (20, 46), raio 14: dunas baixas soltas formando corredores, mato seco rolando, 3 redemoinhos |
 | 9 | Entrada do Templo Soterrado | o portal antigo saindo de um monte de areia arredondado, com duas lanternas |
 | 10 | Gruta do Arco Vermelho | o arco de pedra encostado no paredão norte, com o vão escuro |
 
@@ -64,7 +64,7 @@ Norte, sul e oeste são fechados (dunas altas, `M = 2`).
 - **Luzes:** as 2 fogueiras (Círculo das Tendas e Poço), raio 110, força 1; e as lanternas de latão dos 3 postes
   (2 lanternas em cada, raio 64, força 0,8).
 - **`fx.fire`:** o fogo das 2 fogueiras.
-- **`fx.devil`:** 4 redemoinhos de poeira.
+- **`fx.devil`:** 7 redemoinhos de poeira (3 nos Campos do Vento, 1 em cada outro campo de caça, 2 soltos).
 - **`fx.bird`:** vazio (sem abutres). `fx.flag`: vazio (os estandartes e a flâmula já têm o pano desenhado na arte).
 - Mais o vento com areia e o ar quente do `fx_sand.gd`, como nos outros mapas do Deserto.
 
