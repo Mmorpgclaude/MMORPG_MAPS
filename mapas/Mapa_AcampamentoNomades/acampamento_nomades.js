@@ -51,6 +51,8 @@ function nomadCamp(){
  for(const [dx,dy,rx,ry] of[[.5,-9,10,9],[-9,-6,7,5],[10,-7,8,6]])
   for(let y=0;y<=ARC[1]-1;y++)for(let x=ARC[0]+dx-rx-2;x<=ARC[0]+dx+rx+2;x++){
    const e=Math.hypot((x-ARC[0]-dx)/rx,(y-ARC[1]-dy)/ry)+(vn(x*16,y*16,30,21)-.5)*.7;if(e<1)solid(x,y,2)}
+ /* atrás da Gruta: duna fechada, para a entrada ficar encostada na parede de areia */
+ for(let y=ARC[1]-10;y<=ARC[1]-2;y++)for(let x=ARC[0]-7;x<=ARC[0]+8;x++)solid(x,y,2);
  /* o Templo Soterrado: um monte de areia arredondado cobrindo o templo, com o portal saindo na frente */
  for(const [dx,dy,rx,ry] of[[0,-7,10,7],[-9,-10,8,6],[9,-11,9,7],[-4,-15,7,5]])
   for(let y=GATE[1]+dy-ry-2;y<=Math.min(GATE[1]-1,GATE[1]+dy+ry+2);y++)for(let x=GATE[0]+dx-rx-2;x<=GATE[0]+dx+rx+2;x++){
@@ -197,23 +199,33 @@ function nomadCamp(){
  aNear('goods',CART[0]-8,CART[1]-3,{});aNear('rugs',CART[0]+1,CART[1]+6,{});lamp(CART[0]-3,CART[1]-8);
  /* entradas das cavernas, encostadas no paredão: o vão escuro é pintado no ov; a porta são os tiles do vão */
  const og=oc.getContext('2d');
- const hole=(cx,by,w,h)=>{for(let k=0;k<6;k++){og.fillStyle='rgba(20,12,8,'+(.25+k*.13)+')';og.beginPath();og.ellipse(cx,by-h/2,w/2-k*2,h/2-k*2,0,0,Math.PI*2);og.fill()}};
- hole(GATE[0]*T+8,(GATE[1]+1)*T-6,56,70);aPut('ruin_gate',GATE[0],GATE[1],{bw:3,br:1,cols:[-3,-2,2,3],res:2});
- /* boca da gruta: o escuro fica só dentro do vão do arco (topo arredondado, sem escorrer para a areia da frente) */
- {const a=ART.rock_arch_cave,x0=ARC[0]*T+8-(a.width>>1),by=(ARC[1]+1)*T,cx=x0+Math.round(a.width*.48),top=by-a.height+30,bot=by-8,hw=26;
-  for(let k=0;k<7;k++){const i=k*2.5;og.fillStyle='rgba(18,10,6,'+(.35+k*.1)+')';og.beginPath();og.ellipse(cx,top+hw,hw-i,hw-i,0,Math.PI,0);og.lineTo(cx+hw-i,bot-4-i);og.quadraticCurveTo(cx,bot+4-i,cx-hw+i,bot-4-i);og.closePath();og.fill()}}
- aPut('rock_arch_cave',ARC[0],ARC[1],Object.assign({res:2},ARCH));
- const doors=[{m:'ts',cells:[GATE[0]-1,GATE[1],GATE[0],GATE[1],GATE[0]+1,GATE[1]],x:60*T+8,y:85*T},
-              {m:'ga',cells:[ARC[0],ARC[1],ARC[0]+1,ARC[1]],x:60*T+8,y:85*T}];
- aRes(GATE[0]-4,GATE[1],GATE[0]+4,GATE[1]+3);aRes(ARC[0]-4,ARC[1],ARC[0]+5,ARC[1]+3);
- /* rochedos encostados dos dois lados de cada entrada (a caverna se abre numa encosta de pedra), pedras e mato na boca */
- const flank=(n,tx,ty,o={})=>{for(let j=0;j<=3;j++){const y=ty+j;if(F[y*W+tx]&&!S[y*W+tx]){aPut(n,tx,y,Object.assign({br:2,res:0},o));return}}};
- flank('rock_big',GATE[0]-8,GATE[1]);flank('rock_tall',GATE[0]+8,GATE[1],{flip:true});flank('rock_m',GATE[0]-14,GATE[1]+1,{flip:true});flank('rock_s',GATE[0]+13,GATE[1]+1);
- flank('rock_tall',ARC[0]-8,ARC[1]);flank('rock_big',ARC[0]+10,ARC[1],{flip:true});flank('rock_m',ARC[0]+16,ARC[1]+1);
- for(const [G,sd] of[[GATE,360],[ARC,370]]){
-  aScat(['pebbles1','pebbles2','rock_red2','rock_s'],7,sd,(x,y)=>Math.hypot(x-G[0],(y-G[1]-3)*1.4)<8&&Math.abs(x-G[0])>2,{bw:0,walk:true,fit:0,road:0});
-  aScat(['dry_bush','tumble'],4,sd+1,(x,y)=>Math.hypot(x-G[0],(y-G[1]-3)*1.4)<11&&Math.abs(x-G[0])>3,{bw:0,walk:true,fit:0,road:0})}
- /* Mirante das Dunas */
+ /* entradas de caverna de areia (folha_cavernas do Ricardo): cada uma em 3 partes — a areia do funil no ov (chão, com a
+    paleta do Deserto), o fundo (a pedra em volta da boca, base na linha da boca) e a frente (pedrinhas dos lados do funil).
+    A porta é a fileira de tiles na boca; o meio do funil fica livre. G = geometria da peça (info_cavernas.json). */
+ const CG={"cave_red": {"w": 163, "h": 166, "boca": [60, 39, 108, 79], "split": 91}, "cave_temple": {"w": 176, "h": 184, "boca": [62, 64, 118, 102], "split": 114}, "cave_sand": {"w": 202, "h": 192, "boca": [72, 52, 147, 104], "split": 116}};
+ const cave=(n,cx,doorRow)=>{const g=CG[n],x0=Math.round(cx-g.w/2),top=(doorRow+1)*T-6-g.boca[3];
+  og.drawImage(ART[n+'_chao'],x0,top);
+  const cut=(img,y0,hh)=>{const [c,,q]=cmCv(g.w,hh);q.drawImage(img,0,-y0);return c};
+  const back=cut(ART[n+'_fundo'],0,g.split),front=cut(ART[n+'_frente'],g.split,g.h-g.split);put(back,x0,top+g.split);put(front,x0,top+g.h);
+  const mx0=Math.floor((x0+g.boca[0]+6)/T),mx1=Math.floor((x0+g.boca[2]-6)/T),tx0=Math.floor(x0/T),tx1=Math.floor((x0+g.w-1)/T);
+  /* colisão: a fileira da porta e as de trás bloqueadas, menos a boca (que é a porta) */
+  for(let y=doorRow-3;y<=doorRow;y++)for(let x=tx0;x<=tx1;x++)if(y<doorRow||x<mx0||x>mx1)blkS(x,y);
+  /* pedras da frente: bloqueia o tile se a peça cobre boa parte dele, fora do corredor do meio */
+  const fh=g.h-g.split,fy=top+g.split,q=front.getContext('2d').getImageData(0,0,g.w,fh).data;
+  for(let ty=doorRow+1;ty*T<top+g.h;ty++)for(let tx=tx0;tx<=tx1;tx++){if(tx>=mx0-1&&tx<=mx1+1)continue;let c=0;
+   for(let py=ty*T+8;py<ty*T+16;py++)for(let px=tx*T;px<tx*T+16;px++){const lx=px-x0,ly=py-fy;if(lx>=0&&ly>=0&&lx<g.w&&ly<fh&&q[(ly*g.w+lx)*4+3])c++}
+   if(c>40)blkS(tx,ty)}
+  aRes(tx0-1,doorRow-3,tx1+1,Math.ceil((top+g.h)/T));
+  dark.push([x0+((g.boca[0]+g.boca[2])>>1),top+g.boca[3]-6,70,.85]);   /* o brilho quente lá dentro acende à noite */
+  const cells=[];for(let x=mx0;x<=mx1;x++)cells.push(x,doorRow);return cells};
+ const blkS=(x,y)=>{if(x>=0&&y>=0&&x<W&&y<H)S[y*W+x]=1};
+ const doors=[{m:'ts',cells:cave('cave_temple',GATE[0]*T+8,GATE[1]),x:60*T+8,y:85*T},
+              {m:'ga',cells:cave('cave_red',ARC[0]*T+16,ARC[1]),x:60*T+8,y:85*T}];
+ /* enfeites soltos da folha em volta das entradas (sem animais) */
+ for(const [Gp,sd] of[[GATE,360],[ARC,370]]){
+  aScat(['slab1','slab2','stones_s','rocks_small','rock_flat2'],4,sd,(x,y)=>Math.hypot(x-Gp[0],(y-Gp[1]-6)*1.3)<13,{bw:1,road:0});
+  aScat(['grass_dry','grass_s','branch'],5,sd+1,(x,y)=>Math.hypot(x-Gp[0],(y-Gp[1]-6)*1.3)<14,{bw:0,walk:true,fit:0,road:0})}
+ aNear('barrel',GATE[0]+9,GATE[1]+3,{bw:0});aNear('barrel_down',GATE[0]+11,GATE[1]+4,{bw:0});
  aNear('cairn',LOOK[0],LOOK[1],{fit:2});aNear('tribe_flag',LOOK[0]+3,LOOK[1]-1,{m:0,bw:0});aNear('rock_tall',LOOK[0]-6,LOOK[1]-2,{fit:3,br:2});
  /* estrada: marcos e a placa do portão */
  for(const x of[90,112,128])aNear('milestone',x,47,{bw:0});
