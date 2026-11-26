@@ -40,8 +40,8 @@ Norte, sul e oeste são fechados (dunas altas, `M = 2`).
 | 6 | Planície Escaldante | **área de caça**, em volta de (116, 99), raio 17: seca e aberta, 3 árvores mortas, mato seco e pedrinhas (sem colisão), rochedos baixos na beirada |
 | 7 | Vale das Areias Vermelhas | **área de caça**, em volta de (116, 24), raio 15: anel de rochedos vermelhos grandes em volta, cascalho vermelho no meio |
 | 8 | Campos do Vento | **área de caça**, em volta de (20, 46), raio 14: dunas baixas soltas formando corredores, mato seco rolando, 3 redemoinhos |
-| 9 | Entrada do Templo Soterrado | o portal antigo saindo de um monte de areia arredondado, com duas lanternas |
-| 10 | Gruta do Arco Vermelho | o arco de pedra encostado no paredão norte, com o vão escuro |
+| 9 | Entrada do Templo Soterrado | o portal antigo no pé de um morro irregular de dunas, entre rochedos encostados, com pedras e mato seco na boca |
+| 10 | Gruta do Arco Vermelho | o arco de pedra numa encosta de rochedos vermelhos, no paredão norte, com o vão escuro e pedras na boca |
 
 `gen_data`: R = chão, G = `RDD` × 10, B = `M` + zona × 16 (como o exemplo do Deserto).
 

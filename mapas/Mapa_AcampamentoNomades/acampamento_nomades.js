@@ -48,9 +48,13 @@ function nomadCamp(){
  for(let y=0;y<H;y++)for(let x=0;x<W;x++){const pas=y>=46&&y<=54;if(x<3||(x>=W-3&&!pas)||y<3||y>=H-3)solid(x,y,2)}
  for(let y=46;y<=54;y++)for(let x=0;x<5;x++){F[y*W+W-1-x]=1}
  /* paredão de duna atrás das entradas das cavernas: a peça fica encostada nele e a porta fica no vão */
- for(let y=0;y<=ARC[1]-1;y++)for(let x=ARC[0]-14;x<=ARC[0]+14;x++){const e=Math.hypot((x-ARC[0]-.5)/11,(y-(ARC[1]-9))/9)+(vn(x*16,y*16,40,21)-.5)*.35;if(e<1)solid(x,y,2)}
+ for(const [dx,dy,rx,ry] of[[.5,-9,10,9],[-9,-6,7,5],[10,-7,8,6]])
+  for(let y=0;y<=ARC[1]-1;y++)for(let x=ARC[0]+dx-rx-2;x<=ARC[0]+dx+rx+2;x++){
+   const e=Math.hypot((x-ARC[0]-dx)/rx,(y-ARC[1]-dy)/ry)+(vn(x*16,y*16,30,21)-.5)*.7;if(e<1)solid(x,y,2)}
  /* o Templo Soterrado: um monte de areia arredondado cobrindo o templo, com o portal saindo na frente */
- for(let y=GATE[1]-16;y<=GATE[1]-1;y++)for(let x=GATE[0]-14;x<=GATE[0]+14;x++){const e=Math.hypot((x-GATE[0])/12,(y-(GATE[1]-7))/7.5)+(vn(x*16,y*16,40,19)-.5)*.35;if(e<1)solid(x,y,2)}
+ for(const [dx,dy,rx,ry] of[[0,-7,10,7],[-9,-10,8,6],[9,-11,9,7],[-4,-15,7,5]])
+  for(let y=GATE[1]+dy-ry-2;y<=Math.min(GATE[1]-1,GATE[1]+dy+ry+2);y++)for(let x=GATE[0]+dx-rx-2;x<=GATE[0]+dx+rx+2;x++){
+   const e=Math.hypot((x-GATE[0]-dx)/rx,(y-GATE[1]-dy)/ry)+(vn(x*16,y*16,30,19)-.5)*.7;if(e<1)solid(x,y,2)}
  /* tira bolsões de chão sem ligação com a passagem leste */
  {const seen=new Uint8Array(W*H),q=[50*W+W-2];seen[q[0]]=1;while(q.length){const i=q.pop(),x=i%W,y=(i/W)|0;for(const [dx,dy] of[[1,0],[-1,0],[0,1],[0,-1]]){const nx=x+dx,ny=y+dy;if(nx<0||ny<0||nx>=W||ny>=H)continue;const n=ny*W+nx;if(!seen[n]&&F[n]){seen[n]=1;q.push(n)}}}
   for(let i=0;i<W*H;i++)if(F[i]&&!seen[i])solid(i%W,(i/W)|0,2)}
@@ -199,7 +203,13 @@ function nomadCamp(){
  const doors=[{m:'ts',cells:[GATE[0]-1,GATE[1],GATE[0],GATE[1],GATE[0]+1,GATE[1]],x:60*T+8,y:85*T},
               {m:'ga',cells:[ARC[0],ARC[1],ARC[0]+1,ARC[1]],x:60*T+8,y:85*T}];
  aRes(GATE[0]-4,GATE[1],GATE[0]+4,GATE[1]+3);aRes(ARC[0]-4,ARC[1],ARC[0]+5,ARC[1]+3);
- aNear('lantern_post',GATE[0]-5,GATE[1]+1,{m:0,bw:0,road:0});aNear('lantern_post',GATE[0]+5,GATE[1]+1,{m:0,bw:0,road:0,flip:true});
+ /* rochedos encostados dos dois lados de cada entrada (a caverna se abre numa encosta de pedra), pedras e mato na boca */
+ const flank=(n,tx,ty,o={})=>{for(let j=0;j<=3;j++){const y=ty+j;if(F[y*W+tx]&&!S[y*W+tx]){aPut(n,tx,y,Object.assign({br:2,res:0},o));return}}};
+ flank('rock_big',GATE[0]-8,GATE[1]);flank('rock_tall',GATE[0]+8,GATE[1],{flip:true});flank('rock_m',GATE[0]-14,GATE[1]+1,{flip:true});flank('rock_s',GATE[0]+13,GATE[1]+1);
+ flank('rock_tall',ARC[0]-8,ARC[1]);flank('rock_big',ARC[0]+10,ARC[1],{flip:true});flank('rock_m',ARC[0]+16,ARC[1]+1);
+ for(const [G,sd] of[[GATE,360],[ARC,370]]){
+  aScat(['pebbles1','pebbles2','rock_red2','rock_s'],7,sd,(x,y)=>Math.hypot(x-G[0],(y-G[1]-3)*1.4)<8&&Math.abs(x-G[0])>2,{bw:0,walk:true,fit:0,road:0});
+  aScat(['dry_bush','tumble'],4,sd+1,(x,y)=>Math.hypot(x-G[0],(y-G[1]-3)*1.4)<11&&Math.abs(x-G[0])>3,{bw:0,walk:true,fit:0,road:0})}
  /* Mirante das Dunas */
  aNear('cairn',LOOK[0],LOOK[1],{fit:2});aNear('tribe_flag',LOOK[0]+3,LOOK[1]-1,{m:0,bw:0});aNear('rock_tall',LOOK[0]-6,LOOK[1]-2,{fit:3,br:2});
  /* estrada: marcos e a placa do portão */
