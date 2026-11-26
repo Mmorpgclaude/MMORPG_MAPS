@@ -116,19 +116,31 @@ function redArchCave(){
   aScat(['rock_m','rock_tall'],3,500+k*10,(x,y)=>{const e=Math.hypot((x-h[0])/h[2],(y-h[1])/h[3]);return e>.85&&e<1.05},{fit:1,br:2,road:0});
   torch(Math.round(h[0]-h[2]*.6),Math.round(h[1]-h[3]*.6));torch(Math.round(h[0]+h[2]*.6),Math.round(h[1]-h[3]*.6),{flip:true})}
  torch(55,85);torch(73,85,{flip:true});
- /* Câmara do Fundo: uma boca de caverna na parede do fundo (a entrada cor de areia da folha_cavernas, a mesma aprovada no
-    Acampamento) — o caminho natural que desce para o Lago Subterrâneo (lg). A areia do funil vai no ov; a pedra em volta
-    da boca e as pedrinhas dos lados são objetos. A porta são os tiles da boca; chega no Lago em (60, 126). */
- {const g={"w": 202, "h": 192, "boca": [72, 52, 147, 104], "split": 116},cx=78*T+8;let dr=0;for(let y=2;y<20;y++){if(F[y*W+78]){dr=y;break}}dr+=1;
-  const x0=Math.round(cx-g.w/2),top=(dr+1)*T-6-g.boca[3];
-  oc.getContext('2d').drawImage(ART.cave_sand_chao,x0,top);
-  const cut=(img,y0,hh)=>{const [c,,q]=cmCv(g.w,hh);q.drawImage(img,0,-y0);return c};
-  put(cut(ART.cave_sand_fundo,0,g.split),x0,top+g.split);put(cut(ART.cave_sand_frente,g.split,g.h-g.split),x0,top+g.h);
-  const mx0=Math.floor((x0+g.boca[0]+6)/T),mx1=Math.floor((x0+g.boca[2]-6)/T),tx0=Math.floor(x0/T),tx1=Math.floor((x0+g.w-1)/T);
-  for(let y=dr-3;y<=dr;y++)for(let x=tx0;x<=tx1;x++)if(x>=0&&y>=0&&(y<dr||x<mx0||x>mx1))S[y*W+x]=1;
-  for(let y=dr+1;y<=dr+3;y++)for(const x of[tx0,tx0+1,tx1-1,tx1])if(x>=0&&y<H)S[y*W+x]=1;
-  dark.push([x0+((g.boca[0]+g.boca[2])>>1),top+g.boca[3]-6,70,.85]);
-  const c=[];for(let x=mx0;x<=mx1;x++){F[dr*W+x]=1;S[dr*W+x]=0;c.push(x,dr)}
+ /* Câmara do Fundo (como o Ricardo desenhou): na parede do fundo, uma face de rocha alta (blocos de arenito) com uma
+    abertura escura em arco — o túnel que desce para o Lago Subterrâneo (lg); na frente, o arco das duas lanternas com a
+    corda. Parede e abertura pintadas no ov, sobre a rocha (onde não se anda). A porta são os tiles da boca; chega no Lago
+    em (60, 126). */
+ {const og=oc.getContext('2d'),P=(c,x,y)=>{og.fillStyle=c;og.fillRect(x,y,1,1)},MX=78*T+8;
+  const edge=[];for(let tx=60;tx<=96;tx++){let r=-1;for(let y=2;y<=16;y++){if(F[y*W+tx]){r=y;break}}edge[tx]=r}
+  const top=edge[78];
+  /* a face de rocha: ~3 tiles de altura acima da borda norte, pedras arredondadas de arenito, luz do alto à esquerda */
+  for(let tx=60;tx<=96;tx++){const r=edge[tx];if(r<0||r>top+3)continue;const ey=r*T;
+   for(let x=tx*T;x<tx*T+T;x++){const hgt=62+Math.round(vn(x,0,14,151)*14);
+    for(let y=ey-hgt;y<ey+2;y++){const v=vorC(x,y,10,152),L=Math.max(0,Math.min(1,.62-((x-v[3])+(y-v[4]))*.05)),m=.85+.25*hq(v[0],7),d=(ey-y)/hgt;
+     let k=(.45+.6*L)*m*(.7+.3*(1-d));let c=[150*k,106*k,70*k];if(v[1]<.6)c=[c[0]*.55,c[1]*.55,c[2]*.55];else if(v[1]<1.2)c=[c[0]*.8,c[1]*.8,c[2]*.8];
+     if(y<ey-hgt+2)c=[40,26,18];P('rgb('+(c[0]|0)+','+(c[1]|0)+','+(c[2]|0)+')',x,y)}}}
+  /* a abertura: arco irregular, escuro no fundo, com a borda de pedra mais escura */
+  const ey=top*T,aw=28,ah=60;
+  for(let y=ey-ah-4;y<ey+2;y++)for(let x=MX-aw-4;x<=MX+aw+4;x++){const yy=ey-y,n=(vn(x,y,6,153)-.5)*6;const w=(yy>ah-aw?aw*Math.sqrt(Math.max(0,1-((yy-(ah-aw))/aw)**2)):aw)+n;
+   const ad=Math.abs(x-MX);if(ad<w){const e=Math.min(1,(w-ad)/14)*Math.min(1,(ey+2-y)/18);const k=1-e;P('rgb('+((8+70*k*k)|0)+','+((5+46*k*k)|0)+','+((4+30*k*k)|0)+')',x,y)}
+   else if(ad<w+2&&yy<ah+2)P('rgb(36,24,16)',x,y)}
+  dark.push([MX,ey-14,70,.55]);
+  /* o arco das lanternas na frente da abertura: postes nos lados, lanternas penduradas para dentro; a corda num canto */
+  const lp=mkA('lamppost'),lf=mkA('lamppost',true),rp=mkA('ropes'),G=58,by=(top+4)*T+4;
+  put(lp,MX-G,by);put(lf,MX+G-lf.width,by);put(rp,MX+G+6,(top+3)*T+4);
+  for(const x of[MX-G+lp.width-18,MX+G-lf.width+18]){const y=by-lp.height+32;fx.lamp.push([x,y]);dark.push([x,y,120,1])}
+  for(const x of[(MX-G+12)>>4,(MX+G-12)>>4])S[(top+4)*W+x]=1;
+  const c=[];for(let x=77;x<=79;x++)if(F[top*W+x])c.push(x,top);
   DOORS.push({m:'lg',cells:c,x:60*16+8,y:126*16})}
  /* poeira no ar e areia escorrendo do teto */
  for(let k=0;k<90;k++){const x=4+hq(k,61)*(W-8)|0,y=4+hq(k,62)*(H-8)|0;if(F[y*W+x])fx.dust.push([x*T+8,y*T+8,hq(k,63)*6.28])}
