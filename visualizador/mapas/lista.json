@@ -20,15 +20,15 @@
   "nome": "Acampamento dos Nômades"
  },
  {
-  "id": "ts",
-  "nome": "Templo Soterrado"
- },
- {
   "id": "ga",
   "nome": "Gruta do Arco Vermelho"
  },
  {
   "id": "tr",
   "nome": "Tumba do Rei da Areia"
+ },
+ {
+  "id": "ts",
+  "nome": "Templo Soterrado"
  }
 ]

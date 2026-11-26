@@ -125,11 +125,36 @@ TEMPLO = dict(
  {let y=14;while(y>2&&F[(y-1)*W+60])y--;aPut('ruin_wall',60,y+1,{bw:3,res:1});}aNear('jar',54,15,{bw:0,road:0});aNear('jar',66,15,{bw:0,road:0});aNear('goods',56,16,{road:0});
  for(let k=0;k<26;k++){const x=(52+hq(k,191)*16)*T,y=(14+hq(k,192)*4)*T;og.fillStyle=hq(k,193)<.5?'#e8c040':'#b08820';og.fillRect(x|0,y|0,3,2);og.fillStyle='#fff0a0';og.fillRect(x|0,y|0,1,1)}
  dark.push([60*T+8,14*T,80,.6]);
- /* Galeria Norte: a porta selada aberta (o portal com os blocos caídos) na parede norte — desce para a Tumba do Rei da
-    Areia (tr), chegando lá em (60, 115). A porta são os tiles do vão. */
- {let ty=15;while(ty>2&&F[(ty-1)*W+106])ty--;aPut('ruin_gate',106,ty,{bw:3,br:1,cols:[-3,-2,2,3],res:2});
-  aNear('jar_broken',101,ty+2,{bw:0,road:0});
-  for(let k=0;k<6;k++){const x=(100+hq(k,211)*12)*T,y=(ty+1+hq(k,212)*2)*T;og.fillStyle='#9a7a56';og.fillRect(x|0,y|0,6,4);og.fillStyle='#5a4030';og.fillRect(x|0,(y+4)|0,6,1)}
+ /* Galeria Norte: a boca natural da caverna na parede norte (como a referência do Ricardo): colunas de pedras arredondadas
+    empilhadas dos dois lados, pedras em cima formando o arco, pontas de rocha pendendo no alto da abertura, luz quente lá
+    dentro e pedras soltas no chão em volta. Tudo pintado no ov; desce para a Tumba do Rei da Areia (tr), em (60, 115). */
+ {let ty=15;while(ty>2&&F[(ty-1)*W+106])ty--;
+  const P=(c,x,y,w,h)=>{og.fillStyle=c;og.fillRect(x,y,w||1,h||1)},CX=106*T+8,BY=ty*T+4;
+  /* uma pedra arredondada: luz do alto à esquerda, contorno escuro, brilho pequeno */
+  const pedra=(cx,cy,r,sd)=>{const ry=r*.8,R=a=>1+(hq(((a+3.2)*2.2)|0,sd*13+7)-.5)*.28;
+   const T4=['#5e4430','#866246','#a8825e','#c8a47a'];
+   for(let y=Math.floor(-ry-2);y<=Math.ceil(ry+2);y++)for(let x=Math.floor(-r-2);x<=Math.ceil(r+2);x++){
+    const a=Math.atan2(y/ry,x/r),k=R(a),e=((x*x)/(r*r)+(y*y)/(ry*ry))/(k*k);if(e>1.12)continue;let c;
+    if(e>.82)c='#2e2016';else{const L=.6-(x/r+y/ry)*.36+(hq(cx+x>>1,cy+y>>1)-.5)*.14,b=L<.32?0:L<.55?1:L<.78?2:3;c=T4[b];
+     if(hq(cx+x,cy+y+sd)<.025)c='#4a3424'}P(c,Math.round(cx+x),Math.round(cy+y))}};
+  /* o escuro da abertura com o brilho quente no fundo e pontas pendendo do alto */
+  const ow=24,oh=52;
+  for(let y=BY-oh;y<BY+4;y++)for(let x=CX-ow-2;x<=CX+ow+2;x++){const yy=BY-y,dx=Math.abs(x-CX),
+    w=(yy>oh-ow?ow*Math.sqrt(Math.max(0,1-((yy-(oh-ow))/ow)**2)):ow)+(hq(x>>2,7)-.5)*4;if(dx>=w)continue;
+   const d=Math.min(1,(BY+4-y)/30),gl=Math.max(0,1-Math.hypot(x-CX,(y-(BY-10))*1.6)/30);
+   P('rgb('+((10+90*gl*gl)|0)+','+((7+55*gl*gl)|0)+','+((5+24*gl*gl)|0)+')',x,y)}
+  for(let k=-4;k<=4;k++){const x=CX+k*5+(hq(k,9)*3|0),h=5+(hq(k,11)*9|0),top=BY-oh+Math.round(ow-Math.sqrt(Math.max(0,ow*ow-(k*5)**2)))+2;
+   for(let j=0;j<h;j++){const w=Math.max(1,Math.round(3*(1-j/h)));P(j<1?'#3a2a1c':'#6a4e36',x-(w>>1),top+j,w,1)}}
+  /* colunas de pedras dos dois lados e o arco por cima */
+  /* barranco de pedras na parede, dos dois lados da boca (atrás), depois as colunas e o arco (na frente) */
+  for(const sx of[-1,1])for(let k=0;k<9;k++){const x=CX+sx*(ow+22+k*9+(hq(k,sx+70)-.5)*6),y=BY-6-(hq(k,sx+71)*18|0)+k*1.2;pedra(x,y,6+hq(k,sx+72)*4,k+sx*90)}
+  for(const sx of[-1,1])for(let k=0;k<5;k++){const r=11-k*.7+(hq(k,sx+20)*3),x=CX+sx*(ow+9+(hq(k,sx+30)-.5)*6),y=BY+2-k*14;pedra(x,y,r,k*7+sx)}
+  for(let k=-2;k<=2;k++)pedra(CX+k*13+(hq(k,41)-.5)*4,BY-oh-2+Math.abs(k)*6,9+(hq(k,40)*3),k+50);
+  /* pedras soltas no chão em volta da boca (bloqueiam) e pedrinhas */
+  for(const [dx,dy,r] of[[-62,26,10],[-46,40,7],[58,22,9],[70,44,6],[-80,8,8]]){pedra(CX+dx,BY+dy,r,dx);S[((BY+dy)>>4)*W+((CX+dx)>>4)]=1}
+  for(let k=0;k<8;k++){P('#8a6a48',CX-40+hq(k,61)*80|0,BY+18+hq(k,62)*30|0,3,2)}
+  for(const x of[103,104,108,109])S[ty*W+x]=1;
+  dark.push([CX,BY-14,90,.8]);
   DOORS.push({m:'tr',cells:[105,ty,106,ty,107,ty],x:60*16+8,y:115*16})}
  /* 6 saloes de caca (5 a 10): vazios no meio; braseiros de pedra no alto; areia escorrendo de fendas do teto com montinho */
  for(let k=4;k<=9;k++){const h=HALLS[k];
