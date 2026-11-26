@@ -30,9 +30,18 @@
 | 5 | Salão das Oferendas (24, 46), **caça** | idem |
 | 6 | Salão dos Servos (100, 50), **caça** | idem |
 | 7 | Cripta Profunda (141, 72), **caça** | idem, a mais a leste |
-| 8 | Salão do Sarcófago (60, 24) | o sarcófago do rei (provisório: a cabeça de estátua) com um raio de luz caindo do teto, dois obeliscos, braseiros e moedas de ouro no chão |
+| 8 | Salão do Sarcófago (60, 24) | o **sarcófago dourado** do rei sobre um pedestal, com a tampa meio aberta e brilho saindo de dentro, um raio de luz caindo do teto, quatro vasos, dois obeliscos, braseiros, moedas e poeira dourada no ar |
 
 Os 5 salões de caça são ligados em anel pelos dois lados do corredor central.
+
+## O que tem na tumba (sem atrapalhar a caça)
+
+Desenhados no código, provisórios até a arte do interior (`PROMPT_ASSETS_INTERIOR_CAVERNAS.md`, seção da Tumba):
+- **Nichos funerários com múmias** encostados nas paredes do norte das Câmaras Funerárias e da Cripta Profunda (colisão no pé).
+- **O sarcófago dourado** no Salão do Sarcófago (colisão no pedestal), com os vasos dos lados.
+- **Estátuas de servos ajoelhados** nas paredes e na beirada do Salão dos Servos (colisão no pé).
+- **Hieróglifos dourados** que acendem e apagam devagar na face das paredes (`fx.glyph`, camada de luz).
+- **Poeira dourada** subindo em volta do sarcófago (`fx.gold`) e **névoa baixa e fria** nas criptas (`fx.fog`).
 
 ## Destinos sugeridos para o teleporte
 

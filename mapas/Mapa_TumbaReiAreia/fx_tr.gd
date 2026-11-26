@@ -1,6 +1,8 @@
 extends "res://scripts/fx_base.gd"
 ## Tumba do Rei da Areia (tr), embaixo do Templo Soterrado: poeira flutuando no ar parado, areia escorrendo das frestas do teto,
 ## o fogo das fogueiras dos exploradores (D.fire, como no fx_dx.gd do kit) e o brilho das lanternas (D.lamp).
+## Também: hieróglifos dourados acendendo e apagando nas paredes (D.glyph), poeira dourada em volta do sarcófago (D.gold),
+## brilho saindo do sarcófago aberto (D.sarc) e névoa baixa e fria nas criptas (D.fog), tudo na camada de luz.
 ## Listas do gerador: D.dust [x, y, fase], D.sand [x, y, fase], D.fire [x, y], D.lamp [x, y], D.beam [x, y] (raio de luz
 ## caindo do teto sobre o ídolo, desenhado na camada de luz).
 
@@ -59,3 +61,31 @@ func glow(_a: float) -> void:
 		for j in 10:
 			var u := fmod(tt * 0.1 + j / 10.0, 1.0)
 			fr(Color(1, 0.95, 0.75, 0.7 * sin(u * PI)), roundi(B[0] + sin(j * 2.1 + tt * 0.3) * 14.0), roundi(B[1] - 140 + u * 150), 1, 1)
+	# hieróglifos dourados acendendo e apagando devagar
+	var GL := [["1.1.1","11111","..1..","..1..",".1.1.","1...1"], [".111.","1...1",".111.","..1..","11111","..1.."], ["11...","1.1..","11111","..1.1","...11","....1"], ["..1..",".111.","11111",".111.","..1..",".1.1."]]
+	for Gh in D.get("glyph", []):
+		if not inview(Gh[0], Gh[1], 30): continue
+		var a := clampf(0.15 + 0.55 * (0.5 + 0.5 * sin(tt * 0.7 + Gh[2])), 0.0, 1.0)
+		var pat: Array = GL[int(Gh[3]) % 4]
+		for r in pat.size():
+			var row: String = pat[r]
+			for c in row.length():
+				if row[c] == "1": fr(Color(1.0, 0.78, 0.32, a), roundi(Gh[0]) + c * 2, roundi(Gh[1]) + r * 2 - 4, 2, 2)
+		ell(Gh[0] + 5, Gh[1] + 2, 12, 9, Color(1.0, 0.7, 0.3, 0.1 * a), false, 14)
+	# brilho saindo do sarcófago aberto e poeira dourada subindo em volta
+	var Sc = D.get("sarc")
+	if Sc != null and inview(Sc[0], Sc[1], 140):
+		var p2 := 0.75 + 0.25 * sin(tt * 1.3)
+		ell(Sc[0] - 8, Sc[1] + 4, 48, 22, Color(1.0, 0.75, 0.3, 0.14 * p2), false, 20)
+		ell(Sc[0] - 8, Sc[1] + 4, 22, 11, Color(1.0, 0.85, 0.5, 0.22 * p2), false, 16)
+	for Pg in D.get("gold", []):
+		var u := fmod(tt * 0.08 + Pg[2] * 0.159, 1.0)
+		var x: float = Pg[0] + sin(tt * 0.6 + Pg[2]) * 6.0
+		var y: float = Pg[1] - u * 50.0
+		if not inview(x, y, 10): continue
+		fr(Color(1.0, 0.85, 0.4, 0.8 * sin(u * PI)), roundi(x), roundi(y), 1, 1)
+	# névoa baixa e fria nas criptas
+	for Fg in D.get("fog", []):
+		if not inview(Fg[0], Fg[1], 70): continue
+		var u := fmod(tt * 0.03 + Fg[2] * 0.159, 1.0)
+		ell(Fg[0] + (u - 0.5) * 70.0, Fg[1] + sin(tt * 0.25 + Fg[2]) * 3.0, 36.0, 7.0, Color(0.55, 0.7, 0.8, 0.09 * sin(u * PI)), false, 16)

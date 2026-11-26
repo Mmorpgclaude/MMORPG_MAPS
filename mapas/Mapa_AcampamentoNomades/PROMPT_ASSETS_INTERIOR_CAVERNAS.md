@@ -32,6 +32,11 @@ jarros para espalhar pelo chão. O jogo é plano: nada de escadas, rampas ou pla
 > - **Gruta:** **formação de rocha** de arenito em camadas encostada na parede (2 tamanhos); **estalagmite** alta
 >   (cerca de 3 tiles de altura); **cristal âmbar** grande brilhando saindo da rocha; **o marco da gruta**: um poço natural
 >   de areia escorrendo de uma fenda do teto, com um feixe de luz fraca (cerca de 5 tiles de largura);
+> - **Tumba do Rei:** **sarcófago dourado** de um rei antigo (cerca de 6 tiles de largura e 5 de altura) sobre um
+>   pedestal de pedra, pintado com faixas azuis, a tampa com o rosto do rei **meio aberta** e um brilho quente saindo de
+>   dentro (sem halo fora); **nicho funerário** para encostar na parede: moldura de pedra com uma **múmia enfaixada** deitada
+>   dentro (cerca de 3 tiles de largura e 2 de altura, 2 variações); **estátua de servo ajoelhado** de pedra com toucado
+>   listrado, de frente (cerca de 2 tiles de largura e 3 de altura); **vasos canópicos** (4, com tampas de cabeças humanas);
 > - **Luz:** **tocha de parede** num suporte de ferro (esta é a peça mais usada; desenhe 2 variações);
 > - **Exploradores** (só na entrada): saco de dormir enrolado, caixote aberto, lampião, picareta e pá encostadas.
 

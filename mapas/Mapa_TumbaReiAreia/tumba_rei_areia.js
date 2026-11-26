@@ -115,10 +115,58 @@ function sandKingTomb(){
  /* Corredor dos Nichos: colunas coladas nas paredes e jarros funerários */
  for(const y of[74,86])for(const x of[54,66])aNear('column',x,y,{bw:0,fit:0,road:0,res:0});
  aNear('jar',54,80,{bw:0,road:0});aNear('jar_broken',66,92,{bw:0,road:0});
- /* Salão do Sarcófago: o sarcófago do rei (provisório: a cabeça de estátua) com um raio de luz, obeliscos e braseiros */
- aNear('statue_head',60,16,{fit:2,br:2,road:0});aNear('obelisk',46,20,{bw:1,road:0});aNear('obelisk',74,20,{bw:1,road:0});
- fire(42,30);fire(78,30);fx.beam=[[60*T+8,19*T]];dark.push([60*T+8,17*T,110,.7]);
+ /* Salão do Sarcófago: obeliscos e braseiros (o sarcófago, os vasos e o raio de luz vêm abaixo) */
+ aNear('obelisk',46,20,{bw:1,road:0});aNear('obelisk',74,20,{bw:1,road:0});
+ fire(42,30);fire(78,30);
  for(let k=0;k<30;k++){const x=(50+hq(k,201)*20)*T,y=(20+hq(k,202)*5)*T;og.fillStyle=hq(k,203)<.5?'#e8c040':'#b08820';og.fillRect(x|0,y|0,3,2);og.fillStyle='#fff0a0';og.fillRect(x|0,y|0,1,1)}
+ /* ---- desenhos da tumba (provisórios, até a arte do interior chegar): contorno escuro automático ---- */
+ const outl=(c)=>{const q=c.getContext('2d'),w=c.width,h=c.height,d=q.getImageData(0,0,w,h),D=d.data,o=new Uint8ClampedArray(D);
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){const k=(y*w+x)*4;if(D[k+3])continue;let n=false;
+   for(const [dx,dy] of[[1,0],[-1,0],[0,1],[0,-1]]){const X=x+dx,Y=y+dy;if(X>=0&&Y>=0&&X<w&&Y<h&&D[(Y*w+X)*4+3])n=true}
+   if(n){o[k]=34;o[k+1]=22;o[k+2]=14;o[k+3]=255}}d.data.set(o);q.putImageData(d,0,0);return c};
+ const box=(q,c,x,y,w,h)=>{q.fillStyle=c;q.fillRect(x,y,w,h)};
+ const up2=(c)=>{const [d,,q]=cmCv(c.width*2,c.height*2);q.imageSmoothingEnabled=false;q.drawImage(c,0,0,c.width*2,c.height*2);return d};
+ /* paredes do norte (face de rocha acima do chão) dentro de um salão: tiles de chão com rocha em cima, 3 de largura */
+ const paredes=(k,gap)=>{const h=HALLS[k],L=[];for(let y=2;y<H;y++)for(let x=2;x<W-2;x++){
+   if(Math.hypot((x-h[0])/(h[2]+2),(y-h[1])/(h[3]+2))>1)continue;
+   let ok=true;for(let i=-1;i<=1;i++){const n=y*W+x+i;if(!F[n]||F[n-W]||S[n])ok=false}if(!ok)continue;
+   if(L.every(p=>Math.abs(p[0]-x)>=gap||Math.abs(p[1]-y)>2))L.push([x,y])}return L};
+ /* 1) nichos funerários com múmias, escavados na face da parede (no ov, não ocupam chão) */
+ const NICHO=(()=>{const [c,,q]=cmCv(26,18);
+  box(q,'#6a5240',0,0,26,18);box(q,'#9a7a5a',0,0,26,2);box(q,'#4a3828',0,16,26,2);box(q,'#7a6048',1,2,1,14);box(q,'#7a6048',24,2,1,14);
+  box(q,'#140c08',3,4,20,10);box(q,'#2a1c12',3,4,20,1);
+  box(q,'#cfc2a0',5,7,14,4);box(q,'#e6dcc0',5,7,14,1);for(let i=6;i<18;i+=3)box(q,'#9a8c70',i,7,1,4);
+  box(q,'#d8cca8',18,6,4,6);box(q,'#2a1c12',19,8,1,1);box(q,'#2a1c12',21,8,1,1);return up2(outl(c))})();
+ for(const k of[2,3,6])for(const [x,y] of paredes(k,6).slice(0,4)){put(NICHO,x*T+8-26,(y+1)*T);for(let i=-1;i<=1;i++)S[y*W+x+i]=1}
+ /* 2) o sarcófago do rei: dourado, sobre um pedestal, a tampa meio aberta com brilho saindo de dentro; vasos dos lados */
+ {const [c,,q]=cmCv(48,44);
+  box(q,'#7a6248',0,30,48,14);box(q,'#a08660',0,30,48,3);box(q,'#5a4634',0,42,48,2);for(let x=4;x<48;x+=10)box(q,'#6a5440',x,33,1,9);
+  box(q,'#a07820',6,12,36,20);box(q,'#c89a30',7,13,34,18);box(q,'#1a120a',10,16,24,12);
+  for(let i=0;i<6;i++){box(q,'rgba(255,200,90,'+(0.18+i*0.06)+')',12+i*2,18+i,20-i*4,8-i*1.5)}
+  box(q,'#2a4a8a',7,26,34,2);box(q,'#2a4a8a',7,20,3,2);
+  box(q,'#b08828',14,4,30,20);box(q,'#d8aa38',15,5,28,18);box(q,'#f0cc60',15,5,28,2);
+  for(let y=9;y<22;y+=4)box(q,'#2a4a8a',16,y,26,1);
+  box(q,'#2a4a8a',23,4,12,9);box(q,'#e8c060',25,5,8,7);box(q,'#f6dc90',26,6,6,2);box(q,'#2a1c12',26,8,2,1);box(q,'#2a1c12',30,8,2,1);box(q,'#8a6020',28,10,2,1);
+  box(q,'rgba(30,18,10,.45)',10,24,4,6);
+  const C2=up2(outl(c)),sx=60*T+8,sb=18*T;put(C2,sx-48,sb);for(let y=16;y<=17;y++)for(let x=57;x<=63;x++)S[y*W+x]=1;
+  fx.sarc=[sx+4,sb-50];dark.push([sx,sb-48,140,.9]);fx.beam=[[sx,sb-10]];
+  aNear('jar',53,17,{bw:0,road:0});aNear('jar',67,17,{bw:0,road:0});aNear('jar',54,19,{bw:0,road:0});aNear('jar',66,19,{bw:0,road:0});
+  fx.gold=[];for(let k=0;k<30;k++)fx.gold.push([sx-70+hq(k,221)*140,sb-80+hq(k,222)*90,hq(k,223)*6.28])}
+ /* 3) hieróglifos que brilham na face das paredes (Salão do Sarcófago, Antecâmara e Corredor) */
+ fx.glyph=[];for(const k of[7,0,1,4])for(const [x,y] of paredes(k,2).slice(0,k==7?14:6))fx.glyph.push([x*T+2,y*T-12,hq(x,y)*6.28,(hq(y,x)*4)|0]);
+ /* 4) estátuas de servos ajoelhados encostadas nas paredes do Salão dos Servos, viradas para o sarcófago */
+ {const [c,,q]=cmCv(16,22);
+  box(q,'#6a5a44',1,17,14,5);box(q,'#8a765a',1,17,14,1);
+  box(q,'#9a846a',3,11,10,7);box(q,'#b49c7c',3,11,10,2);
+  box(q,'#a8927a',5,5,6,8);box(q,'#c4ae8e',5,5,2,6);box(q,'#7a6650',4,10,2,5);box(q,'#7a6650',10,10,2,5);
+  box(q,'#2a4a6a',4,0,8,5);box(q,'#c4a060',5,0,6,1);box(q,'#b89a7a',6,1,4,4);box(q,'#2a1c12',6,2,1,1);box(q,'#2a1c12',9,2,1,1);
+  const SV=up2(outl(c)),h=HALLS[5];
+  for(const [x,y] of paredes(5,3).slice(0,8)){put(SV,x*T+8-16,(y+1)*T);S[y*W+x]=1}
+  for(let k=0;k<8;k++){const a=-Math.PI*.15+k*Math.PI*1.3/7+Math.PI*.5,x=Math.round(h[0]+Math.cos(a)*h[2]*.86),y=Math.round(h[1]+Math.sin(a)*h[3]*.86),i=y*W+x;
+   if(!F[i]||S[i]||!F[i+1]||!F[i-1])continue;put(SV,x*T+8-16,(y+1)*T);S[i]=1}}
+ /* 7) névoa baixa e fria nas criptas (Cripta Profunda e Câmaras Funerárias) */
+ fx.fog=[];for(const [k,n] of[[6,30],[2,12],[3,12]]){const h=HALLS[k];for(let q=0;q<n*3&&fx.fog.length<70;q++){const x=h[0]+(hq(q,k*31)-.5)*2*h[2]*.85,y=h[1]+(hq(k*31,q)-.5)*2*h[3]*.85;
+  if(F[(y|0)*W+(x|0)])fx.fog.push([x*T,y*T,hq(q,k)*6.28])}}
  /* 5 salões de caça (2 a 6): vazios no meio; braseiros no alto; areia escorrendo de fendas do teto */
  for(let k=2;k<=6;k++){const h=HALLS[k];
   fire(Math.round(h[0]-h[2]*.55),Math.round(h[1]-h[3]*.6));fire(Math.round(h[0]+h[2]*.55),Math.round(h[1]-h[3]*.6));
