@@ -236,16 +236,16 @@ function nomadCamp(){
  const IN=(h,a,b)=>(x,y)=>{const e=Math.hypot(x-h[0],(y-h[1])*1.2)/h[2];return e>=a&&e<b};
  /* Planície Escaldante: seca e aberta — árvores mortas soltas, mato seco e pedrinhas (anda-se por cima), rochedos baixos na beirada */
  aScat(['dead_tree'],2,330,IN(H1,.7,.95),{bw:1,fit:2,road:3});
- aScat(['dry_bush','tumble','pebbles1','pebbles2'],5,331,IN(H1,.6,.95),{bw:0,walk:true,fit:0});
+ aScat(['dry_bush','tumble'],3,331,IN(H1,.6,.95),{bw:0,walk:true,fit:0});aScat(['pebbles1','pebbles2'],2,334,IN(H1,.6,.95),{fit:1});
  aScat(['rock_m'],2,332,IN(H1,.8,1.05),{fit:1,road:3});aScat(['rock_s','rock_red','rock_red2'],3,333,IN(H1,.75,1.05),{fit:1});
  /* Vale das Areias Vermelhas: um anel de rochedos vermelhos grandes em volta, cascalho vermelho no meio */
  aScat(['rock_big','rock_tall','rock_m'],6,340,IN(H2,.78,1.08),{fit:2,br:2,road:3,res:1});
  aScat(['rock_red','rock_red2','rock_s'],4,341,IN(H2,.65,1),{fit:1});
- aScat(['pebbles1','pebbles2'],5,342,IN(H2,.5,.8),{bw:0,walk:true,fit:0});
+ aScat(['pebbles1','pebbles2'],5,342,IN(H2,.5,.8),{fit:1});
  /* Campos do Vento: bolas de mato seco e arbustos rolando entre as dunas baixas */
  aScat(['tumble','dry_bush'],8,350,IN(H3,.55,1),{bw:0,walk:true,fit:0});
  aScat(['cactus_s','cactus_barrel'],2,351,IN(H3,.75,1),{bw:0});
- aScat(['rock_tall','rock_m','rock_big'],5,307,OPEN,{fit:3,br:2,road:5,res:2});aScat(['rock_s','rock_red','rock_red2'],14,308,OPEN,{fit:1});aScat(['pebbles1','pebbles2'],10,318,OPEN,{bw:0,walk:true,fit:0});aScat(DRY,32,309,OPEN,{bw:0,walk:true,fit:0});
+ aScat(['rock_tall','rock_m','rock_big'],5,307,OPEN,{fit:3,br:2,road:5,res:2});aScat(['rock_s','rock_red','rock_red2'],14,308,OPEN,{fit:1});aScat(['pebbles1','pebbles2'],10,318,OPEN,{fit:1});aScat(DRY,32,309,OPEN,{bw:0,walk:true,fit:0});
  aScat(['cactus_s','cactus_m','cactus_barrel','cactus_flower'],12,311,OPEN,{bw:0});aScat(['dead_tree'],5,312,OPEN,{bw:1});
  /* efeitos (fx_nd.gd): redemoinhos de poeira e o fogo das fogueiras (sem abutres: nada de animais) */
  /* redemoinhos: três nos Campos do Vento, um em cada outro campo de caça, dois soltos */
