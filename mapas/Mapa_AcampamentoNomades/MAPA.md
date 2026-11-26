@@ -52,7 +52,7 @@ Norte, sul e oeste são fechados (dunas altas, `M = 2`).
 ## Destinos sugeridos para o teleporte (tiles, livres)
 
 - **Portão Oeste de Al-Sahrah:** (140, 50)
-- **Círculo das Tendas:** (60, 62)
+- **Círculo das Tendas:** (60, 67), logo ao sul da fogueira
 
 ## Arte
 
