@@ -13,7 +13,7 @@
 
 ## Entrada e saída
 
-- **Entra:** pela **boca natural de caverna** (recortada da imagem de referência do Ricardo: `Assets_Tumba/referencia_passagem.png` → `arte/passagem_boca.png`, metade do tamanho, 128 cores) na parede norte da **Galeria Norte do Templo
+- **Entra:** pela **boca natural de caverna** (recortada da imagem de referência do Ricardo: `Assets_Tumba/referencia_passagem.png` → `arte/passagem_boca.png`, metade do tamanho, 128 cores, simétrica: o lado direito espelhado no esquerdo) na parede norte da **Galeria Norte do Templo
   Soterrado**: porta nos tiles (104-108, 6) do Templo (campo `doors`). Chega aqui na **Antecâmara (60, 115)** (px: 968, 1840).
 - **Sai:** pela **borda sul, colunas 56-63**: `{k:'edge', m:'ts', x, y}` — volta para a Galeria Norte do Templo, no tile
   (106, 9), na frente da porta.

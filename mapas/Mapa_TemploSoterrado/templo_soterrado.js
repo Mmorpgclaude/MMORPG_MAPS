@@ -125,10 +125,10 @@ function buriedTemple(){
  for(let k=0;k<26;k++){const x=(52+hq(k,191)*16)*T,y=(14+hq(k,192)*4)*T;og.fillStyle=hq(k,193)<.5?'#e8c040':'#b08820';og.fillRect(x|0,y|0,3,2);og.fillStyle='#fff0a0';og.fillRect(x|0,y|0,1,1)}
  dark.push([60*T+8,14*T,80,.6]);
  /* Galeria Norte: a boca natural da caverna na parede norte — a peça recortada da imagem de referência do Ricardo
-    (arte/passagem_boca.png, metade do tamanho, 128 cores), pintada no ov com a boca centrada na porta. Desce para a Tumba do
+    (arte/passagem_boca.png, metade do tamanho, 128 cores, simétrica: o lado direito espelhado no esquerdo), pintada no ov com a boca centrada na porta. Desce para a Tumba do
     Rei da Areia (tr), chegando em (60, 115). Colisão: as colunas de pedra nas fileiras do chão, menos a boca. */
  {let ty=15;while(ty>2&&F[(ty-1)*W+106])ty--;
-  const G={"w": 200, "h": 113, "mx": 114, "mb": 86},A=ART.passagem_boca,CX=106*T+8,BY=ty*T+4,x0=CX-G.mx,y0=BY-G.mb;
+  const G={"w": 172, "h": 113, "mx": 86, "mb": 86},A=ART.passagem_boca,CX=106*T+8,BY=ty*T+4,x0=CX-G.mx,y0=BY-G.mb;
   og.drawImage(A,x0,y0);
   const [c,,q]=cmCv(G.w,G.h);q.drawImage(A,0,0);const d=q.getImageData(0,0,G.w,G.h).data;
   for(let tyy=ty;tyy*T<y0+G.h;tyy++)for(let tx=Math.floor(x0/T);tx<=Math.floor((x0+G.w-1)/T);tx++){if(tx>=104&&tx<=108)continue;let n=0;
