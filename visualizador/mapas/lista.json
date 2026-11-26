@@ -20,11 +20,11 @@
   "nome": "Templo Soterrado"
  },
  {
-  "id": "lg",
-  "nome": "Lago Subterrâneo"
- },
- {
   "id": "ga",
   "nome": "Gruta do Arco Vermelho"
+ },
+ {
+  "id": "lg",
+  "nome": "Lago Subterrâneo"
  }
 ]

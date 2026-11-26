@@ -37,6 +37,14 @@
 O lago (água funda) fica no meio, com duas ilhas ligadas às margens leste e oeste por uma **passarela reta de tábuas**
 (plana, no `ov`, por onde se anda) e uma ilhota ligada à Margem Sul.
 
+## Vida no lago e o marco
+
+- **Estátua antiga meio afundada** na água, ao lado da ilhota sul, em (99, 72) (provisória: a cabeça de estátua do kit;
+  a arte certa vem na folha do Lago). Uma luz fraca (`dark`) nela.
+- **Efeitos** (`fx_lg.gd`, desenhados na camada de luz, por cima do escuro da caverna): reflexos e ondinhas (`fx.ripple`),
+  gotas pingando do teto e abrindo círculos na água (`fx.drop`), névoa fina sobre a água, mais forte à noite (`fx.mist`),
+  feixes de luz de fendas do teto (`fx.beam`) e a água batendo na estátua (`fx.statue`).
+
 ## Destinos sugeridos para o teleporte
 
 - **Chegada:** (60, 126)

@@ -27,6 +27,9 @@ Pouca poluição: peças de encostar na parede ou na beira da água; o meio dos 
 >   na beira da água;
 > - **Estalagmites** de arenito úmido (2 tamanhos); **formação de rocha** em camadas para encostar na parede (2 tamanhos);
 > - **Margem do lago:** pedras lisas e molhadas na beira da água (3 variações, para encostar na borda da água);
+> - **Estátua antiga meio afundada** (o marco do lago): a cabeça enorme de um rei de pedra e um braço erguido saindo da
+>   água (cerca de 6 tiles de largura e 5 de altura), com musgo e cristais âmbar pequenos presos na pedra; desenhe só a
+>   parte fora da água, a linha da água reta embaixo (o jogo desenha as ondinhas em volta);
 > - **Barco a remo** velho de madeira, amarrado (visto de cima, para ficar na água junto à margem);
 > - **Píer pequeno** de madeira (plano, visto de cima, cerca de 3 tiles de comprimento);
 > - **Tocha de pé** num poste de madeira; **tocha de parede** num suporte de ferro;

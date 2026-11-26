@@ -15,7 +15,7 @@ function lakeCave(){
    if(d<d1){d2=d1;d1=d;id=cx2*7919+cy2;ccx=px;ccy=py}else if(d<d2)d2=d}return [id,(d2-d1)/2,d1,ccx,ccy]};
  const clamp=(v,a,b)=>v<a?a:v>b?b:v;
  const S=new Array(W*H).fill(0),Z=new Array(W*H).fill(0),ents=[],dark=[];
- const fx={dust:[],sand:[],fire:[],lamp:[],glint:[]};
+ const fx={dust:[],sand:[],fire:[],lamp:[],glint:[],ripple:[],drop:[],mist:[],beam:[],statue:null};
  const put=(cv,x,ybase,lb)=>{const e={img:cv,x:Math.round(x),y:ybase,z:ybase-cv.height+2,sw:cv.width,sh:cv.height};if(lb)e.lb=lb;ents.push(e)};
  const zn=['Lago Subterrâneo','Chegada','Margem Sul','Gruta Oeste','Gruta Leste','Salão dos Cristais','Praia Escura','Margem Norte','Margens do Lago'];
  /* ===== grade: rocha em tudo, os salões e os túneis são escavados ===== */
@@ -130,6 +130,15 @@ function lakeCave(){
   torch(Math.round(h[0]-h[2]*.55),Math.round(h[1]-h[3]*.6))}
  /* cristais (provisório: brilho no lugar da arte que virá) */
  for(let k=0;k<26;k++){const t=k/26*6.283,x=92+Math.cos(t)*49,y=62+Math.sin(t)*33;dark.push([x*T,y*T,70,.8])}
+ /* a estátua antiga meio afundada no lago, entre as duas ilhas (provisória: a cabeça de estátua do kit; a arte certa
+    — cabeça e um braço saindo da água — vem na folha do Lago). Fica na água: não precisa de colisão. */
+ {const sx=99*T,sy=72*T,c=mkA('statue_head');put(c,sx-(c.width>>1),sy);fx.statue=[sx,sy-6,c.width];dark.push([sx,sy-30,90,.45])}
+ /* vida no lago: ondinhas e reflexos, gotas pingando do teto, névoa fina sobre a água, feixes de luz de fendas do teto */
+ {const isW=(x,y)=>x>=0&&y>=0&&x<W&&y<H&&TY[y*W+x]==4;
+  for(let k=0;k<400&&fx.ripple.length<70;k++){const x=4+hq(k,171)*(W-8)|0,y=4+hq(k,172)*(H-8)|0;if(isW(x,y))fx.ripple.push([x*T+8,y*T+8,hq(k,173)*6.28])}
+  for(let k=0;k<400&&fx.drop.length<18;k++){const x=4+hq(k,174)*(W-8)|0,y=4+hq(k,175)*(H-8)|0;if(isW(x,y))fx.drop.push([x*T+8,y*T+8,hq(k,176)*7])}
+  for(let k=0;k<400&&fx.mist.length<30;k++){const x=4+hq(k,177)*(W-8)|0,y=4+hq(k,178)*(H-8)|0;if(isW(x,y))fx.mist.push([x*T+8,y*T+8,hq(k,179)*6.28])}
+  for(const [x,y] of[[70,46],[118,70],[92,40],[58,70]])fx.beam.push([x*T,y*T])}
  /* poeira no ar e areia escorrendo do teto */
  for(let k=0;k<90;k++){const x=4+hq(k,61)*(W-8)|0,y=4+hq(k,62)*(H-8)|0;if(F[y*W+x])fx.dust.push([x*T+8,y*T+8,hq(k,63)*6.28])}
  for(let k=0;k<200&&fx.sand.length<16;k++){const x=4+hq(k,64)*(W-8)|0,y=4+hq(k,65)*(H-8)|0;if(F[y*W+x]&&!F[(y-1)*W+x])fx.sand.push([x*T+8,y*T-4,hq(k,66)*6.28])}
