@@ -125,22 +125,21 @@ TEMPLO['SLB'] = 'id<.33?112:id<.66?100:122'
 
 GRUTA = dict(
  ID='ga', W=160, H=120, CH=115, FN='redArchCave', NOME='Gruta do Arco Vermelho', PORTA='do arco de pedra (rock_arch), no Vale das Areias Vermelhas,',
- DESC='''   Uma caverna de rocha vermelha atrás do arco de pedra: a galeria vermelha da entrada e quatro salões largos para caçar
-   (o Salão das Pedras, o Salão do Eco, a Fenda Funda e o Covil Arenoso), ligados por túneis.''',
- ZN="['Gruta do Arco Vermelho','Entrada da Gruta','Galeria','Salão Oeste','Salão Leste','Câmara do Fundo']",
- HALLS="[[60,110,10,6,1,0],[64,88,16,8,2,0],[32,52,26,20,3,0],[114,54,32,24,4,0],[72,16,10,7,5,0]]",
- TUN="[[60,116,60,110,4],[60,110,64,88,4],[64,88,32,52,4.5],[64,88,114,54,4.5],[32,52,72,16,3.6],[114,54,72,16,3.6]]",
+ DESC='''   Uma caverna de arenito atrás da entrada de areia: a entrada, a galeria e CINCO salões largos para caçar (Oeste, das
+   Pedras, Central, Leste e Sudeste), ligados entre si por túneis largos, e a Câmara do Fundo.''',
+ ZN="['Gruta do Arco Vermelho','Entrada da Gruta','Galeria','Salão Oeste','Salão das Pedras','Salão Central','Salão Leste','Salão Sudeste','Câmara do Fundo']",
+ HALLS="[[60,110,10,6,1,0],[64,88,14,7,2,0],[24,80,18,14,3,0],[28,40,20,15,4,0],[78,46,18,13,5,0],[130,44,22,16,6,0],[124,92,22,14,7,0],[78,12,10,6,8,0]]",
+ TUN="[[60,116,60,110,4],[60,110,64,88,4],[64,88,24,80,4],[24,80,28,40,4],[28,40,78,46,4],[64,88,78,46,4],[78,46,130,44,4],[130,44,124,92,4],[64,88,124,92,4],[78,46,78,12,3.4]]",
  SD=110, R0='[140,62,40]', R1='[162,78,48]', R2='[118,50,34]', R3='[178,96,60]',
  SLR='0', SLG='0', SLB='0',
  FR=96, FG=62, FB=46, VX='112*16+16', VY='14*16',
  OBJ=''' /* Entrada: acampamento encostado na parede */
  fire(55,109);aNear('goods',53,106,{});torch(67,107,{flip:true});
- /* rochedos só colados na parede, meio livre */
- for(const [k,sd,n] of[[1,515,1],[2,520,5],[3,530,6],[4,540,1]])aScat(['rock_m','rock_tall'],n,sd,(x,y)=>{const h=HALLS[k],e=Math.hypot((x-h[0])/h[2],(y-h[1])/h[3]);return e>.85&&e<1.05},{fit:1,br:2,road:0});
- torch(52,85);torch(76,85,{flip:true});
- torch(14,40);torch(32,34);torch(50,40,{flip:true});torch(12,62);torch(52,64,{flip:true});
- torch(88,38);torch(114,32);torch(140,38,{flip:true});torch(86,66);torch(142,68,{flip:true});
- torch(66,12);torch(78,12,{flip:true});''')
+ /* 5 salões de caça (3 a 7): meio vazio; rochedos só colados na parede e duas tochas no alto de cada um */
+ for(let k=3;k<=7;k++){const h=HALLS[k];
+  aScat(['rock_m','rock_tall'],3,500+k*10,(x,y)=>{const e=Math.hypot((x-h[0])/h[2],(y-h[1])/h[3]);return e>.85&&e<1.05},{fit:1,br:2,road:0});
+  torch(Math.round(h[0]-h[2]*.6),Math.round(h[1]-h[3]*.6));torch(Math.round(h[0]+h[2]*.6),Math.round(h[1]-h[3]*.6),{flip:true})}
+ torch(55,85);torch(73,85,{flip:true});torch(78,8);''')
 
 for d, pasta, arq in [(TEMPLO, 'Mapa_TemploSoterrado', 'templo_soterrado.js'), (GRUTA, 'Mapa_GrutaArcoVermelho', 'gruta_arco.js')]:
     d = dict(d); d['HELPER'] = HELPER

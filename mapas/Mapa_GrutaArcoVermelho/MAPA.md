@@ -29,10 +29,13 @@
 |---|---|---|
 | 0 | Gruta do Arco Vermelho (túneis) | |
 | 1 | Entrada da Gruta (60, 110) | acampamento dos exploradores encostado na parede |
-| 2 | Galeria (64, 88) | túnel largo ligando os salões |
-| 3 | Salão Oeste (32, 52), **caça** | ~52 × 40 tiles, e **vazio** no meio; só tochas e rochedos colados na parede |
-| 4 | Salão Leste (114, 54), **caça** | ~64 × 48 tiles, enorme e vazio no meio |
-| 5 | Câmara do Fundo (72, 16) | a câmara do marco da gruta (vai receber o poço de areia da folha nova) |
+| 2 | Galeria (64, 88) | encontro dos túneis |
+| 3 | Salão Oeste (24, 80), **caça** | ~36 × 28 tiles, vazio no meio |
+| 4 | Salão das Pedras (28, 40), **caça** | ~40 × 30 tiles |
+| 5 | Salão Central (78, 46), **caça** | ~36 × 26 tiles |
+| 6 | Salão Leste (130, 44), **caça** | ~44 × 32 tiles |
+| 7 | Salão Sudeste (124, 92), **caça** | ~44 × 28 tiles |
+| 8 | Câmara do Fundo (78, 12) | a câmara do marco da gruta (vai receber o poço de areia da folha nova) |
 
 ## Planta (pedido do Ricardo: pouca poluição)
 
@@ -46,9 +49,12 @@ A caverna é escura: 1 fogueira (raio 140) e as lanternas (raio 120) iluminam os
 ## Destinos sugeridos para o teleporte
 
 - **Entrada da Gruta (60, 112)**
-- **Salão Leste (114, 54)**
+- **Salão Leste (130, 44)**
 
 ## Arte
 
 Só peças prontas do kit (`exemplo_deserto/arte/`), em `arte/`: rock_red, rock_red2, rock_s, rock_m, rock_tall, rock_big, pebbles, goods, jar, firepit, lamppost. Registro: `pecas_folha_ruinas.json` e
 `pecas_folha_caravanas.json` (copiados do kit).
+
+Os 5 salões de caça são ligados entre si por túneis largos (dá para circular sem voltar à entrada). Em cada um: só 2 tochas
+e até 3 rochedos colados na parede.
