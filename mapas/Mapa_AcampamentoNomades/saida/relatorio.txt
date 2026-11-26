@@ -5,6 +5,6 @@ OK    tamanho 150×120 (padrão de área aberta)
 OK    chão com 2400×1920 px (16 px por tile)
 OK    gen_data com 1 texel por tile
 OK    passagem {"k": "edge", "m": "dq", "x": 24, "dy": 0}: 9 células na borda, livres
-OK    10926 de 10926 tiles livres alcançáveis a partir da passagem
+OK    11003 de 11003 tiles livres alcançáveis a partir da passagem
 OK    arte recortada com no máximo 128 cores (maior peça: 128)
-objetos: 188 · zonas: Dunas do Oeste, Estrada de Al-Sahrah, Círculo das Tendas, Poço da Tribo, Mercado da Tribo, Mirante das Dunas, Planície Escaldante, Vale das Areias Vermelhas, Campos do Vento, Entrada do Templo Soterrado, Gruta do Arco Vermelho
+objetos: 160 · zonas: Dunas do Oeste, Estrada de Al-Sahrah, Círculo das Tendas, Poço da Tribo, Mercado da Tribo, Mirante das Dunas, Planície Escaldante, Vale das Areias Vermelhas, Campos do Vento, Entrada do Templo Soterrado, Gruta do Arco Vermelho

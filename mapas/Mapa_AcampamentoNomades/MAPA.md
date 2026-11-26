@@ -82,6 +82,13 @@ Norte, sul e oeste são fechados (dunas altas, `M = 2`).
 - **`fx.bird`:** vazio (sem abutres). `fx.flag`: vazio (os estandartes e a flâmula já têm o pano desenhado na arte).
 - Mais o vento com areia e o ar quente do `fx_sand.gd`, como nos outros mapas do Deserto.
 
+## Colisão das pedras
+
+- Pedras pequenas, pedrinhas, cascalho e lajinhas (`rock_s`, `rock_red`, `rock_red2`, `pebbles1/2`, `stones_s`,
+  `rocks_small`, `rock_flat2`): **sem colisão** (o jogador passa por cima), pedido do Ricardo.
+- Rochedos médios e grandes (`rock_m`, `rock_tall`, `rock_big`) e as lajes grandes (`slab1/2`): colisão só no pé.
+- Áreas de caça: poucos enfeites, só na beirada; o meio de cada campo fica livre.
+
 ## Destinos sugeridos para o teleporte (tiles, livres)
 
 - **Portão Oeste de Al-Sahrah:** (140, 50)
