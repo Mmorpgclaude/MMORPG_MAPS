@@ -8,14 +8,14 @@ HELPER = open(os.path.join(RAIZ, 'kit/ferramentas/ds_helper.js'), encoding='utf-
 
 MOLDE = r'''/* ---------- %(NOME)s (mapa '%(ID)s') — caverna (lugar de dentro) do Acampamento dos Nômades (nd) ----------
 %(DESC)s
-   Entrada e saída: a porta %(PORTA)s no Acampamento leva para cá (chega em (60, 85)); a saída é a borda sul (colunas 56-63),
-   que volta para a frente da porta. Lugar de dentro: tamanho livre (120 × 90).
+   Entrada e saída: a porta %(PORTA)s no Acampamento leva para cá (chega em (60, %(CH)s)); a saída é a borda sul (colunas 56-63),
+   que volta para a frente da porta. Lugar de dentro: tamanho livre (%(W)s × %(H)s).
    Chão: pintor por pixel de caverna (o mesmo nas duas cavernas do Acampamento), espelhado em %(ID)s_floor.gdshader.
    gen_data: R = andável, G = distância até o caminho principal × 10, B = tipo do chão × 40
    (0 chão de arenito com cascalho, 1 areia acumulada, 2 lajes do templo, 3 rocha: parede e teto). 1 tile = 16 px.
    Objetos: peças prontas do kit (exemplo_deserto/arte), colocadas pelo ajudante do Deserto. Sem animais nem ossadas. */
 function %(FN)s(){
- const T=16,W=120,H=90,FW=W*T,FH=H*T;
+ const T=16,W=%(W)s,H=%(H)s,FW=W*T,FH=H*T;
  const vn=(x,y,s,sd)=>{const X=x/s,Y=y/s,x0=Math.floor(X),y0=Math.floor(Y),fx=X-x0,fy=Y-y0,u=fx*fx*(3-2*fx),v=fy*fy*(3-2*fy),
   a=hq(x0+sd*131,y0),b=hq(x0+1+sd*131,y0),c=hq(x0+sd*131,y0+1),d=hq(x0+1+sd*131,y0+1);return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v};
  const vorC=(x,y,s,sd)=>{const gx=Math.floor(x/s),gy=Math.floor(y/s);let d1=1e9,d2=1e9,id=0,ccx=0,ccy=0;
@@ -99,7 +99,7 @@ function %(FN)s(){
 '''
 
 TEMPLO = dict(
- ID='ts', FN='buriedTemple', NOME='Templo Soterrado', PORTA='do portal antigo (ruin_gate), no monte de areia da Planície Escaldante,',
+ ID='ts', W=120, H=90, CH=85, FN='buriedTemple', NOME='Templo Soterrado', PORTA='do portal antigo (ruin_gate), no monte de areia da Planície Escaldante,',
  DESC='''   Um templo antigo engolido pelas dunas: salões de lajes, a galeria das colunas, o salão do ídolo com a cabeça da estátua e
    os obeliscos, uma câmara de jarros e dois salões desmoronados, cheios de areia, largos para caçar.''',
  ZN="['Templo Soterrado','Salão da Entrada','Galeria das Colunas','Salão do Ídolo','Câmara Selada','Salão Desmoronado Oeste','Salão Desmoronado Leste']",
@@ -124,20 +124,23 @@ TEMPLO['SLG'] = 'id<.33?150:id<.66?138:162'
 TEMPLO['SLB'] = 'id<.33?112:id<.66?100:122'
 
 GRUTA = dict(
- ID='ga', FN='redArchCave', NOME='Gruta do Arco Vermelho', PORTA='do arco de pedra (rock_arch), no Vale das Areias Vermelhas,',
+ ID='ga', W=160, H=120, CH=115, FN='redArchCave', NOME='Gruta do Arco Vermelho', PORTA='do arco de pedra (rock_arch), no Vale das Areias Vermelhas,',
  DESC='''   Uma caverna de rocha vermelha atrás do arco de pedra: a galeria vermelha da entrada e quatro salões largos para caçar
    (o Salão das Pedras, o Salão do Eco, a Fenda Funda e o Covil Arenoso), ligados por túneis.''',
  ZN="['Gruta do Arco Vermelho','Entrada da Gruta','Galeria','Salão Oeste','Salão Leste','Câmara do Fundo']",
- HALLS="[[60,80,10,6,1,0],[60,58,15,8,2,0],[28,30,22,16,3,0],[92,30,22,16,4,0],[60,22,9,7,5,0]]",
- TUN="[[60,86,60,80,4],[60,80,60,58,4],[60,58,28,30,4],[60,58,92,30,4],[28,30,60,22,3.4],[92,30,60,22,3.4]]",
+ HALLS="[[60,110,10,6,1,0],[64,88,16,8,2,0],[32,52,26,20,3,0],[114,54,32,24,4,0],[72,16,10,7,5,0]]",
+ TUN="[[60,116,60,110,4],[60,110,64,88,4],[64,88,32,52,4.5],[64,88,114,54,4.5],[32,52,72,16,3.6],[114,54,72,16,3.6]]",
  SD=110, R0='[140,62,40]', R1='[162,78,48]', R2='[118,50,34]', R3='[178,96,60]',
  SLR='0', SLG='0', SLB='0',
  FR=96, FG=62, FB=46, VX='112*16+16', VY='14*16',
  OBJ=''' /* Entrada: acampamento encostado na parede */
- fire(53,79);aNear('goods',51,76,{});torch(67,77,{flip:true});
- /* rochedos so colados na parede, meio livre */
- for(const [k,sd] of[[1,510],[2,515],[3,520],[4,530]])aScat(['rock_m','rock_tall'],k<=2?1:3,sd,(x,y)=>{const h=HALLS[k],e=Math.hypot((x-h[0])/h[2],(y-h[1])/h[3]);return e>.85&&e<1.05},{fit:1,br:2,road:0});
- torch(48,55);torch(72,55,{flip:true});torch(12,24);torch(40,18,{flip:true});torch(80,18);torch(108,24,{flip:true});torch(28,44);torch(92,44,{flip:true});torch(60,16);''')
+ fire(55,109);aNear('goods',53,106,{});torch(67,107,{flip:true});
+ /* rochedos só colados na parede, meio livre */
+ for(const [k,sd,n] of[[1,515,1],[2,520,5],[3,530,6],[4,540,1]])aScat(['rock_m','rock_tall'],n,sd,(x,y)=>{const h=HALLS[k],e=Math.hypot((x-h[0])/h[2],(y-h[1])/h[3]);return e>.85&&e<1.05},{fit:1,br:2,road:0});
+ torch(52,85);torch(76,85,{flip:true});
+ torch(14,40);torch(32,34);torch(50,40,{flip:true});torch(12,62);torch(52,64,{flip:true});
+ torch(88,38);torch(114,32);torch(140,38,{flip:true});torch(86,66);torch(142,68,{flip:true});
+ torch(66,12);torch(78,12,{flip:true});''')
 
 for d, pasta, arq in [(TEMPLO, 'Mapa_TemploSoterrado', 'templo_soterrado.js'), (GRUTA, 'Mapa_GrutaArcoVermelho', 'gruta_arco.js')]:
     d = dict(d); d['HELPER'] = HELPER

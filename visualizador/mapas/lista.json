@@ -12,15 +12,15 @@
   "nome": "Exemplo: Vale das Caravanas (Deserto)"
  },
  {
-  "id": "nd",
-  "nome": "Acampamento dos Nômades"
- },
- {
   "id": "ts",
   "nome": "Templo Soterrado"
  },
  {
   "id": "ga",
   "nome": "Gruta do Arco Vermelho"
+ },
+ {
+  "id": "nd",
+  "nome": "Acampamento dos Nômades"
  }
 ]

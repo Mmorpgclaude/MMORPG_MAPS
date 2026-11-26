@@ -3,7 +3,7 @@
 - **Nome:** Gruta do Arco Vermelho
 - **Id:** `ga` (não está na lista dos ids usados)
 - **Tipo:** **lugar de dentro** (caverna) do Acampamento dos Nômades (`nd`); aparece só como ícone no Mapa do Mundo.
-- **Tamanho:** 120 × 90 tiles (1920 × 1440 px). O `preview.py` dá "AVISO tamanho" (esperado: lugar de dentro).
+- **Tamanho:** **160 × 120 tiles** (2560 × 1920 px; aumentada a pedido do Ricardo para salões de caça maiores). O `preview.py` dá "AVISO tamanho" (esperado: lugar de dentro).
 - **Gerador:** `gruta_arco.js`, função `redArchCave()`. As duas cavernas do Acampamento saem do mesmo molde
   (`visualizador_ferramentas/gera_cavernas.py` no repositório): mesmo pintor, mesmo shader, cores próprias.
 - **Chão:** `ga_floor.gdshader`, porte linha a linha do pintor de caverna (o kit não tem chão de caverna do Deserto; o
@@ -17,7 +17,7 @@
 
 ## Entrada e saída
 
-- **Entra:** pela porta do arco de pedra (rock_arch) no paredão norte do Vale das Areias Vermelhas, tiles (112-113, 12) do Acampamento dos Nômades. Chega aqui em **Entrada da Gruta (60, 84)** (px: 968, 1360).
+- **Entra:** pela porta do arco de pedra (rock_arch) no paredão norte do Vale das Areias Vermelhas, tiles (112-113, 12) do Acampamento dos Nômades. Chega aqui em **Entrada da Gruta (60, 115)** (px: 968, 1840).
 - **Sai:** pela **borda sul, colunas 56-63** (8 tiles): `{k:'edge', m:'nd', x, y}` — volta para o Acampamento na frente da
   porta, no tile (112, 14). O gatilho leva `x` **e** `y` (é a volta de uma porta, não uma passagem entre mapas abertos).
 - O formato da porta no jogo não está no kit: no Acampamento ela vem no campo extra `doors` do gerador (tiles, destino e
@@ -28,11 +28,11 @@
 | # | Zona | O que tem |
 |---|---|---|
 | 0 | Gruta do Arco Vermelho (túneis) | |
-| 1 | Entrada da Gruta (60, 80) | acampamento dos exploradores encostado na parede |
-| 2 | Galeria (60, 58) | túnel largo ligando os salões |
-| 3 | Salão Oeste (28, 30), **caça** | enorme e **vazio** no meio; só tochas e rochedos colados na parede |
-| 4 | Salão Leste (92, 30), **caça** | idem |
-| 5 | Câmara do Fundo (60, 22) | a câmara do marco da gruta (vai receber o poço de areia da folha nova) |
+| 1 | Entrada da Gruta (60, 110) | acampamento dos exploradores encostado na parede |
+| 2 | Galeria (64, 88) | túnel largo ligando os salões |
+| 3 | Salão Oeste (32, 52), **caça** | ~52 × 40 tiles, e **vazio** no meio; só tochas e rochedos colados na parede |
+| 4 | Salão Leste (114, 54), **caça** | ~64 × 48 tiles, enorme e vazio no meio |
+| 5 | Câmara do Fundo (72, 16) | a câmara do marco da gruta (vai receber o poço de areia da folha nova) |
 
 ## Planta (pedido do Ricardo: pouca poluição)
 
@@ -45,8 +45,8 @@ A caverna é escura: 1 fogueira (raio 140) e as lanternas (raio 120) iluminam os
 
 ## Destinos sugeridos para o teleporte
 
-- **Entrada da Gruta (60, 84)**
-- **Salão Leste (92, 30)**
+- **Entrada da Gruta (60, 112)**
+- **Salão Leste (114, 54)**
 
 ## Arte
 

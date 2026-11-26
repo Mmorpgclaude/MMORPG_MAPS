@@ -1,10 +1,10 @@
 OK    sem erros de JavaScript
 OK    determinístico (rodou duas vezes e saiu igual)
 OK    S e zonas com W×H valores
-AVISO tamanho 120×90 (só lugar de dentro pode ter outro tamanho)
-OK    chão com 1920×1440 px (16 px por tile)
+AVISO tamanho 160×120 (só lugar de dentro pode ter outro tamanho)
+OK    chão com 2560×1920 px (16 px por tile)
 OK    gen_data com 1 texel por tile
 OK    passagem {"k": "edge", "m": "nd", "x": 1808, "y": 224}: 8 células na borda, livres
-OK    3313 de 3313 tiles livres alcançáveis a partir da passagem
+OK    5506 de 5506 tiles livres alcançáveis a partir da passagem
 OK    arte recortada com no máximo 128 cores (maior peça: 128)
-objetos: 12 · zonas: Gruta do Arco Vermelho, Entrada da Gruta, Galeria, Salão Oeste, Salão Leste, Câmara do Fundo
+objetos: 17 · zonas: Gruta do Arco Vermelho, Entrada da Gruta, Galeria, Salão Oeste, Salão Leste, Câmara do Fundo
