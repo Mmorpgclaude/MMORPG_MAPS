@@ -30,9 +30,9 @@
 | 3 | Gruta Oeste (36, 100), **caça** | salão grande, vazio no meio |
 | 4 | Gruta Leste (146, 100), **caça** | idem |
 | 5 | Salão dos Cristais (30, 40), **caça** | idem (vai receber os cristais âmbar) |
-| 6 | Praia Escura (152, 36), **caça** | **areia preta e brilhante** (tipo 5) descendo até a margem nordeste do lago; pedras lisas (com colisão) só na beira da água |
+| 6 | Praia Escura (152, 36), **caça** | salão vazio no meio; na margem nordeste do lago, pedras lisas (com colisão) só na beira da água |
 | 7 | Margem Norte (92, 14), **caça** | aberta; na margem do lago, um **píer velho de tábuas** (plano, x 91-92) com o **barco amarrado** ao lado e o poste de amarração |
-| 8 | Margens do Lago, **caça** | a margem larga em volta do lago, as duas ilhas e a ilhota |
+| 8 | Margens do Lago, **caça** | **areia preta e brilhante** (tipo 5) numa faixa de 3 a 5 tiles em volta de toda a água, ilhas incluídas; o resto da margem larga em volta do lago, as duas ilhas e a ilhota |
 
 O lago (água funda) fica no meio, com duas ilhas ligadas às margens leste e oeste por uma **passarela reta de tábuas**
 (plana, no `ov`, por onde se anda) e uma ilhota ligada à Margem Sul.

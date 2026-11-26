@@ -5,6 +5,6 @@ AVISO tamanho 180×140 (só lugar de dentro pode ter outro tamanho)
 OK    chão com 2880×2240 px (16 px por tile)
 OK    gen_data com 1 texel por tile
 OK    passagem {"k": "edge", "m": "ga", "x": 1256, "y": 240}: 8 células na borda, livres
-OK    9841 de 9841 tiles livres alcançáveis a partir da passagem
+OK    9828 de 9828 tiles livres alcançáveis a partir da passagem
 OK    arte recortada com no máximo 128 cores (maior peça: 128)
-objetos: 28 · zonas: Lago Subterrâneo, Chegada, Margem Sul, Gruta Oeste, Gruta Leste, Salão dos Cristais, Praia Escura, Margem Norte, Margens do Lago
+objetos: 33 · zonas: Lago Subterrâneo, Chegada, Margem Sul, Gruta Oeste, Gruta Leste, Salão dos Cristais, Praia Escura, Margem Norte, Margens do Lago

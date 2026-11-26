@@ -37,10 +37,11 @@ function lakeCave(){
   if(e<1&&!ISL.some(([a,b,rx,ry])=>Math.hypot((x-a)/rx,(y-b)/ry)<1))TY[i]=4}
  for(const [ax,ay,bx,by] of[[40,56,144,56],[92,80,92,96]]){const n=Math.ceil(Math.hypot(bx-ax,by-ay)*2);
   for(let s2=0;s2<=n;s2++){const x=ax+(bx-ax)*s2/n,y=ay+(by-ay)*s2/n;for(let j=-1;j<=0;j++)for(let k=-1;k<=0;k++){const tx=Math.round(x+k),ty=Math.round(y+j),i=ty*W+tx;if(TY[i]==4){TY[i]=0;BR[i]=1}}}}
- /* Praia Escura: areia preta e brilhante (TY 5) no salão nordeste e descendo pela margem até a água */
- for(let y=0;y<H;y++)for(let x=0;x<W;x++){const i=y*W+x;if(TY[i]==3||TY[i]==4||BR[i])continue;
-  const e=Math.hypot((x-152)/22,(y-36)/16)+(vn(x*16,y*16,30,160)-.5)*.3,sh=Math.hypot((x-128)/16,(y-46)/12)+(vn(x*16,y*16,30,161)-.5)*.3;
-  if(e<1||sh<1)TY[i]=5}
+ /* areia escura (TY 5): só numa faixa em volta do lago, de 3 a 5 tiles a partir da água (borda irregular) */
+ {const D=new Float32Array(W*H).fill(99),q=[];for(let i=0;i<W*H;i++)if(TY[i]==4){D[i]=0;q.push(i)}
+  for(let h=0;h<q.length;h++){const i=q[h],x=i%W,y=(i/W)|0;for(const [dx,dy] of[[1,0],[-1,0],[0,1],[0,-1]]){const nx=x+dx,ny=y+dy;if(nx<0||ny<0||nx>=W||ny>=H)continue;const n=ny*W+nx;
+   if(D[n]>D[i]+1&&TY[n]!=3){D[n]=D[i]+1;if(D[n]<7)q.push(n)}}}
+  for(let i=0;i<W*H;i++){if(TY[i]==3||TY[i]==4||BR[i])continue;const x=i%W,y=(i/W)|0;if(D[i]<=3+vn(x*16,y*16,40,162)*2.5)TY[i]=5}}
  /* Margem Norte: um píer velho de tábuas (plano) saindo da margem para dentro do lago */
  for(let y=28;y<=40;y++)for(const x of[91,92]){const i=y*W+x;if(TY[i]==4){TY[i]=0;BR[i]=1}}
  /* tira bolsões sem ligação com a saída */
