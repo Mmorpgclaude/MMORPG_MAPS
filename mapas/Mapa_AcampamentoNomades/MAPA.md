@@ -42,8 +42,8 @@ Norte, sul e oeste são fechados (dunas altas, `M = 2`).
 | 6 | Planície Escaldante | **área de caça**, em volta de (116, 99), raio 17: seca e aberta, 3 árvores mortas, mato seco e pedrinhas (sem colisão), rochedos baixos na beirada |
 | 7 | Vale das Areias Vermelhas | **área de caça**, em volta de (116, 24), raio 15: anel de rochedos vermelhos grandes em volta, cascalho vermelho no meio |
 | 8 | Campos do Vento | **área de caça**, em volta de (20, 46), raio 14: dunas baixas soltas formando corredores, mato seco rolando, 3 redemoinhos |
-| 9 | Entrada do Templo Soterrado | o portal antigo no pé de um morro irregular de dunas, entre rochedos encostados, com pedras e mato seco na boca |
-| 10 | Gruta do Arco Vermelho | o arco de pedra numa encosta de rochedos vermelhos, no paredão norte; a boca escura fica só dentro do vão (pintada no `ov`, topo arredondado), e a sombra de dentro do arco foi tingida de escuro (`rock_arch_cave`) |
+| 9 | Entrada do Templo Soterrado | entrada de caverna de areia com o portal esculpido (`cave_temple`, folha_cavernas), no pé do morro de areia, com lajes, capim seco e dois barris em volta |
+| 10 | Gruta do Arco Vermelho | entrada de caverna de arenito vermelho (`cave_red`, folha_cavernas), encostada na parede de areia do norte |
 
 `gen_data`: R = chão, G = `RDD` × 10, B = `M` + zona × 16 (como o exemplo do Deserto).
 
@@ -51,8 +51,8 @@ Norte, sul e oeste são fechados (dunas altas, `M = 2`).
 
 | Porta (tiles) | Peça | Leva para | Chega em (px) |
 |---|---|---|---|
-| (121-123, 87), no vão do portal | `ruin_gate` | Templo Soterrado (`ts`) | (968, 1360) = tile (60, 85) |
-| (112-113, 12), no vão do arco | `rock_arch` | Gruta do Arco Vermelho (`ga`) | (968, 1360) = tile (60, 85) |
+| (121-124, 87), na boca | `cave_temple` | Templo Soterrado (`ts`) | (968, 1360) = tile (60, 85) |
+| (112-114, 12), na boca | `cave_red` | Gruta do Arco Vermelho (`ga`) | (968, 1360) = tile (60, 85) |
 
 - As portas vêm no **campo extra `doors`** do gerador (`[{m, cells:[x,y, x,y,...], x, y}]`): o kit não traz o formato da
   porta do jogo. O Claude do jogo liga no formato do jogo.
@@ -60,6 +60,18 @@ Norte, sul e oeste são fechados (dunas altas, `M = 2`).
   jogador não passa por trás.
 - Cada caverna sai pela borda sul e volta para a frente da porta: Templo → tile (122, 89); Gruta → tile (112, 14).
 - As duas cavernas têm pasta própria (`Mapa_TemploSoterrado/`, `Mapa_GrutaArcoVermelho/`) com o `MAPA.md` delas.
+
+## Entradas das cavernas (folha_cavernas)
+
+- Folha `Assets_Nomades/folha_cavernas.png` (prompt `PROMPT_ASSETS_CAVERNA_AREIA.md`), registro `pecas_folha_cavernas.json`.
+- Cada entrada é dividida em 3 partes (a peça da folha vinha com a areia desenhada embaixo): `<peça>_chao` vai para o `ov`
+  (a areia do funil, retingida com a paleta do chão do Deserto), `<peça>_fundo` é o objeto da pedra em volta da boca (base na
+  linha da boca) e `<peça>_frente` é o objeto das pedrinhas dos lados do funil (base na borda de baixo). Geometria (boca e
+  corte) em `arte/info_cavernas.json`.
+- Porta: os tiles da boca (Templo: (121-124, 87); Gruta: (112-114, 12)). Colisão: a pedra em volta da boca e as pedrinhas
+  dos lados; o meio do funil é livre. Uma luz quente (`dark`) acende na boca à noite.
+- Não usados (pedido do Ricardo, sem animais): o crânio e as costelas da folha. O portal antigo (`ruin_gate`) e o arco de
+  pedra saíram.
 
 ## Luzes (`dark`) e efeitos (`fx`)
 
