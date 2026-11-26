@@ -120,7 +120,7 @@ func load_map(id: String) -> void:
 ## Brilho redondo (como o lamp_glow do jogo): branco no meio, sumindo nas bordas.
 func _glow_tex() -> Texture2D:
 	var g := Gradient.new()
-	g.set_color(0, Color(1, 1, 1, 1)); g.set_color(1, Color(1, 1, 1, 0))
+	g.set_color(0, Color(1, 0.78, 0.45, 1)); g.set_color(1, Color(1, 0.6, 0.25, 0))
 	var t := GradientTexture2D.new()
 	t.gradient = g; t.fill = GradientTexture2D.FILL_RADIAL
 	t.fill_from = Vector2(0.5, 0.5); t.fill_to = Vector2(1.0, 0.5); t.width = 64; t.height = 64
