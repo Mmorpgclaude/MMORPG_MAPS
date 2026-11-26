@@ -162,10 +162,10 @@ GRUTA = dict(
    else if(ad<w+2&&yy<ah+2)P('rgb(36,24,16)',x,y)}
   dark.push([MX,ey-14,70,.55]);
   /* o arco das lanternas na frente da abertura: postes nos lados, lanternas penduradas para dentro; a corda num canto */
-  const lp=mkA('lamppost'),lf=mkA('lamppost',true),rp=mkA('ropes'),G=58,by=(top+4)*T+4;
-  put(lp,MX-G,by);put(lf,MX+G-lf.width,by);put(rp,MX+G+6,(top+3)*T+4);
+  const lp=mkA('lamppost'),lf=mkA('lamppost',true),rp=mkA('ropes'),G=96,by=(top+2)*T+10;
+  put(lp,MX-G,by);put(lf,MX+G-lf.width,by);put(rp,MX+G-4,(top+4)*T);
   for(const x of[MX-G+lp.width-18,MX+G-lf.width+18]){const y=by-lp.height+32;fx.lamp.push([x,y]);dark.push([x,y,120,1])}
-  for(const x of[(MX-G+12)>>4,(MX+G-12)>>4])S[(top+4)*W+x]=1;
+  for(const x of[(MX-G+12)>>4,(MX+G-12)>>4])S[(top+2)*W+x]=1;
   const c=[];for(let x=77;x<=79;x++)if(F[top*W+x])c.push(x,top);
   DOORS.push({m:'lg',cells:c,x:60*16+8,y:126*16})}''')
 
