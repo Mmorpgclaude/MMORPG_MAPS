@@ -38,7 +38,7 @@
 | 7 | Salão Desmoronado Leste (104, 92), **caça** | idem |
 | 8 | Cripta Leste (104, 52), **caça** | idem |
 | 9 | Salão das Areias (143, 72), **caça** | idem, o mais a leste |
-| 10 | Galeria Norte (106, 15), **caça** | idem, ligada à Câmara Selada; na parede norte, uma **boca natural de caverna** (colunas de pedras arredondadas e arco de pedras, com luz quente lá dentro, pintada no `ov`; tiles da porta (105-107, 6)) que desce para a **Tumba do Rei da Areia** (`tr`), chegando lá em (60, 115) |
+| 10 | Galeria Norte (106, 15), **caça** | idem, ligada à Câmara Selada; na parede norte, uma **boca natural de caverna** (a peça `passagem_boca.png`, recortada da imagem de referência do Ricardo, pintada no `ov`; tiles da porta (104-108, 6)) que desce para a **Tumba do Rei da Areia** (`tr`), chegando lá em (60, 115) |
 
 ## Planta (pedido do Ricardo: pouca poluição)
 
