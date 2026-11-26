@@ -130,8 +130,13 @@ function buriedTemple(){
     (arte/passagem_boca.png, metade do tamanho, 128 cores, simétrica: o lado direito espelhado no esquerdo), pintada no ov com a boca centrada na porta. Desce para a Tumba do
     Rei da Areia (tr), chegando em (60, 115). Colisão: as colunas de pedra nas fileiras do chão, menos a boca. */
  {let ty=15;while(ty>2&&F[(ty-1)*W+106])ty--;
-  const G={"w": 172, "h": 113, "mx": 86, "mb": 86},A=ART.passagem_boca,CX=106*T+8,BY=ty*T+4,x0=CX-G.mx,y0=BY-G.mb;
+  const G={"w": 172, "h": 127, "mx": 86, "mb": 86},A=ART.passagem_boca,CX=106*T+8,BY=ty*T+4,x0=CX-G.mx,y0=BY-G.mb;
+  /* luz quente saindo da boca e se espalhando no chão da frente (leque translúcido, no ov) */
+  for(let y=BY-8;y<BY+52;y++)for(let x=CX-48;x<=CX+48;x++){const u=(x-CX)/(26+(y-BY+8)*.45),v=(y-BY+8)/60;const e=u*u+v*v;if(e>=1)continue;
+   og.fillStyle='rgba(255,170,80,'+(.22*(1-e)*(1-v)).toFixed(3)+')';og.fillRect(x,y,1,1)}
   og.drawImage(A,x0,y0);
+  /* sombra de contato no pé das duas colunas */
+  for(const sx of[-1,1]){const bx=CX+sx*30;for(let y=-3;y<=3;y++)for(let x=-16;x<=16;x++){if((x*x)/256+(y*y)/9>1)continue;og.fillStyle='rgba(30,18,10,.28)';og.fillRect(bx+x,BY+6+y,1,1)}}
   const [c,,q]=cmCv(G.w,G.h);q.drawImage(A,0,0);const d=q.getImageData(0,0,G.w,G.h).data;
   for(let tyy=ty;tyy*T<y0+G.h;tyy++)for(let tx=Math.floor(x0/T);tx<=Math.floor((x0+G.w-1)/T);tx++){if(tx>=104&&tx<=108)continue;let n=0;
    for(let py=tyy*T;py<tyy*T+16;py++)for(let px=tx*T;px<tx*T+16;px++){const lx=px-x0,ly=py-y0;if(lx>=0&&ly>=0&&lx<G.w&&ly<G.h&&d[(ly*G.w+lx)*4+3])n++}
@@ -142,7 +147,7 @@ function buriedTemple(){
  for(let k=4;k<=9;k++){const h=HALLS[k];
   fire(Math.round(h[0]-h[2]*.55),Math.round(h[1]-h[3]*.6));fire(Math.round(h[0]+h[2]*.55),Math.round(h[1]-h[3]*.6));
   for(let q=0;q<3;q++){const sx=Math.round(h[0]+(q-1)*h[2]*.45);let y=Math.round(h[1]);while(y>0&&F[(y-1)*W+sx])y--;
-   if(y<=0)continue;fx.sand.push([sx*T+8,y*T-4,hq(k,q)*6.28]);
+   if(y<=0||(k==9&&Math.abs(sx-106)<12))continue;fx.sand.push([sx*T+8,y*T-4,hq(k,q)*6.28]);
    const px=sx*T+8,py=y*T+34;for(let j=-3;j<=3;j++)for(let i=-9;i<=9;i++){if((i*i)/81+(j*j)/9>1)continue;og.fillStyle=j<0?'#dcbc84':'#c8a46a';og.fillRect(px+i,py+j,1,1)}}}
  /* poeira no ar e areia escorrendo do teto */
  for(let k=0;k<90;k++){const x=4+hq(k,61)*(W-8)|0,y=4+hq(k,62)*(H-8)|0;if(F[y*W+x])fx.dust.push([x*T+8,y*T+8,hq(k,63)*6.28])}
