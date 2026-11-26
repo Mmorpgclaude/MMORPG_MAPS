@@ -39,7 +39,7 @@ void fragment() {
 	int m = matAt(x, y);
 	if (m > 0) {
 		int fd = 255;
-		for (int k = 1; k <= 40; k++) { if (y + k >= map_size.y * 16) break; if (!sol(x, y + k)) { fd = k; break; } }
+		for (int k = 1; k <= 48; k++) { if (y + k >= map_size.y * 16) break; if (!sol(x, y + k)) { fd = k; break; } }
 		if (m == 1) {
 			int fh = int(26.0 + vn(X, 3.0, 13.0, 30) * 16.0);
 			if (fd > 0 && fd <= fh) {
@@ -71,7 +71,7 @@ void fragment() {
 				c = cc * k;
 			}
 		} else {
-			int fh = int(16.0 + vn(X, 5.0, 17.0, 37) * 10.0);
+			int fh = int(34.0 + vn(X, 5.0, 17.0, 37) * 12.0);   // nd: paredes de areia mais altas que no kit (16 + 10)
 			if (fd > 0 && fd <= fh) {
 				float v = float(fd) / float(fh), rip = sin((X * 0.45 + Y * 1.1 + vn(X, Y, 30.0, 38) * 10.0) * 0.6);
 				float k = (0.72 + 0.36 * v) * (0.97 + 0.03 * rip) * grain; c = vec3(214.0, 176.0, 118.0) * k; if (fd < 3) c *= vec3(0.75, 0.75, 0.78);

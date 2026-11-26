@@ -111,7 +111,7 @@ function nomadCamp(){
     if(fd>0&&fd<=fh){const row=((y)/6|0),bx=(x+(row&1)*8)%16;const cc=bx==0||y%6==0?SSc[1]:hq(x>>2,y>>1)<.5?SSc[3]:SSc[2];let k=.75+.35*(fd/fh);if(fd<3)k*=.6;r=cc[0]*k;g=cc[1]*k;b=cc[2]*k}
     else{const u=x%16,v=y%12;let cc=hq(x>>4,(y/12)|0)<.5?SSc[4]:SSc[3];let k=grain;if(u==0||v==0)cc=SSc[1];else if(u==1||v==1)k*=1.12;
      if((x%48)<2||(x%48)>45)cc=SSc[2];if(x%80<6){cc=SSc[5];if(x%80==5)cc=SSc[1]}r=cc[0]*k;g=cc[1]*k;b=cc[2]*k}}
-   else{const fh=16+vn(x,5,17,37)*10|0;
+   else{const fh=34+vn(x,5,17,37)*12|0;   /* nd: paredes de areia mais altas que no kit (16+10), pedido do Ricardo */
     if(fd>0&&fd<=fh){/* encosta da duna alta */const v=fd/fh,rip=Math.sin((x*.45+y*1.1+vn(x,y,30,38)*10)*.6);let k=(.72+.36*v)*(.97+.03*rip)*grain;r=214*k;g=176*k;b=118*k;if(fd<3){r*=.75;g*=.75;b*=.78}}
     else{/* topo da duna: claro, com cristas iluminadas */const h=hgt(x,y),gx=hgt(x+5,y)-hgt(x-5,y),gy=hgt(x,y+5)-hgt(x,y-5),sh=-(gx+gy)*9;
      const rip=Math.sin((x*.35+y*.9+vn(x,y,40,2)*14)*.55);let k=(1.02+sh*.25)*(.96+.04*rip)*grain;r=226*k;g=190*k;b=132*k;

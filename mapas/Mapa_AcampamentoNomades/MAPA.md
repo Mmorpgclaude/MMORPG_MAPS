@@ -8,9 +8,11 @@
 - **Gerador:** `acampamento_nomades.js`, função `nomadCamp()`. Feito sobre `exemplo_deserto/deserto_exemplo.js`: o pintor do
   chão, o `ds5b` e o ajudante da arte (`aNear`/`aScat`/`aBox`...) são **cópia exata**; mudam só a grade (dunas, estrada,
   clareiras, bordas), as zonas, os objetos e as passagens.
-- **Chão:** `nd_floor.gdshader` = `dx_floor.gdshader` do kit **sem nenhuma mudança** (precisa de `gen_common.gdshaderinc` e
-  `ds_post.gdshaderinc`). Conferido no Godot 4.7.2: **99,99 %** dos pixels com diferença ≤ 2 em relação à `floor_ref.png`,
-  PSNR **55,9 dB**.
+- **Chão:** `nd_floor.gdshader` = `dx_floor.gdshader` do kit com **uma mudança, pedida pelo Ricardo: as paredes de areia
+  (encosta das dunas altas, `M = 2`) são mais altas** — `fh = 34 + vn·12` px em vez de `16 + vn·10` (e o laço que acha a
+  encosta vai até 48 px em vez de 40). A mesma mudança está no pintor de `acampamento_nomades.js`; o resto do pintor e o
+  `ds5b` são cópia exata. Precisa de `gen_common.gdshaderinc` e `ds_post.gdshaderinc`. Conferido no Godot 4.7.2:
+  **99,99 %** dos pixels com diferença ≤ 2 em relação à `floor_ref.png`, PSNR **55,9 dB**.
 - **Efeitos:** `fx_nd.gd` = `fx_dx.gd` do kit (`extends "res://scripts/fx_sand.gd"`), sem mudança no código.
 
 ## Pedido do Ricardo: **sem animais**
