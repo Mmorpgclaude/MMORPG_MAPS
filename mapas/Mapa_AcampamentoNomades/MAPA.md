@@ -43,7 +43,7 @@ Norte, sul e oeste são fechados (dunas altas, `M = 2`).
 | 7 | Vale das Areias Vermelhas | **área de caça**, em volta de (116, 24), raio 15: anel de rochedos vermelhos grandes em volta, cascalho vermelho no meio |
 | 8 | Campos do Vento | **área de caça**, em volta de (20, 46), raio 14: dunas baixas soltas formando corredores, mato seco rolando, 3 redemoinhos |
 | 9 | Entrada do Templo Soterrado | o portal antigo no pé de um morro irregular de dunas, entre rochedos encostados, com pedras e mato seco na boca |
-| 10 | Gruta do Arco Vermelho | o arco de pedra numa encosta de rochedos vermelhos, no paredão norte, com o vão escuro e pedras na boca |
+| 10 | Gruta do Arco Vermelho | o arco de pedra numa encosta de rochedos vermelhos, no paredão norte; a boca escura fica só dentro do vão (pintada no `ov`, topo arredondado), e a sombra de dentro do arco foi tingida de escuro (`rock_arch_cave`) |
 
 `gen_data`: R = chão, G = `RDD` × 10, B = `M` + zona × 16 (como o exemplo do Deserto).
 

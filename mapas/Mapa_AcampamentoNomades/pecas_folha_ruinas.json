@@ -27,13 +27,6 @@
   ],
   0.5
  ],
- "rock_arch": [
-  [
-   1180,
-   160
-  ],
-  0.5
- ],
  "ruin_gate": [
   [
    981,
@@ -124,5 +117,16 @@
    951
   ],
   0.4
- ]
+ ],
+ "rock_arch_cave": {
+  "base": "rock_arch",
+  "obs": "rock_arch do kit com a sombra de dentro do v\u00e3o tingida de escuro (boca da gruta)",
+  "valor": [
+   [
+    1180,
+    160
+   ],
+   0.5
+  ]
+ }
 }

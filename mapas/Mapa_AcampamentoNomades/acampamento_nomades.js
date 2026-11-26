@@ -199,7 +199,10 @@ function nomadCamp(){
  const og=oc.getContext('2d');
  const hole=(cx,by,w,h)=>{for(let k=0;k<6;k++){og.fillStyle='rgba(20,12,8,'+(.25+k*.13)+')';og.beginPath();og.ellipse(cx,by-h/2,w/2-k*2,h/2-k*2,0,0,Math.PI*2);og.fill()}};
  hole(GATE[0]*T+8,(GATE[1]+1)*T-6,56,70);aPut('ruin_gate',GATE[0],GATE[1],{bw:3,br:1,cols:[-3,-2,2,3],res:2});
- hole(ARC[0]*T+16,(ARC[1]+1)*T-6,60,64);aPut('rock_arch',ARC[0],ARC[1],Object.assign({res:2},ARCH));
+ /* boca da gruta: o escuro fica só dentro do vão do arco (topo arredondado, sem escorrer para a areia da frente) */
+ {const a=ART.rock_arch_cave,x0=ARC[0]*T+8-(a.width>>1),by=(ARC[1]+1)*T,cx=x0+Math.round(a.width*.48),top=by-a.height+30,bot=by-8,hw=26;
+  for(let k=0;k<7;k++){const i=k*2.5;og.fillStyle='rgba(18,10,6,'+(.35+k*.1)+')';og.beginPath();og.ellipse(cx,top+hw,hw-i,hw-i,0,Math.PI,0);og.lineTo(cx+hw-i,bot-4-i);og.quadraticCurveTo(cx,bot+4-i,cx-hw+i,bot-4-i);og.closePath();og.fill()}}
+ aPut('rock_arch_cave',ARC[0],ARC[1],Object.assign({res:2},ARCH));
  const doors=[{m:'ts',cells:[GATE[0]-1,GATE[1],GATE[0],GATE[1],GATE[0]+1,GATE[1]],x:60*T+8,y:85*T},
               {m:'ga',cells:[ARC[0],ARC[1],ARC[0]+1,ARC[1]],x:60*T+8,y:85*T}];
  aRes(GATE[0]-4,GATE[1],GATE[0]+4,GATE[1]+3);aRes(ARC[0]-4,ARC[1],ARC[0]+5,ARC[1]+3);
