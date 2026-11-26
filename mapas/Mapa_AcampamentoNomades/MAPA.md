@@ -51,7 +51,7 @@ Norte, sul e oeste são fechados (dunas altas, `M = 2`).
 
 | Porta (tiles) | Peça | Leva para | Chega em (px) |
 |---|---|---|---|
-| (121-124, 87), na boca | `cave_temple` | Templo Soterrado (`ts`) | (968, 1360) = tile (60, 85) |
+| (121-124, 87), na boca | `cave_temple` | Templo Soterrado (`ts`) | (968, 1840) = tile (60, 115) |
 | (111-115, 12), na boca | `cave_sand` | Gruta do Arco Vermelho (`ga`) | (968, 1840) = tile (60, 115) |
 
 - As portas vêm no **campo extra `doors`** do gerador (`[{m, cells:[x,y, x,y,...], x, y}]`): o kit não traz o formato da

@@ -1,14 +1,14 @@
 /* ---------- Templo Soterrado (mapa 'ts') — caverna (lugar de dentro) do Acampamento dos Nômades (nd) ----------
-   Um templo antigo engolido pelas dunas: salões de lajes, a galeria das colunas, o salão do ídolo com a cabeça da estátua e
-   os obeliscos, uma câmara de jarros e dois salões desmoronados, cheios de areia, largos para caçar.
-   Entrada e saída: a porta do portal antigo (ruin_gate), no monte de areia da Planície Escaldante, no Acampamento leva para cá (chega em (60, 85)); a saída é a borda sul (colunas 56-63),
-   que volta para a frente da porta. Lugar de dentro: tamanho livre (120 × 90).
+   Um templo antigo engolido pelas dunas. O eixo do templo (lajes): Salão da Entrada, Galeria das Colunas, Salão do Ídolo e a
+   Câmara Selada. Dos dois lados, SEIS salões desmoronados e criptas cheias de areia, largos para caçar, ligados em anel.
+   Entrada e saída: a porta da entrada de caverna com o portal esculpido (cave_temple), no morro de areia da Planície Escaldante, no Acampamento leva para cá (chega em (60, 115)); a saída é a borda sul (colunas 56-63),
+   que volta para a frente da porta. Lugar de dentro: tamanho livre (160 × 120).
    Chão: pintor por pixel de caverna (o mesmo nas duas cavernas do Acampamento), espelhado em ts_floor.gdshader.
    gen_data: R = andável, G = distância até o caminho principal × 10, B = tipo do chão × 40
    (0 chão de arenito com cascalho, 1 areia acumulada, 2 lajes do templo, 3 rocha: parede e teto). 1 tile = 16 px.
    Objetos: peças prontas do kit (exemplo_deserto/arte), colocadas pelo ajudante do Deserto. Sem animais nem ossadas. */
 function buriedTemple(){
- const T=16,W=120,H=90,FW=W*T,FH=H*T;
+ const T=16,W=160,H=120,FW=W*T,FH=H*T;
  const vn=(x,y,s,sd)=>{const X=x/s,Y=y/s,x0=Math.floor(X),y0=Math.floor(Y),fx=X-x0,fy=Y-y0,u=fx*fx*(3-2*fx),v=fy*fy*(3-2*fy),
   a=hq(x0+sd*131,y0),b=hq(x0+1+sd*131,y0),c=hq(x0+sd*131,y0+1),d=hq(x0+1+sd*131,y0+1);return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v};
  const vorC=(x,y,s,sd)=>{const gx=Math.floor(x/s),gy=Math.floor(y/s);let d1=1e9,d2=1e9,id=0,ccx=0,ccy=0;
@@ -19,11 +19,11 @@ function buriedTemple(){
  const fx={dust:[],sand:[],fire:[],lamp:[],glint:[]};
  const DOORS=[];   /* portas para outros lugares de dentro (escadas) */
  const put=(cv,x,ybase,lb)=>{const e={img:cv,x:Math.round(x),y:ybase,z:ybase-cv.height+2,sw:cv.width,sh:cv.height};if(lb)e.lb=lb;ents.push(e)};
- const zn=['Templo Soterrado','Salão da Entrada','Galeria das Colunas','Salão do Ídolo','Câmara Selada','Salão Desmoronado Oeste','Salão Desmoronado Leste'];
+ const zn=['Templo Soterrado','Salão da Entrada','Galeria das Colunas','Salão do Ídolo','Câmara Selada','Salão Desmoronado Oeste','Cripta Oeste','Salão Desmoronado Leste','Cripta Leste','Salão das Areias','Galeria Norte'];
  /* ===== grade: rocha em tudo, os salões e os túneis são escavados ===== */
  const TY=new Uint8Array(W*H).fill(3),SL=new Uint8Array(W*H);
- const HALLS=[[60,80,11,6,1,1],[60,58,17,9,2,1],[60,26,22,13,3,1],[22,44,15,13,5,0],[98,44,15,13,6,0],[60,8,8,3,4,1]];   /* [x, y, rx, ry, zona, lajes] */
- const TUN=[[60,86,60,58,4],[60,58,60,26,4],[60,58,22,44,3.6],[60,58,98,44,3.6],[60,26,60,8,3]];       /* túneis entre os salões: [x0, y0, x1, y1, largura] */
+ const HALLS=[[60,110,11,6,1,1],[60,86,16,9,2,1],[60,42,20,12,3,1],[60,14,9,4,4,1],[22,88,17,13,5,0],[22,46,17,14,6,0],[104,92,21,13,7,0],[104,52,20,14,8,0],[143,72,14,20,9,0],[106,15,22,9,10,0]];   /* [x, y, rx, ry, zona, lajes] */
+ const TUN=[[60,116,60,86,4],[60,86,60,42,4],[60,42,60,14,3],[60,86,22,88,3.6],[22,88,22,46,3.6],[22,46,60,42,3.4],[60,86,104,92,3.6],[104,92,104,52,3.6],[104,52,60,42,3.4],[104,92,143,72,3.6],[104,52,143,72,3.4],[104,52,106,15,3.4],[106,15,60,14,3]];       /* túneis entre os salões: [x0, y0, x1, y1, largura] */
  for(let y=0;y<H;y++)for(let x=0;x<W;x++){const X=x*16,Y=y*16;
   for(const [hx,hy,rx,ry,zz,sl] of HALLS){const e=Math.hypot((x-hx)/rx,(y-hy)/ry)+(vn(X,Y,46,90)-.5)*.42;if(e<1){TY[y*W+x]=0;Z[y*W+x]=zz;if(sl&&e<.86)SL[y*W+x]=1}}}
  for(const [ax,ay,bx,by,w] of TUN){const n=Math.ceil(Math.hypot(bx-ax,by-ay)*2);for(let s2=0;s2<=n;s2++){const x=ax+(bx-ax)*s2/n,y=ay+(by-ay)*s2/n,r=w+(vn(x*16,y*16,60,90+1)-.5)*1.4;
@@ -108,17 +108,18 @@ function buriedTemple(){
  const HALL=k=>HALLS[k];
  const inHall=(k,f=1)=>(x,y)=>{const h=HALLS[k];return Math.hypot((x-h[0])/h[2],(y-h[1])/h[3])<f};
  const rim=k=>(x,y)=>{const h=HALLS[k],e=Math.hypot((x-h[0])/h[2],(y-h[1])/h[3]);return e>.62&&e<1.1};
- /* Salao da Entrada: acampamento encostado na parede esquerda */
- fire(52,79);aNear('goods',50,76,{});aNear('jar',53,75,{bw:0});torch(68,77,{flip:true});
+ /* Salao da Entrada: acampamento encostado na parede */
+ fire(52,109);aNear('goods',50,106,{});aNear('jar',53,105,{bw:0});torch(69,107,{flip:true});
  /* Galeria: colunas encostadas nas paredes, meio largo e livre */
- for(const x of[46,74])for(const y of[53,63])aNear('column',x,y,{bw:0,fit:0,road:0,res:0});
- torch(44,58);torch(76,58,{flip:true});
+ for(const x of[46,74])for(const y of[81,91])aNear('column',x,y,{bw:0,fit:0,road:0,res:0});
+ torch(45,86);torch(75,86,{flip:true});
  /* Salao do Idolo: estatua no fundo, obeliscos so na parede de tras */
- aNear('statue_head',60,16,{fit:2,br:2,road:0});aNear('obelisk',44,20,{bw:1,road:0});aNear('obelisk',76,20,{bw:1,road:0});
- torch(48,24);torch(72,24,{flip:true});
- /* saloes de caca laterais: vazios no meio */
- aNear('column_broken',12,36,{bw:0,road:0});torch(22,33);aNear('column_broken',108,36,{bw:0,road:0});torch(98,33,{flip:true});
- torch(14,52);torch(106,52,{flip:true});
+ aNear('statue_head',60,32,{fit:2,br:2,road:0});aNear('obelisk',44,36,{bw:1,road:0});aNear('obelisk',76,36,{bw:1,road:0});
+ torch(48,40);torch(72,40,{flip:true});torch(60,12);
+ /* 6 saloes de caca (5 a 10): vazios no meio; uma coluna quebrada colada na parede e duas tochas no alto de cada um */
+ for(let k=4;k<=9;k++){const h=HALLS[k];
+  aScat(['column_broken'],1,600+k*10,(x,y)=>{const e=Math.hypot((x-h[0])/h[2],(y-h[1])/h[3]);return e>.85&&e<1.05},{bw:0,fit:1,road:0});
+  torch(Math.round(h[0]-h[2]*.55),Math.round(h[1]-h[3]*.6));torch(Math.round(h[0]+h[2]*.55),Math.round(h[1]-h[3]*.6),{flip:true})}
  /* poeira no ar e areia escorrendo do teto */
  for(let k=0;k<90;k++){const x=4+hq(k,61)*(W-8)|0,y=4+hq(k,62)*(H-8)|0;if(F[y*W+x])fx.dust.push([x*T+8,y*T+8,hq(k,63)*6.28])}
  for(let k=0;k<200&&fx.sand.length<16;k++){const x=4+hq(k,64)*(W-8)|0,y=4+hq(k,65)*(H-8)|0;if(F[y*W+x]&&!F[(y-1)*W+x])fx.sand.push([x*T+8,y*T-4,hq(k,66)*6.28])}

@@ -100,26 +100,27 @@ function %(FN)s(){
 '''
 
 TEMPLO = dict(
- ID='ts', W=120, H=90, CH=85, FN='buriedTemple', NOME='Templo Soterrado', PORTA='do portal antigo (ruin_gate), no monte de areia da Planície Escaldante,',
- DESC='''   Um templo antigo engolido pelas dunas: salões de lajes, a galeria das colunas, o salão do ídolo com a cabeça da estátua e
-   os obeliscos, uma câmara de jarros e dois salões desmoronados, cheios de areia, largos para caçar.''',
- ZN="['Templo Soterrado','Salão da Entrada','Galeria das Colunas','Salão do Ídolo','Câmara Selada','Salão Desmoronado Oeste','Salão Desmoronado Leste']",
- HALLS="[[60,80,11,6,1,1],[60,58,17,9,2,1],[60,26,22,13,3,1],[22,44,15,13,5,0],[98,44,15,13,6,0],[60,8,8,3,4,1]]",
- TUN="[[60,86,60,58,4],[60,58,60,26,4],[60,58,22,44,3.6],[60,58,98,44,3.6],[60,26,60,8,3]]",
+ ID='ts', W=160, H=120, CH=115, FN='buriedTemple', NOME='Templo Soterrado', PORTA='da entrada de caverna com o portal esculpido (cave_temple), no morro de areia da Planície Escaldante,',
+ DESC='''   Um templo antigo engolido pelas dunas. O eixo do templo (lajes): Salão da Entrada, Galeria das Colunas, Salão do Ídolo e a
+   Câmara Selada. Dos dois lados, SEIS salões desmoronados e criptas cheias de areia, largos para caçar, ligados em anel.''',
+ ZN="['Templo Soterrado','Salão da Entrada','Galeria das Colunas','Salão do Ídolo','Câmara Selada','Salão Desmoronado Oeste','Cripta Oeste','Salão Desmoronado Leste','Cripta Leste','Salão das Areias','Galeria Norte']",
+ HALLS="[[60,110,11,6,1,1],[60,86,16,9,2,1],[60,42,20,12,3,1],[60,14,9,4,4,1],[22,88,17,13,5,0],[22,46,17,14,6,0],[104,92,21,13,7,0],[104,52,20,14,8,0],[143,72,14,20,9,0],[106,15,22,9,10,0]]",
+ TUN="[[60,116,60,86,4],[60,86,60,42,4],[60,42,60,14,3],[60,86,22,88,3.6],[22,88,22,46,3.6],[22,46,60,42,3.4],[60,86,104,92,3.6],[104,92,104,52,3.6],[104,52,60,42,3.4],[104,92,143,72,3.6],[104,52,143,72,3.4],[104,52,106,15,3.4],[106,15,60,14,3]]",
  SD=90, R0='[150,104,70]', R1='[170,124,84]', R2='[128,88,60]', R3='[184,140,96]',
- SLR='[184,160,120][(id*3)|0]'.replace('[(id*3)|0]',''), SLG='', SLB='',
+ SLR='', SLG='', SLB='',
  FR=92, FG=70, FB=50, VX='122*16+8', VY='89*16',
- OBJ=''' /* Salao da Entrada: acampamento encostado na parede esquerda */
- fire(52,79);aNear('goods',50,76,{});aNear('jar',53,75,{bw:0});torch(68,77,{flip:true});
+ OBJ=''' /* Salao da Entrada: acampamento encostado na parede */
+ fire(52,109);aNear('goods',50,106,{});aNear('jar',53,105,{bw:0});torch(69,107,{flip:true});
  /* Galeria: colunas encostadas nas paredes, meio largo e livre */
- for(const x of[46,74])for(const y of[53,63])aNear('column',x,y,{bw:0,fit:0,road:0,res:0});
- torch(44,58);torch(76,58,{flip:true});
+ for(const x of[46,74])for(const y of[81,91])aNear('column',x,y,{bw:0,fit:0,road:0,res:0});
+ torch(45,86);torch(75,86,{flip:true});
  /* Salao do Idolo: estatua no fundo, obeliscos so na parede de tras */
- aNear('statue_head',60,16,{fit:2,br:2,road:0});aNear('obelisk',44,20,{bw:1,road:0});aNear('obelisk',76,20,{bw:1,road:0});
- torch(48,24);torch(72,24,{flip:true});
- /* saloes de caca laterais: vazios no meio */
- aNear('column_broken',12,36,{bw:0,road:0});torch(22,33);aNear('column_broken',108,36,{bw:0,road:0});torch(98,33,{flip:true});
- torch(14,52);torch(106,52,{flip:true});''')
+ aNear('statue_head',60,32,{fit:2,br:2,road:0});aNear('obelisk',44,36,{bw:1,road:0});aNear('obelisk',76,36,{bw:1,road:0});
+ torch(48,40);torch(72,40,{flip:true});torch(60,12);
+ /* 6 saloes de caca (5 a 10): vazios no meio; uma coluna quebrada colada na parede e duas tochas no alto de cada um */
+ for(let k=4;k<=9;k++){const h=HALLS[k];
+  aScat(['column_broken'],1,600+k*10,(x,y)=>{const e=Math.hypot((x-h[0])/h[2],(y-h[1])/h[3]);return e>.85&&e<1.05},{bw:0,fit:1,road:0});
+  torch(Math.round(h[0]-h[2]*.55),Math.round(h[1]-h[3]*.6));torch(Math.round(h[0]+h[2]*.55),Math.round(h[1]-h[3]*.6),{flip:true})}''')
 TEMPLO['SLR'] = 'id<.33?178:id<.66?166:190'
 TEMPLO['SLG'] = 'id<.33?150:id<.66?138:162'
 TEMPLO['SLB'] = 'id<.33?112:id<.66?100:122'

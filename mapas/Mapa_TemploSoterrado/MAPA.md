@@ -3,7 +3,8 @@
 - **Nome:** Templo Soterrado
 - **Id:** `ts` (não está na lista dos ids usados)
 - **Tipo:** **lugar de dentro** (caverna) do Acampamento dos Nômades (`nd`); aparece só como ícone no Mapa do Mundo.
-- **Tamanho:** 120 × 90 tiles (1920 × 1440 px). O `preview.py` dá "AVISO tamanho" (esperado: lugar de dentro).
+- **Tamanho:** **160 × 120 tiles** (2560 × 1920 px; aumentado a pedido do Ricardo para ter 6 salões de caça). O `preview.py` dá
+  "AVISO tamanho" (esperado: lugar de dentro).
 - **Gerador:** `templo_soterrado.js`, função `buriedTemple()`. As duas cavernas do Acampamento saem do mesmo molde
   (`visualizador_ferramentas/gera_cavernas.py` no repositório): mesmo pintor, mesmo shader, cores próprias.
 - **Chão:** `ts_floor.gdshader`, porte linha a linha do pintor de caverna (o kit não tem chão de caverna do Deserto; o
@@ -17,7 +18,7 @@
 
 ## Entrada e saída
 
-- **Entra:** pela porta do portal antigo (ruin_gate) no monte de areia ao norte da Planície Escaldante, tiles (121-123, 87) do Acampamento dos Nômades. Chega aqui em **Salão da Entrada (60, 84)** (px: 968, 1360).
+- **Entra:** pela porta do portal antigo (ruin_gate) no monte de areia ao norte da Planície Escaldante, tiles (121-123, 87) do Acampamento dos Nômades. Chega aqui em **Salão da Entrada (60, 115)** (px: 968, 1840).
 - **Sai:** pela **borda sul, colunas 56-63** (8 tiles): `{k:'edge', m:'nd', x, y}` — volta para o Acampamento na frente da
   porta, no tile (122, 89). O gatilho leva `x` **e** `y` (é a volta de uma porta, não uma passagem entre mapas abertos).
 - O formato da porta no jogo não está no kit: no Acampamento ela vem no campo extra `doors` do gerador (tiles, destino e
@@ -28,12 +29,16 @@
 | # | Zona | O que tem |
 |---|---|---|
 | 0 | Templo Soterrado (túneis) | |
-| 1 | Salão da Entrada (60, 80) | acampamento dos exploradores encostado na parede (fogueira, mercadorias, jarro) |
-| 2 | Galeria das Colunas (60, 58) | colunas encostadas nas paredes, o meio largo e livre |
-| 3 | Salão do Ídolo (60, 26) | a cabeça da estátua na parede do fundo, dois obeliscos na parede de trás |
-| 4 | Câmara Selada (60, 8) | câmara pequena atrás do Salão do Ídolo |
-| 5 | Salão Desmoronado Oeste (22, 44), **caça** | grande e **vazio** no meio; só tochas e uma coluna quebrada na parede |
-| 6 | Salão Desmoronado Leste (98, 44), **caça** | idem |
+| 1 | Salão da Entrada (60, 110) | acampamento dos exploradores encostado na parede (fogueira, mercadorias, jarro) |
+| 2 | Galeria das Colunas (60, 86) | colunas encostadas nas paredes, o meio largo e livre |
+| 3 | Salão do Ídolo (60, 42) | a cabeça da estátua na parede do fundo, dois obeliscos na parede de trás |
+| 4 | Câmara Selada (60, 14) | câmara pequena atrás do Salão do Ídolo |
+| 5 | Salão Desmoronado Oeste (22, 88), **caça** | grande e vazio no meio; só tochas na parede |
+| 6 | Cripta Oeste (22, 46), **caça** | idem |
+| 7 | Salão Desmoronado Leste (104, 92), **caça** | idem |
+| 8 | Cripta Leste (104, 52), **caça** | idem |
+| 9 | Salão das Areias (143, 72), **caça** | idem, o mais a leste |
+| 10 | Galeria Norte (106, 15), **caça** | idem, ligada à Câmara Selada |
 
 ## Planta (pedido do Ricardo: pouca poluição)
 
@@ -46,10 +51,12 @@ A caverna é escura: 1 fogueira (raio 140) e as lanternas (raio 120) iluminam os
 
 ## Destinos sugeridos para o teleporte
 
-- **Salão da Entrada (60, 84)**
-- **Salão do Ídolo (60, 30)**
+- **Salão da Entrada (60, 112)**
+- **Salão do Ídolo (60, 46)**
 
 ## Arte
 
 Só peças prontas do kit (`exemplo_deserto/arte/`), em `arte/`: column, column_broken, statue_head, obelisk, ruin_wall, jar, jar_broken, shard, goods, firepit, lamppost, rochedos e pedrinhas. Registro: `pecas_folha_ruinas.json` e
 `pecas_folha_caravanas.json` (copiados do kit).
+
+Os 6 salões de caça são ligados em anel pelos dois lados do eixo do templo (dá para circular sem voltar à entrada).

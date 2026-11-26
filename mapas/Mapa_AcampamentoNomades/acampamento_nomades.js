@@ -219,7 +219,7 @@ function nomadCamp(){
   dark.push([x0+((g.boca[0]+g.boca[2])>>1),top+g.boca[3]-6,70,.85]);   /* o brilho quente lá dentro acende à noite */
   const cells=[];for(let x=mx0;x<=mx1;x++)cells.push(x,doorRow);return cells};
  const blkS=(x,y)=>{if(x>=0&&y>=0&&x<W&&y<H)S[y*W+x]=1};
- const doors=[{m:'ts',cells:cave('cave_temple',GATE[0]*T+8,GATE[1]),x:60*T+8,y:85*T},
+ const doors=[{m:'ts',cells:cave('cave_temple',GATE[0]*T+8,GATE[1]),x:60*T+8,y:115*T},
               {m:'ga',cells:cave('cave_sand',ARC[0]*T+16,ARC[1]),x:60*T+8,y:115*T}];
  /* enfeites soltos da folha em volta das entradas (sem animais) */
  for(const [Gp,sd] of[[GATE,360],[ARC,370]]){
