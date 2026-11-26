@@ -32,6 +32,9 @@ Pouca poluição: peças de encostar na parede ou na beira da água; o meio dos 
 >   parte fora da água, a linha da água reta embaixo (o jogo desenha as ondinhas em volta);
 > - **Ruínas afundadas** em volta da estátua: 2 colunas de pedra (uma inteira, uma quebrada), um pedaço de muro com relevo
 >   e um arco de pedra, desenhados só a parte fora da água, com a linha da água reta embaixo, musgo e pequenos cristais âmbar;
+> - **Restos de exploradores humanos** (planos, vistos de cima, sem chão embaixo; NADA de ossos de animais): esqueleto
+>   humano deitado (cerca de 2,5 tiles de comprimento), esqueleto sentado encostado numa pedra, crânio humano sozinho,
+>   3 ossos soltos, mochila de couro rasgada, lampião apagado caído;
 > - **Barco a remo** velho de madeira, amarrado (visto de cima, para ficar na água junto à margem);
 > - **Píer pequeno** de madeira (plano, visto de cima, cerca de 3 tiles de comprimento);
 > - **Tocha de pé** num poste de madeira; **tocha de parede** num suporte de ferro;

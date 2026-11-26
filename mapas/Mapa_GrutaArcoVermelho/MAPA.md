@@ -58,3 +58,9 @@ Só peças prontas do kit (`exemplo_deserto/arte/`), em `arte/`: rock_red, rock_
 
 Os 5 salões de caça são ligados entre si por túneis largos (dá para circular sem voltar à entrada). Em cada um: só 2 tochas
 e até 3 rochedos colados na parede.
+
+## Ossos de exploradores
+
+Pedido do Ricardo: ossos humanos, sem colisão, com história (desenhados no `ov`, provisórios). O primeiro explorador que
+achou o túnel para o Lago morreu encostado na parede da Câmara do Fundo (esqueleto e mochila); mais ossos e um crânio num
+canto do Salão das Pedras e um esqueleto no canto do Salão Leste. Tudo encostado nas paredes, fora do meio da caça.

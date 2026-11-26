@@ -142,6 +142,39 @@ GRUTA = dict(
   aScat(['rock_m','rock_tall'],3,500+k*10,(x,y)=>{const e=Math.hypot((x-h[0])/h[2],(y-h[1])/h[3]);return e>.85&&e<1.05},{fit:1,br:2,road:0});
   torch(Math.round(h[0]-h[2]*.6),Math.round(h[1]-h[3]*.6));torch(Math.round(h[0]+h[2]*.6),Math.round(h[1]-h[3]*.6),{flip:true})}
  torch(55,85);torch(73,85,{flip:true});
+ /* ossos de exploradores (provisório, desenhados no ov: planos, sem colisão, encostados nas paredes). Cada peça é feita
+    numa grade (1 = osso, 2 = buraco escuro); o contorno escuro e a sombra embaixo/à direita saem sozinhos. */
+ const OSS=(()=>{const g=oc.getContext('2d');
+  const spr=(w,h,draw)=>{const m=new Uint8Array(w*h),pl=(x,y,v)=>{x=Math.round(x);y=Math.round(y);if(x>=0&&y>=0&&x<w&&y<h&&m[y*w+x]!=2)m[y*w+x]=v||1};
+   const ln=(x0,y0,x1,y1,t)=>{const n=Math.max(1,Math.ceil(Math.hypot(x1-x0,y1-y0)*2));for(let i=0;i<=n;i++){const x=x0+(x1-x0)*i/n,y=y0+(y1-y0)*i/n;pl(x,y);if(t>1){pl(x+.5,y);pl(x,y+.5)}}};
+   const el=(cx,cy,rx,ry,v)=>{for(let y=-ry;y<=ry;y++)for(let x=-rx;x<=rx;x++)if((x*x)/(rx*rx+.3)+(y*y)/(ry*ry+.3)<=1)pl(cx+x,cy+y,v)};
+   const knob=(x,y)=>{pl(x,y);pl(x+1,y);pl(x,y+1);pl(x+1,y+1)};
+   draw({pl,ln,el,knob});
+   const [c,,q]=cmCv(w+2,h+2),C=(col,x,y)=>{q.fillStyle=col;q.fillRect(x+1,y+1,1,1)},in_=(x,y)=>x>=0&&y>=0&&x<w&&y<h&&m[y*w+x];
+   for(let y=-1;y<=h;y++)for(let x=-1;x<=w;x++){if(in_(x,y))continue;if(in_(x+1,y)||in_(x-1,y)||in_(x,y+1)||in_(x,y-1))C('#3a2c20',x,y)}
+   for(let y=0;y<h;y++)for(let x=0;x<w;x++){const v=m[y*w+x];if(!v)continue;
+    if(v==2){C('#1a120c',x,y);continue}C(!in_(x,y+1)||!in_(x+1,y)?'#a89878':(!in_(x,y-1)||!in_(x-1,y)?'#f2e8d0':'#ddd0b2'),x,y)}
+   return c};
+  const SK=spr(38,15,({pl,ln,el,knob})=>{el(4,7,3,3);pl(3,6,2);pl(5,6,2);pl(4,8,2);ln(2,10,6,10);   /* crânio e queixo */
+   ln(8,7,21,7,2);for(let i=0;i<4;i++){const x=10+i*2.5,r=3.4-i*.4;ln(x,7,x-1,7-r);ln(x-1,7-r,x+.5,7-r-1);ln(x,8,x-1,8+r);ln(x-1,8+r,x+.5,8+r+1)}
+   ln(9,3,15,1);ln(15,1,20,2);knob(20,1);ln(9,11,15,13);ln(15,13,20,12);knob(20,12);   /* braços */
+   el(23,7,2,3);pl(23,7,2);   /* bacia */
+   ln(25,5,30,4,2);knob(30,3);ln(31,4,36,5);knob(36,5);ln(25,9,30,10,2);knob(30,10);ln(31,10,36,9);knob(36,8)});   /* pernas */
+  const CR=spr(9,9,({pl,el,ln})=>{el(4,4,3,3);pl(3,3,2);pl(5,3,2);pl(4,5,2);ln(2,7,6,7)});
+  const OS=spr(18,12,({ln,knob})=>{ln(2,2,11,4,2);knob(1,1);knob(11,4);ln(5,9,15,7);knob(4,9);knob(15,6);ln(13,1,16,10);knob(12,0)});
+  const MO=(()=>{const [c,,q]=cmCv(14,12),P=(col,x,y,w,h)=>{q.fillStyle=col;q.fillRect(x,y,w,h)};
+   P('#2a1a10',1,1,11,10);P('#6a4426',2,2,9,8);P('#8a5c34',3,3,7,3);P('#3a2414',3,7,7,1);P('#c09a58',6,4,2,2);P('#4a2e18',11,3,3,1);P('#4a2e18',13,4,1,5);return c})();
+  const put_=(c,x,y,f)=>{if(f){g.save();g.translate(x+c.width,y);g.scale(-1,1);g.drawImage(c,0,0);g.restore()}else g.drawImage(c,x,y)};
+  const perto=(tx,ty,bw)=>{for(let d=0;d<=12;d++)for(let j=-d;j<=d;j++)for(let i=-d;i<=d;i++){if(Math.max(Math.abs(i),Math.abs(j))!=d)continue;const x=tx+i,y=ty+j;
+    let ok=true;for(let b=0;b<=1&&ok;b++)for(let a=0;a<bw&&ok;a++){const k=(y+b)*W+x+a;if(x+a<0||y+b<0||x+a>=W||y+b>=H||!F[k]||S[k])ok=false}
+    if(!ok)continue;let wall=false;for(let b=-2;b<=3;b++)for(let a=-2;a<=bw+1;a++){const xx=x+a,yy=y+b;if(xx<0||yy<0||xx>=W||yy>=H||!F[yy*W+xx])wall=true}
+    if(wall)return [x*T,y*T+2]}return null};
+  const em=(c,bw)=>(tx,ty,f)=>{const p=perto(tx,ty,bw);if(p)put_(c,p[0],p[1],f);return p};
+  return {esqueleto:em(SK,3),cranio:em(CR,1),soltos:em(OS,2),mochila:em(MO,1),CR}})();
+ /* a história: o primeiro explorador que achou o túnel morreu encostado na parede da Câmara do Fundo; outros ossos num
+    canto do Salão das Pedras e perto da entrada */
+ OSS.esqueleto(66,9,false);OSS.mochila(64,12);
+ OSS.soltos(12,30);OSS.cranio(16,28);OSS.esqueleto(140,34,true);
  /* Câmara do Fundo (como o Ricardo desenhou): na parede do fundo, uma face de rocha alta (blocos de arenito) com uma
     abertura escura em arco — o túnel que desce para o Lago Subterrâneo (lg); na frente, o arco das duas lanternas com a
     corda. Parede e abertura pintadas no ov, sobre a rocha (onde não se anda). A porta são os tiles da boca; chega no Lago
