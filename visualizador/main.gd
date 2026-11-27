@@ -108,7 +108,7 @@ func load_map(id: String, at := Vector2(-1, -1)) -> void:
 	player.position = _spawn() if at.x < 0 else at
 	if args.has("px") and at.x < 0: player.position = Vector2(float(args.px) * T + 8, float(args.py) * T + 8)
 	dark_a = 0.0
-	if M.get("dentro", false): _set_dark(0.7)   # caverna: escura, só as luzes dos fogos e lanternas
+	if M.get("dentro", false): _set_dark(float(M.get("escuro", 0.7)))   # caverna: escura, só as luzes dos fogos e lanternas
 	elif args.has("noite"): _set_dark(0.75)
 	loading = false
 	zone_last = -1

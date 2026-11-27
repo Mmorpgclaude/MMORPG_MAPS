@@ -5,6 +5,6 @@ AVISO tamanho 160×120 (só lugar de dentro pode ter outro tamanho)
 OK    chão com 2560×1920 px (16 px por tile)
 OK    gen_data com 1 texel por tile
 OK    passagem {"k": "edge", "m": "ts", "x": 1704, "y": 144}: 8 células na borda, livres
-OK    6728 de 6728 tiles livres alcançáveis a partir da passagem
+OK    6832 de 6832 tiles livres alcançáveis a partir da passagem
 OK    arte recortada com no máximo 128 cores (maior peça: 128)
-objetos: 24 · zonas: Tumba do Rei da Areia, Antecâmara, Corredor dos Nichos, Câmara Funerária Oeste, Câmara Funerária Leste, Salão das Oferendas, Salão dos Servos, Cripta Profunda, Salão do Sarcófago
+objetos: 38 · zonas: Tumba do Rei da Areia, Antecâmara, Corredor dos Nichos, Câmara Desabada, Câmara Funerária Leste, Salão das Oferendas, Salão dos Servos, Cripta Profunda, Salão do Sarcófago

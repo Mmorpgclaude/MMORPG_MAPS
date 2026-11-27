@@ -59,3 +59,18 @@ func glow(_a: float) -> void:
 		for j in 10:
 			var u := fmod(tt * 0.1 + j / 10.0, 1.0)
 			fr(Color(1, 0.95, 0.75, 0.7 * sin(u * PI)), roundi(B[0] + sin(j * 2.1 + tt * 0.3) * 14.0), roundi(B[1] - 140 + u * 150), 1, 1)
+	# luzes de almas: pequenas luzes azuladas flutuando devagar perto do sarcófago, aparecendo e sumindo
+	for So in D.get("soul", []):
+		var ph: float = So[2]
+		var x: float = So[0] + sin(tt * 0.23 + ph) * 26.0 + sin(tt * 0.61 + ph * 2.0) * 8.0
+		var y: float = So[1] + cos(tt * 0.19 + ph * 1.3) * 18.0 - 10.0
+		if not inview(x, y, 30): continue
+		var a := clampf(0.5 + 0.5 * sin(tt * 0.45 + ph * 3.0), 0.0, 1.0)
+		if a < 0.08: continue
+		for k in 5:
+			var rr := 16.0 - k * 3.0
+			ell(x, y, rr, rr * 1.15, Color(0.45, 0.72, 1.0, 0.035 * a), false, 18)
+		fr(Color(0.8, 0.92, 1.0, 0.8 * a), roundi(x), roundi(y), 1, 2)
+		for k in 3:
+			var u := fmod(tt * 0.5 + k / 3.0 + ph, 1.0)
+			fr(Color(0.6, 0.85, 1.0, 0.5 * a * (1.0 - u)), roundi(x + sin(ph + k) * 3.0), roundi(y + u * 10.0), 1, 1)

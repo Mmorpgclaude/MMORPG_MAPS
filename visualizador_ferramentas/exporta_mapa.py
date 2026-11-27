@@ -10,7 +10,8 @@ from playwright.async_api import async_playwright
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 KIT = os.path.join(RAIZ, 'kit', 'ferramentas')
 JS, FN, ART, ID, SHADER, FX, NOME = sys.argv[1:8]
-DENTRO = len(sys.argv) > 8 and sys.argv[8] == 'dentro'   # lugar de dentro (caverna): fica escuro no visualizador
+DENTRO = len(sys.argv) > 8 and sys.argv[8].startswith('dentro')
+ESCURO = float(sys.argv[8].split(':')[1]) if DENTRO and ':' in sys.argv[8] else 0.7   # dentro:0.85 = mais escuro   # lugar de dentro (caverna): fica escuro no visualizador
 OUT = os.path.join(RAIZ, 'visualizador', 'mapas', ID)
 
 async def roda():
@@ -43,7 +44,7 @@ for e in r['ents']:
 shutil.copy(SHADER, OUT + '/floor.gdshader')
 shutil.copy(FX, OUT + '/fx.gd')
 m = {'id': ID, 'nome': NOME, 'W': r['W'], 'H': r['H'], 'S': ''.join('1' if v else '0' for v in r['S']),
-     'zonas': r['zones']['names'], 'z': r['zones']['z'], 'portals': r['portals'], 'dark': r['dark'], 'fx': r['fx'], 'ents': ents, 'doors': r.get('doors', []), 'dentro': DENTRO}
+     'zonas': r['zones']['names'], 'z': r['zones']['z'], 'portals': r['portals'], 'dark': r['dark'], 'fx': r['fx'], 'ents': ents, 'doors': r.get('doors', []), 'dentro': DENTRO, 'escuro': ESCURO}
 json.dump(m, open(OUT + '/map.json', 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 LISTA = os.path.join(RAIZ, 'visualizador', 'mapas', 'lista.json')
 L = json.load(open(LISTA, encoding='utf-8')) if os.path.exists(LISTA) else []

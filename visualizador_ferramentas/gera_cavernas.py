@@ -158,8 +158,8 @@ TUMBA = dict(
  ID='tr', MS='ts', PRE='', W=160, H=120, CH=115, FN='sandKingTomb', NOME='Tumba do Rei da Areia', PORTA='selada da Galeria Norte (aberta, com os blocos caídos) no Templo Soterrado,',
  DESC='''   A tumba verdadeira, embaixo do Templo Soterrado: a Antecâmara, o Corredor dos Nichos e, no fundo, o Salão do Sarcófago do
    rei. Dos dois lados, CINCO câmaras funerárias e salões largos para caçar, ligados em anel.''',
- ZN="['Tumba do Rei da Areia','Antecâmara','Corredor dos Nichos','Câmara Funerária Oeste','Câmara Funerária Leste','Salão das Oferendas','Salão dos Servos','Cripta Profunda','Salão do Sarcófago']",
- HALLS="[[60,108,12,6,1,1],[60,82,7,13,2,1],[24,88,18,13,3,0],[102,92,21,13,4,0],[24,46,18,14,5,0],[100,50,20,14,6,0],[141,72,14,20,7,0],[60,24,22,12,8,1]]",
+ ZN="['Tumba do Rei da Areia','Antecâmara','Corredor dos Nichos','Câmara Desabada','Câmara Funerária Leste','Salão das Oferendas','Salão dos Servos','Cripta Profunda','Salão do Sarcófago']",
+ HALLS="[[60,108,12,6,1,1],[60,82,10,15,2,1],[24,88,18,13,3,0],[102,92,21,13,4,0],[24,46,18,14,5,0],[100,50,20,14,6,0],[141,72,14,20,7,0],[60,24,22,12,8,1]]",
  TUN="[[60,116,60,108,4],[60,108,60,82,4],[60,82,60,24,4],[60,90,24,88,3.6],[24,88,24,46,3.6],[24,46,60,30,3.4],[60,90,102,92,3.6],[102,92,100,50,3.6],[100,50,60,30,3.4],[102,92,141,72,3.6],[100,50,141,72,3.4]]",
  SD=170, R0='[118,84,58]', R1='[138,100,70]', R2='[98,70,50]', R3='[152,116,82]',
  SLR='id<.33?150:id<.66?138:162', SLG='id<.33?126:id<.66?114:138', SLB='id<.33?96:id<.66?86:106',
@@ -167,13 +167,27 @@ TUMBA = dict(
  OBJ=''' const og=oc.getContext('2d');
  /* Antecâmara: os blocos da porta selada caídos e dois braseiros */
  fire(50,104);fire(70,104);aNear('ruin_wall',53,110,{road:0});
- /* Corredor dos Nichos: colunas coladas nas paredes e jarros funerários */
- for(const y of[74,86])for(const x of[54,66])aNear('column',x,y,{bw:0,fit:0,road:0,res:0});
- aNear('jar',54,80,{bw:0,road:0});aNear('jar_broken',66,92,{bw:0,road:0});
+ /* Corredor dos Nichos → avenida dos obeliscos: duas filas de obeliscos encostadas nas paredes, um braseiro entre cada par,
+    levando ao Salão do Sarcófago; o meio fica largo e livre */
+ {const ok=(x,y)=>F[y*W+x]&&!S[y*W+x];
+  for(const y of[72,80,88])for(const [x,f] of[[53,false],[67,true]])if(ok(x,y))aPut('obelisk',x,y,{bw:1,br:1,res:0,flip:f});
+  for(const y of[76,84])for(const x of[55,65])if(ok(x,y)){const c=aPut('firepit',x,y,{bw:1,res:0}),e=ents[ents.length-1],px=e.x+(e.sw>>1),py=e.y-10;fx.fire.push([px,py]);dark.push([px,py,140,1])}}
  /* Salão do Sarcófago: o sarcófago do rei (provisório: a cabeça de estátua) com um raio de luz, obeliscos e braseiros */
  aNear('statue_head',60,16,{fit:2,br:2,road:0});aNear('obelisk',46,20,{bw:1,road:0});aNear('obelisk',74,20,{bw:1,road:0});
  fire(42,30);fire(78,30);fx.beam=[[60*T+8,19*T]];dark.push([60*T+8,17*T,110,.7]);
  for(let k=0;k<30;k++){const x=(50+hq(k,201)*20)*T,y=(20+hq(k,202)*5)*T;og.fillStyle=hq(k,203)<.5?'#e8c040':'#b08820';og.fillRect(x|0,y|0,3,2);og.fillStyle='#fff0a0';og.fillRect(x|0,y|0,1,1)}
+ /* Câmara Desabada (salão 2): o teto caiu nos cantos — muros com relevo tombados, colunas quebradas, rochedos e montes de
+    areia, tudo nas pontas do salão; o meio continua livre para caçar */
+ {const h=HALLS[2],at=(a,e)=>[Math.round(h[0]+Math.cos(a)*h[2]*e),Math.round(h[1]+Math.sin(a)*h[3]*e)];
+  const canto=(a,list)=>{for(const [n,da,e,o] of list){const [x,y]=at(a+da,e);aNear(n,x,y,Object.assign({road:0,res:0},o))}};
+  canto(-2.4,[['ruin_wall',0,.74,{fit:1}],['column_broken',.35,.8,{bw:0}],['column_broken',-.35,.78,{bw:0,flip:true}],['jar_broken',.15,.58,{bw:0}]]);
+  canto(.75,[['ruin_wall',0,.74,{fit:1,flip:true}],['column_broken',.38,.76,{bw:0,flip:true}],['column_broken',-.35,.74,{bw:0}],['jar_broken',.2,.56,{bw:0}]]);
+  canto(-.7,[['column_broken',0,.8,{bw:0}],['column',.3,.82,{bw:0}]]);
+  for(const [a,e] of[[-2.4,.62],[.75,.62],[-.7,.7],[2.4,.72]]){const [x,y]=at(a,e),px=x*T+8,py=y*T+12;
+   for(let j=-5;j<=5;j++)for(let i=-18;i<=18;i++){if((i*i)/324+(j*j)/25>1)continue;og.fillStyle=j<-1?'#dcbc84':j<2?'#c8a46a':'#b08c58';og.fillRect(px+i,py+j,1,1)}}
+  for(const [a,e] of[[-2.4,.6],[.75,.6],[2.4,.7]]){const [x,y]=at(a,e);let yy=y;while(yy>0&&F[(yy-1)*W+x])yy--;if(yy>0)fx.sand.push([x*T+8,yy*T-4,hq(x,y)*6.28])}}
+ /* luzes de almas: pequenas luzes azuladas flutuando devagar no Salão do Sarcófago */
+ fx.soul=[];{const h=HALLS[7];for(let k=0;k<12;k++)fx.soul.push([(h[0]+(hq(k,231)-.5)*h[2]*1.5)*T,(h[1]+(hq(231,k)-.5)*h[3]*1.3)*T,hq(k,232)*6.28])}
  /* 5 salões de caça (2 a 6): vazios no meio; braseiros no alto; areia escorrendo de fendas do teto */
  for(let k=2;k<=6;k++){const h=HALLS[k];
   fire(Math.round(h[0]-h[2]*.55),Math.round(h[1]-h[3]*.6));fire(Math.round(h[0]+h[2]*.55),Math.round(h[1]-h[3]*.6));

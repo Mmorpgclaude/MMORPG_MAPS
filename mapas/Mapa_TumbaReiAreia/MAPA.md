@@ -24,15 +24,21 @@
 |---|---|---|
 | 0 | Tumba do Rei da Areia | túneis |
 | 1 | Antecâmara (60, 108) | os blocos da porta selada caídos e dois braseiros |
-| 2 | Corredor dos Nichos (60, 82) | colunas coladas nas paredes e jarros funerários |
-| 3 | Câmara Funerária Oeste (24, 88), **caça** | vazia no meio; braseiros e areia caindo nas paredes |
-| 4 | Câmara Funerária Leste (102, 92), **caça** | idem |
+| 2 | Corredor dos Nichos (60, 82) | **avenida dos obeliscos**: duas filas de 3 obeliscos encostadas nas paredes, com braseiros entre eles, levando ao Salão do Sarcófago; o meio fica livre |
+| 3 | Câmara Desabada (24, 88), **caça** | o teto caiu nos cantos: muros com relevo tombados, colunas quebradas, jarros quebrados, montes de areia e areia caindo; o meio continua livre |
+| 4 | Câmara Funerária Leste (102, 92), **caça** | vazia no meio; braseiros e areia caindo nas paredes |
 | 5 | Salão das Oferendas (24, 46), **caça** | idem |
 | 6 | Salão dos Servos (100, 50), **caça** | idem |
 | 7 | Cripta Profunda (141, 72), **caça** | idem, a mais a leste |
 | 8 | Salão do Sarcófago (60, 24) | o sarcófago do rei (provisório: a cabeça de estátua) com um raio de luz caindo do teto, dois obeliscos, braseiros e moedas de ouro no chão |
 
 Os 5 salões de caça são ligados em anel pelos dois lados do corredor central.
+
+## Clima da tumba
+
+- **Mais escura** que as outras cavernas (no visualizador: `escuro` 0,86 em vez de 0,7): só os braseiros iluminam.
+- **Luzes de almas** no Salão do Sarcófago: pequenas luzes azuladas flutuando devagar, aparecendo e sumindo
+  (`fx.soul`, camada de luz).
 
 ## Destinos sugeridos para o teleporte
 
